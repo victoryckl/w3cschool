@@ -115,3 +115,45 @@ DELETE FROM customers WHERE age=25;
 ROLLBACK;
 SELECT * FROM customers;
 
+#DROP TABLE products;
+CREATE TABLE IF NOT EXISTS `products` (
+  `ProductID` int(11) NOT NULL AUTO_INCREMENT,
+  `ProductName` varchar(64) NOT NULL,
+  `SupplierID` int(11) NOT NULL,
+  `CategoryID` int(11) NOT NULL,
+  `Unit` varchar(64) DEFAULT NULL,
+  `Price` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`ProductID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO products(ProductName,SupplierID,CategoryID,Unit,Price)
+VALUES
+('Chais',1,1,'10 boxes x 20 bags',18),
+('Chang',1,1,'24 - 12 oz bottles',19),
+('Aniseed Syrup',1,2,'12 - 550 ml bottles',10),
+("Chef Anton's Cajun Seasoning",2,2,'48 - 6 oz jars',22),
+("Chef Anton's Gumbo Mix",2,2,'36 boxes',21.35);
+
+SELECT * FROM products;
+SELECT MAX(Price) AS LargesPrice FROM products;
+SELECT MIN(Price) AS SmallestPrice FROM Products;
+SELECT COUNT(ProductID) FROM products;
+SELECT COUNT(*) AS NumberOfOrders FROM products;
+SELECT COUNT(DISTINCT CategoryID) AS NumberOfCategorys FROM products;
+SELECT AVG(Price) FROM products;
+SELECT ProductName,Price FROM products 
+	WHERE Price > (SELECT AVG(Price) FROM products);
+
+#DROP TABLE orderdetails;
+CREATE TABLE IF NOT EXISTS `orderdetails` (
+  `OrderDetailID` int(11) NOT NULL AUTO_INCREMENT,
+  `OrderID` int(11) NOT NULL,
+  `ProductID` int(11) NOT NULL,
+  `Quantity` int(11) NOT NULL,
+  PRIMARY KEY (`OrderDetailID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO orderdetails (OrderID,ProductID,Quantity)
+VALUES (10248,11,12),(10248,42,10),(10248,72,5),(10249,14,9),(10249,51,40);
+SELECT * FROM orderdetails;
+
+SELECT SUM(Quantity) FROM orderdetails;
