@@ -1,3 +1,4 @@
+
 /*
 110	一年级 111	一年级上 112	一年级下 120	二年级 121	二年级上 122	二年级下 130	三年级 131	三年级上 132	三年级下
 140	四年级 141	四年级上 142	四年级下 150	五年级 151	五年级上 152	五年级下 160	六年级 161	六年级上 162	六年级下
@@ -9,6 +10,9 @@
 */
 
 SELECT * FROM xkb_chapter WHERE subjectId=8;
+SELECT gradeId FROM xkb_grade WHERE gradeName='七年级';
+SELECT id FROM xkb_edition WHERE Name='沪教版';
+
 
 SELECT *,COUNT(*) FROM xkb_chapter GROUP BY gradeId ORDER BY gradeId;
 SELECT CONCAT(chapter,'-',unit,'-',section) xxx,COUNT(*) FROM xkb_chapter GROUP BY gradeId ORDER BY gradeId;
@@ -34,7 +38,11 @@ SELECT t1.*,t2.Name FROM (
 	LEFT JOIN xkb_edition t2
 	ON t1.editionId=t2.Id;
 
-SELECT * FROM xkb_chapter GROUP BY gradeId ORDER BY gradeId;
+SELECT t1.*,t2.Name FROM (
+	SELECT * FROM xkb_chapter WHERE subjectId=2 AND gradeId>=500 GROUP BY gradeId,editionId
+) t1
+LEFT JOIN xkb_edition t2
+ON t1.editionId = t2.id;
 
 SELECT t1.*,
 	COUNT(t2.question_id) as count
@@ -45,7 +53,7 @@ SELECT t1.*,
 			FROM xkb_chapter 
 			#WHERE subjectId=2 AND gradeId=301 AND editionId=68#数学 八年级上 湘教版
 			#WHERE subjectId=11 AND gradeId=201 AND editionId=81#思想品德 七年级上 部编版
-			WHERE subjectId=1 AND gradeId=122 AND editionId=81#语文 二年级下 部编版
+			WHERE subjectId=2 AND gradeId=500 AND editionId=21
 			GROUP BY chapterOrder,unitOrder,sectionOrder
 	) t1
 	LEFT JOIN xkb_question_knowledge_basic_id t2
@@ -58,7 +66,66 @@ SELECT t1.*,
 			WHERE 
 				help_topic_id < LENGTH(t1.kIds)-LENGTH(REPLACE(t1.kIds,',',''))+1
 	)
-	GROUP BY t1.k1,t1.k2,t1.k3;#22
+	GROUP BY t1.k1,t1.k2,t1.k3;
+
+
+
+SELECT * FROM xkb_chapter WHERE subjectId=(
+		SELECT subjectId FROM xkb_subject WHERE subjectName='语文'
+	) AND gradeId=(
+		SELECT gradeId FROM xkb_grade WHERE gradeName='七年级上'
+	);
+
+/*
+章节对应题目数
+语文-0      数学-73133  英语-0 
+物理-55874  化学-52589  生物-66827
+政治-21981  历史-49495  地理-39530
+科学-103441 道德与法治-35435
+*/
+
+SELECT t1.knowledgeId,t2.question_id,COUNT(*)FROM (
+		SELECT DISTINCT(knowledgeId) FROM xkb_chapter WHERE subjectId=(
+			SELECT subjectId FROM xkb_subject WHERE subjectName='数学'
+		)
+		#AND gradeId=(
+		#	SELECT gradeId FROM xkb_grade WHERE gradeName='九年级上'
+		#)
+	) t1
+	INNER JOIN xkb_question_knowledge_basic_id t2
+	ON t1.knowledgeId=t2.knowledge_basic_id
+	GROUP BY t1.knowledgeId
+	ORDER BY t1.knowledgeId;
+
+SELECT * FROM
+(
+	SELECT DISTINCT subjectId FROM xkb_questions WHERE id IN (
+		SELECT question_id FROM xkb_question_knowledge_basic_id WHERE knowledge_basic_id IN
+		(
+			SELECT DISTINCT(knowledgeId) FROM xkb_chapter WHERE subjectId=
+				(SELECT subjectId FROM xkb_subject WHERE subjectName='科学')
+		)
+	)
+) t1
+LEFT JOIN xkb_subject t2 ON t1.subjectId=t2.subjectId;
+
+SELECT * FROM xkb_questions 
+	WHERE subjectId=(SELECT subjectId FROM xkb_subject WHERE subjectName='科学');
+
+/*
+1	语文	15326
+2	数学	55600
+3	英语	17044
+4	历史	41859
+5	地理	31179
+6	政治	45691
+7	生物	40322
+8	物理	38051
+9	化学	26493
+*/
+SELECT t2.subjectId,t2.subjectName,t1.count FROM (
+	SELECT subjectId,COUNT(*) count FROM xkb_questions GROUP BY subjectId ORDER BY subjectId
+) t1 LEFT JOIN xkb_subject t2 ON t1.subjectId=t2.subjectId;
 
 
 SELECT * FROM xkb_chapter WHERE subjectId=2 AND gradeId=301 AND editionId=68 ORDER BY chapterOrder,unitOrder,sectionOrder;#数学 八年级上 湘教版
@@ -104,8 +171,6 @@ SELECT t1.*,
 	ON t1.knowledgeId = t2.knowledge_basic_id
 	GROUP BY t1.chapterOrder,t1.unitOrder,t1.sectionOrder;#22
 DROP TEMPORARY TABLE IF EXISTS temp_xkb_chapter;
-
-SELECT * FROM xkb_chapter WHERE section<>'';
 
 SELECT t1.*,
 	COUNT(t2.question_id) as count
@@ -220,8 +285,8 @@ SELECT * FROM xkb_questions WHERE id IN (
 );
 
 SELECT SQL_CALC_FOUND_ROWS * FROM xkb_questions WHERE id IN (
-	SELECT question_id FROM xkb_question_knowledge_basic_id WHERE knowledge_basic_id=73120
-) LIMIT 30,10;
+	SELECT question_id FROM xkb_question_knowledge_basic_id WHERE knowledge_basic_id in (25013,25014,25015,25016,25017,25019)
+) LIMIT 0,10;
 SELECT FOUND_ROWS() AS queryOrderListCount;
 
 SELECT * FROM xkb_questions WHERE isSub=TRUE LIMIT 0,10;
