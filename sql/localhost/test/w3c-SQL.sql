@@ -239,3 +239,120 @@ ORDER BY ID DESC
 LIMIT 1;
 
 SELECT COUNT(ID),ADDRESS FROM customers GROUP BY ADDRESS;
+
+#SELECT COUNT(ID),ADDRESS FROM customers WHERE COUNT(ID) > 3 GROUP BY ADDRESS;
+SELECT AVG(AGE) FROM customers;
+
+SELECT NAME,MID(ADDRESS,1,4) AS ADDRESS FROM customers;
+SELECT NAME,ADDRESS,LENGTH(ADDRESS) FROM customers WHERE LENGTH(ADDRESS) > 4;
+SELECT LENGTH('xxxxx');
+
+SELECT ProductName,ROUND(Price),ROUND(Price,0),ROUND(Price,1) FROM products;
+
+SELECT ProductName, Price, Now() AS PerDate FROM Products;
+
+SELECT FORMAT(Now(),'YYYY-MM-DD');
+SELECT DATE_FORMAT(Now(),'%Y-%m-%d');
+SELECT ProductName, Price, DATE_FORMAT(Now(),'%Y-%m-%d') AS PerDate FROM Products;
+
+SELECT SQRT(16);
+SELECT ProductName, SQRT(Price) FROM Products;
+
+SELECT RAND(),RAND(),RAND();
+SELECT RAND(1),RAND(1),RAND(1);
+SELECT * FROM products ORDER BY RAND();
+
+SELECT CONCAT('FIRST','SECOND');
+SELECT CONCAT('FIRST','-','SECOND');
+SELECT CONCAT('FIRST','-','SECOND','-','SECOND') XXX;
+SELECT CONCAT(ProductName,'-',Price) FROM products;
+
+SELECT ProductName,UnitOrder FROM products;
+SELECT ProductName,CategoryID*UnitOrder FROM products;
+SELECT ProductName,CategoryID*IFNULL(UnitOrder,0) FROM products;
+SELECT ProductName,CategoryID*IFNULL(UnitOrder,1) FROM products;
+SELECT ProductName,CategoryID*IFNULL(UnitOrder,'20') FROM products;
+
+SELECT ProductName,CONCAT(CategoryID, IFNULL(UnitOrder,'A')) FROM products;
+SELECT ProductName,CONCAT(CategoryID, COALESCE(UnitOrder,'A')) FROM products;
+SELECT ProductName,CONCAT(CategoryID, COALESCE(UnitOrder,NULL,NULL,'B')) FROM products;
+
+UPDATE products SET ProductName=REPLACE(ProductName,'Chef','Xo');
+UPDATE products SET ProductName=REPLACE(ProductName,'Xo','Chef');
+
+UPDATE products SET ProductName=REPLACE(ProductName,'','Chef');
+UPDATE products SET ProductName=REPLACE(ProductName,'Chefxx','');
+
+SELECT TRIM('  Hello  '),LTRIM('  Hello  '),RTRIM('  Hello  ');
+SELECT 
+	CONCAT('-',TRIM('  Hello  '),'-'),
+	CONCAT('-',LTRIM('  Hello  '),'-'),
+	CONCAT('-',RTRIM('  Hello  '),'-');
+
+SELECT TRIM(',' FROM ',,,Hello,,');
+#SELECT LTRIM(',' FROM ',,,Hello,,');
+#SELECT RTRIM(',' FROM ',,,Hello,,');
+
+SELECT TRIM(',' FROM '1,2,3,,');
+SELECT TRIM(LEADING ',' FROM ',1,2,3,,');
+SELECT TRIM(TRAILING ',' FROM ',1,2,3,,');
+SELECT TRIM(BOTH ',' FROM ',1,2,3,,');
+
+
+CREATE TABLE IF NOT EXISTS customers_new LIKE customers;
+CREATE TABLE IF NOT EXISTS customers_new2 AS SELECT * FROM customers;
+CREATE TABLE IF NOT EXISTS customers_new3 AS SELECT ID,NAME,AGE FROM customers;
+
+ALTER TABLE customers_new2 ADD PRIMARY KEY(ID);
+ALTER TABLE customers_new2 DROP PRIMARY KEY;
+
+#sp_renamedb 'test' 'test2';
+
+SELECT customers.NAME, orders.* FROM orders 
+INNER JOIN customers ON orders.CUSTOMER_ID=customers.ID
+WHERE AMOUNT > 1500;
+
+#四表联查
+SELECT customers.NAME, orders.AMOUNT, products.ProductName 
+FROM orders 
+INNER JOIN customers ON orders.CUSTOMER_ID=customers.ID
+LEFT JOIN orderdetails ON orders.OID=orderdetails.OrderID
+LEFT JOIN products ON orderdetails.ProductID=products.ProductID
+WHERE AMOUNT > 1500;
+
+#Incorrect parameter count in the call to native function 'datediff'
+#SELECT datediff('minute','2020-0-4-16 11:3:0',getdate())>5;
+
+/*
+DECLARE @start int
+DECLARE @sql varchar(255);
+set @sql='select * from customers';
+SELECT LENGTH(@sql);
+exec  @sql;
+*/
+
+set @strWhere='NAME="Khilan"';
+#set @strSQL = 'select count(*) as Total from customers where 1=1 AND '+ @strWhere;
+set @strSQL = 'select * from customers';
+PREPARE stmt FROM @strSQL; 
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+#笔画从少到多 （MS SQL Server才有Chinese_PRC_Stroke_ci_as）
+SELECT * FROM customers ORDER BY ChinaName COLLATE Chinese_PRC_Stroke_ci_as 
+
+#AES_DECRYPT(crypt_str,key_str)
+SELECT AES_ENCRYPT('123456','444');
+SELECT AES_DECRYPT(AES_ENCRYPT('123456','444'),'444');
+
+#SELECT pwdencrypt('123456');
+select password('abc'),
+			sha1('abc'),
+			unhex(sha1('abc')),
+			upper(sha1(unhex(sha1('abc'))));
+
+select hex(9),hex(10),hex('01'),unhex('31'),unhex('3031');
+
+SELECT upper(MD5('abc'));
+
+
