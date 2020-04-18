@@ -174,3 +174,4 @@ SET @sql = CONCAT('Select st.stuid, st.stunm, ', @sql,
 PREPARE stmt FROM @sql;
 EXECUTE stmt;
 DEALLOCATE PREPARE stmt;
+

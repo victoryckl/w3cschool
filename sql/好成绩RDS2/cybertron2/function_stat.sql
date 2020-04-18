@@ -1,4 +1,17 @@
-CREATE TABLE IF NOT EXISTS `function_stat` (
+
+CREATE TABLE IF NOT EXISTS `function_tbl` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `function` varchar(64) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='功能列表';
+
+INSERT INTO function_tbl VALUES
+(1,'声希语音评测'),
+(2,'阿凡题搜题'),
+(3,'gostudy指尖识别'),
+(4,'图灵幼儿bot聊天服务');
+
+CREATE TABLE `function_stat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `functionId` int(11) NOT NULL DEFAULT '0',
   `year` int(11) NOT NULL DEFAULT '0',
@@ -29,10 +42,9 @@ CREATE TABLE IF NOT EXISTS `function_stat` (
   `hour22` int(11) NOT NULL DEFAULT '0',
   `hour23` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `ui_function_day` (`functionId`,`year`,`month`,`day`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMIT '功能调用次数统计表';
-
-ALTER TABLE function_stat ADD CONSTRAINT ui_function_day UNIQUE (`functionId`,`year`,`month`,`day`);
+  UNIQUE KEY `ui_function_day` (`functionId`,`year`,`month`,`day`),
+  CONSTRAINT `foreign_function_id` FOREIGN KEY (`functionId`) REFERENCES `function_tbl` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='功能调用次数统计表';
 
 INSERT INTO function_stat(
 	`functionId`,`year`,`month`,`day`,
@@ -64,46 +76,37 @@ DESC function_stat;
 
 #查询表字段名称
 SELECT COLUMN_NAME FROM information_schema.COLUMNS
-WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
-AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 11;
+	WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
+	AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 11;
 
 SELECT CONCAT_WS(',',COLUMN_NAME) FROM information_schema.COLUMNS
-WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
-AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 11;
+	WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
+	AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 11;
 
 SELECT GROUP_CONCAT('+',COLUMN_NAME) hours FROM information_schema.COLUMNS
-WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
-AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 18;
+	WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
+	AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 18;
 
 SELECT TRIM(LEADING '+' FROM REPLACE(GROUP_CONCAT('+',COLUMN_NAME),',','')) hours 
-FROM information_schema.COLUMNS
-WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
-AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 18;
+	FROM information_schema.COLUMNS
+	WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
+	AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 18;
 
 ################################
 SET @col_hours = NULL;
 SELECT TRIM(LEADING '+' FROM REPLACE(GROUP_CONCAT('+',COLUMN_NAME),',','')) hours 
 	FROM information_schema.COLUMNS
 	WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
-	AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 18
+	AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 9
 	INTO @col_hours;
-SELECT @col_hours;
-SET @sql = CONCAT('SELECT SUM(',@col_hours,') FROM function_stat');
+SET @sql = CONCAT(
+	'SELECT `year`,`month`,`day`, SUM(',@col_hours,') count
+	FROM function_stat 
+	GROUP BY functionId,`year`,`month`,`day` 
+	ORDER BY functionId,`year`,`month`,`day`');
 PREPARE stmt FROM @sql;
 EXECUTE stmt;
 DEALLOCATE PREPARE stmt;
-################################
+#################################
 
-SELECT SUM(
-	SELECT TRIM(LEADING '+' FROM REPLACE(GROUP_CONCAT('+',COLUMN_NAME),',','')) hours 
-	FROM information_schema.COLUMNS
-	WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
-	AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 18)
-FROM function_stat;
 
-set @hourEnd = 9;
-select id,
-				case  @hourEnd  when 'A'  THEN val else  0 end A,
-				case  filed_name  when 'B'  THEN val else  0 end B,
-				case  filed_name  when 'C'  THEN val else  0 end C
-	FROM tt
