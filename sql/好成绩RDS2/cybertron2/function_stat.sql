@@ -67,16 +67,26 @@ SELECT COLUMN_NAME FROM information_schema.COLUMNS
 WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
 AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 11;
 
-SELECT GROUP_CONCAT(COLUMN_NAME) hours FROM information_schema.COLUMNS
+SELECT CONCAT_WS(',',COLUMN_NAME) FROM information_schema.COLUMNS
+WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
+AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 11;
+
+SELECT GROUP_CONCAT('+',COLUMN_NAME) hours FROM information_schema.COLUMNS
+WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
+AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 18;
+
+SELECT TRIM(LEADING '+' FROM REPLACE(GROUP_CONCAT('+',COLUMN_NAME),',','')) hours 
+FROM information_schema.COLUMNS
 WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
 AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 18;
 
 ################################
 SET @col_hours = NULL;
-SELECT GROUP_CONCAT(COLUMN_NAME) hours FROM information_schema.COLUMNS
-WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
-AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 1
-INTO @col_hours;
+SELECT TRIM(LEADING '+' FROM REPLACE(GROUP_CONCAT('+',COLUMN_NAME),',','')) hours 
+	FROM information_schema.COLUMNS
+	WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
+	AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 18
+	INTO @col_hours;
 SELECT @col_hours;
 SET @sql = CONCAT('SELECT SUM(',@col_hours,') FROM function_stat');
 PREPARE stmt FROM @sql;
@@ -85,8 +95,10 @@ DEALLOCATE PREPARE stmt;
 ################################
 
 SELECT SUM(
-	SELECT TRIM(',' FROM GROUP_CONCAT(COLUMN_NAME)) hours FROM information_schema.COLUMNS
-	WHERE TABLE_SCHEMA='cybertron2' AND TABLE_NAME='function_stat' AND COLUMN_NAME like 'hour%')
+	SELECT TRIM(LEADING '+' FROM REPLACE(GROUP_CONCAT('+',COLUMN_NAME),',','')) hours 
+	FROM information_schema.COLUMNS
+	WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='function_stat' 
+	AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 18)
 FROM function_stat;
 
 set @hourEnd = 9;
