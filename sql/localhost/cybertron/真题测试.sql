@@ -1,3 +1,77 @@
+SELECT t1.*,t2.sorces AS score, IFNULL(t3.questionId, 0) collected,t3.createTime FROM xkb_questions t1
+		INNER JOIN xkb_paperques t2 ON t1.id=t2.question_id AND t2.paperId=1
+		LEFT JOIN xkb_good_question t3 ON t3.userName='xxxx' AND t1.id=t3.questionId;
+
+SELECT t1.*,t2.sorces AS score,IFNULL(t3.questionId, 0) collected,t3.createTime 
+		FROM xkb_questions t1
+		INNER JOIN xkb_paperques t2
+		ON t1.id=t2.question_id 
+		AND t2.paperId=1
+		AND t1.id IN (18292046,18292047,18292049)
+		LEFT JOIN xkb_good_question t3 ON t3.userName='xxxx' AND t1.id=t3.questionId;
+
+SELECT t1.*,IFNULL(t2.questionId, 0) collected,t2.createTime  FROM (
+	SELECT * FROM xkb_questions WHERE id IN (18292046,18292047,18292049)
+) t1
+LEFT JOIN xkb_good_question t2 ON t2.userName='xxxx' AND t1.id=t2.questionId;
+
+########################################################################
+
+CREATE TABLE IF NOT EXISTS `xkb_good_question` (
+	`id`  int NOT NULL AUTO_INCREMENT ,
+	`userName`  varchar(64) NOT NULL COMMENT '用户名 => userinfotbl.UserName',
+	`questionId` int NOT NULL COMMENT '题目ID => xkb_questions.id',
+	`createTime` timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间，更新时间',
+	PRIMARY KEY (`id`),
+	UNIQUE `ui_name_id` (`userName`, `questionId`) USING BTREE
+)DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci COMMENT='用户好题本';
+
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx', 17822408) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx', 17822409) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx', 17822413) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx', 17822415) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx', 17822416) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx', 17822417) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx', 17822419) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx', 17822423) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx', 17822424) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx', 17822426) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+
+
+INSERT INTO xkb_good_question(userName,questionId)VALUES('xxxx', 123)ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_good_question(userName,questionId)VALUES('xxxx', 1234)ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_good_question(userName,questionId)VALUES('xxxx', 12345)ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx2', 17822434) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx2', 17822444) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx2', 17822446) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx2', 123456) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx2', 1234567) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx2', 12345678) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+
+
+SELECT * FROM xkb_good_question WHERE userName='xxxx' ORDER BY createTime DESC;
+SELECT * FROM xkb_good_question WHERE userName='xxxx2' ORDER BY createTime DESC;
+
+DELETE FROM xkb_good_question WHERE userName='xxxx' AND questionId IN (1658,1659);
+DELETE FROM xkb_good_question WHERE userName='xxxx2';
+
+SELECT * FROM xkb_good_question;
+
+SELECT SQL_CALC_FOUND_ROWS t1.createTime,t2.* FROM (
+	SELECT questionId,createTime FROM xkb_good_question 
+	WHERE userName='xxxx'
+	ORDER BY createTime DESC
+) t1
+INNER JOIN xkb_questions t2
+ON t1.questionId=t2.id
+LIMIT 0,5;
+SELECT FOUND_ROWS() AS queryOrderListCount;
+
+
+
 
 /*
 110	一年级 111	一年级上 112	一年级下 120	二年级 121	二年级上 122	二年级下 130	三年级 131	三年级上 132	三年级下
@@ -30,13 +104,12 @@ SELECT * FROM xkb_grade WHERE gradeId >= 200 AND gradeId < 500;#初中
 SELECT * FROM xkb_grade WHERE gradeId >= 500;#高中
 
 #按照学段、年级分组出版社列表
-SELECT t1.*,t2.Name FROM (
+SELECT t1.*,t2.Name,t3.subjectName FROM (
 	SELECT pharseId,subjectId,editionId 
-		FROM xkb_chapter
-		#WHERE pharseId=1
+		FROM xkb_chapter WHERE subjectId=(SELECT subjectId FROM xkb_subject WHERE subjectName='物理')
 		GROUP BY pharseId,subjectId,editionId) t1
-	LEFT JOIN xkb_edition t2
-	ON t1.editionId=t2.Id;
+	LEFT JOIN xkb_edition t2 ON t1.editionId=t2.Id
+	LEFT JOIN xkb_subject t3 ON t1.subjectId=t3.subjectId;
 
 SELECT t1.*,t2.Name FROM (
 	SELECT * FROM xkb_chapter WHERE subjectId=2 AND gradeId>=500 GROUP BY gradeId,editionId
@@ -86,11 +159,8 @@ SELECT * FROM xkb_chapter WHERE subjectId=(
 
 SELECT t1.knowledgeId,t2.question_id,COUNT(*)FROM (
 		SELECT DISTINCT(knowledgeId) FROM xkb_chapter WHERE subjectId=(
-			SELECT subjectId FROM xkb_subject WHERE subjectName='数学'
+			SELECT subjectId FROM xkb_subject WHERE subjectName='物理'
 		)
-		#AND gradeId=(
-		#	SELECT gradeId FROM xkb_grade WHERE gradeName='九年级上'
-		#)
 	) t1
 	INNER JOIN xkb_question_knowledge_basic_id t2
 	ON t1.knowledgeId=t2.knowledge_basic_id
@@ -284,9 +354,36 @@ SELECT * FROM xkb_questions WHERE id IN (
 	SELECT question_id FROM xkb_question_knowledge_basic_id WHERE knowledge_basic_id=73120
 );
 
-SELECT SQL_CALC_FOUND_ROWS * FROM xkb_questions WHERE id IN (
-	SELECT question_id FROM xkb_question_knowledge_basic_id WHERE knowledge_basic_id in (25013,25014,25015,25016,25017,25019)
-) LIMIT 0,10;
+SELECT t1.*,IFNULL(t2.questionId, 0) collected,t2.createTime
+
+==================================================================================================================================
+未完成
+==================================================================================================================================
+SELECT SQL_CALC_FOUND_ROWS * 
+FROM xkb_questions t1
+WHERE t1.id IN (
+		SELECT question_id FROM xkb_question_knowledge_basic_id WHERE knowledge_basic_id in (25013,25014,25015,25016,25017,25019)
+)
+LIMIT 0,10;
+SELECT FOUND_ROWS() AS queryOrderListCount;
+
+SELECT SQL_CALC_FOUND_ROWS t1.*,IFNULL(t2.questionId, 0) collected,t2.createTime FROM (
+	SELECT * FROM xkb_questions
+	WHERE id IN (
+		SELECT question_id FROM xkb_question_knowledge_basic_id WHERE knowledge_basic_id in (25013,25014,25015,25016,25017,25019)
+	)
+) t1
+LEFT JOIN xkb_good_question t2 ON t2.userName='xxxx' AND t1.id=t2.questionId
+LIMIT 0,10;
+SELECT FOUND_ROWS() AS queryOrderListCount;
+
+SELECT SQL_CALC_FOUND_ROWS * 
+FROM xkb_questions t1
+LEFT JOIN xkb_good_question t2 ON t2.userName='xxxx' AND t1.id=t2.questionId
+ON t1.id IN (
+		SELECT question_id FROM xkb_question_knowledge_basic_id WHERE knowledge_basic_id in (25013,25014,25015,25016,25017,25019)
+)
+LIMIT 0,10;
 SELECT FOUND_ROWS() AS queryOrderListCount;
 
 SELECT * FROM xkb_questions WHERE isSub=TRUE LIMIT 0,10;
