@@ -354,5 +354,3 @@ select password('abc'),
 select hex(9),hex(10),hex('01'),unhex('31'),unhex('3031');
 
 SELECT upper(MD5('abc'));
-
-
