@@ -3,12 +3,12 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `employee_tbl`;
 CREATE TABLE `employee_tbl` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(10) NOT NULL DEFAULT '',
   `date` datetime NOT NULL,
   `singin` tinyint(4) NOT NULL DEFAULT '0' COMMENT '登录次数',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
 BEGIN;
 INSERT INTO `employee_tbl` VALUES ('1', '小明', '2016-04-22 15:25:33', '1'), ('2', '小王', '2016-04-20 15:25:47', '3'), ('3', '小丽', '2016-04-19 15:26:02', '2'), ('4', '小王', '2016-04-07 15:26:14', '4'), ('5', '小明', '2016-04-11 15:26:40', '4'), ('6', '小明', '2016-04-04 15:26:54', '2');
@@ -187,5 +187,57 @@ SHOW CREATE TABLE w3cschool_tbl;
 
 SELECT VERSION(),DATABASE(),USER();#服务器版本信息,	当前数据库名 (或者返回空)，当前用户名
 SHOW STATUS;#服务器状态
-SHOW VARIABLES;#	服务器配置变量
+SHOW VARIABLES;#服务器配置变量
+
+ALTER TABLE employee_tbl AUTO_INCREMENT=10;
+
+DROP TABLE person_tbl;
+CREATE TABLE person_tbl
+(
+   first_name CHAR(20) NOT NULL,
+   last_name CHAR(20) NOT NULL,
+   sex CHAR(10),
+   PRIMARY KEY (last_name, first_name)
+);
+
+INSERT IGNORE INTO person_tbl (last_name, first_name)
+  VALUES( 'Jay', 'Thomas');
+INSERT IGNORE INTO person_tbl (last_name, first_name)
+  VALUES( 'Jay', 'Thomas'),('Jack','Sim');
+/*
+INSERT IGNORE INTO与INSERT INTO的区别就是INSERT IGNORE会忽略数据库中已经存在的数据，
+如果数据库没有数据，就插入新的数据，
+如果有数据的话就跳过这条数据。
+这样就可以保留数据库中已经存在数据，达到在间隙中插入数据的目的。
+*/ 
+
+ALTER TABLE person_tbl DROP PRIMARY KEY;
+INSERT IGNORE INTO person_tbl (last_name, first_name)
+  VALUES( 'Jay', 'Thomas'),('Jack','Sim');
+SELECT * FROM person_tbl;
+ALTER TABLE person_tbl ADD PRIMARY KEY(first_name,last_name);
+#查找重复记录
+select name,count(*) as count from employee_tbl group by name having count(name) > 1;
+select * from employee_tbl where name in (
+select name from employee_tbl group by name having count(name) > 1);
+
+#删除重复数据的方法：创建临时表，查询并导入不重复的数据到临时表，删除原表，临时表重名
+DROP TABLE tmp;
+CREATE TABLE tmp LIKE person_tbl;
+ALTER TABLE tmp ADD PRIMARY KEY(first_name, last_name);
+INSERT INTO tmp SELECT * FROM person_tbl GROUP BY first_name,last_name;
+DROP TABLE person_tbl;
+ALTER TABLE tmp RENAME TO person_tbl;
+
+#使用SELECT...INTO OUTFILE语句来简单的导出数据到文本文件上
+SELECT * FROM person_tbl 
+INTO OUTFILE 'D:/ServerDevelop/mysql-5.6.40-winx64/backup/1.txt';
+#[Err] 1290 - The MySQL server is running with the --secure-file-priv option so it cannot execute this statement
+SHOW VARIABLES LIKE "secure%"; #secure_file_priv NULL 默认有可能是NULL就代表禁止导出
+/*mysql安装路径下的my.ini文件，设置一下路径： 
+[mysqld]
+secure_file_priv=D:/ServerDevelop/mysql-5.6.40-winx64/backup
+*/
+
+
 

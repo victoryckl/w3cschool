@@ -11,7 +11,7 @@ INSERT INTO call_function VALUES
 (3,'gostudy指尖识别'),
 (4,'图灵幼儿bot聊天服务');
 
-
+DROP TABLE call_function_stat;
 CREATE TABLE IF NOT EXISTS `call_function_stat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `functionId` int(11) NOT NULL DEFAULT 0,
@@ -91,6 +91,12 @@ SELECT TRIM(LEADING '+' FROM REPLACE(GROUP_CONCAT('+',COLUMN_NAME),',','')) hour
 	FROM information_schema.COLUMNS
 	WHERE TABLE_SCHEMA = 'cybertron2' AND TABLE_NAME='call_function_stat' 
 	AND COLUMN_NAME like 'hour%' AND TRIM('hour' FROM COLUMN_NAME) <= 18;
+
+SELECT `year`,`month`,`day`, SUM(hour0+hour14) count
+			FROM call_function_stat 
+			WHERE functionId=1 AND `year`=2020 AND `month`=4 AND `day`=16
+			GROUP BY functionId,`year`,`month`,`day`
+			ORDER BY functionId,`year`,`month`,`day`
 
 ################################
 #根据指定日期，小时范围统计总数
