@@ -240,4 +240,71 @@ secure_file_priv=D:/ServerDevelop/mysql-5.6.40-winx64/backup
 */
 
 
+SELECT date FROM employee_tbl WHERE id=1;
+SELECT
+EXTRACT(YEAR FROM date),
+EXTRACT(MONTH FROM date),
+EXTRACT(DAY FROM date),
+EXTRACT(HOUR FROM date)
+FROM employee_tbl WHERE id=1;
+
+select concat('11','22','33'),concat('11','22',NULL);
+
+SELECT 
+CONCAT_WS('-','11','22','33'),
+CONCAT_WS('-','11','22',NULL),
+CONCAT_WS('','11','22',NULL);
+
+SELECT name,GROUP_CONCAT(id) FROM employee_tbl GROUP BY name;
+SELECT name,GROUP_CONCAT(DISTINCT id ORDER BY id DESC SEPARATOR '+') FROM employee_tbl GROUP BY name;
+
+SELECT REPEAT('ab', 2),REPEAT('z', 3);
+
+set @content='123456789';
+select left(@content,5),right(@content, 3),
+substring(@content,3),substring(@content,3,4);
+
+select substring_index("www.w3cschool.cn",".",2);
+
+SELECT * FROM employee_tbl ORDER BY RAND() LIMIT 3;#随机抽取样本
+
+SELECT LEAST(3,4),LEAST(38.5,42,2.3,55,61),LEAST('F','Z','B','E','E');
+SELECT GREATEST(3,4),GREATEST(38.5,42,2.3,55,61),GREATEST('F','Z','B','E','E');
+
+SELECT DEGREES(PI()),RADIANS(90);
+
+SELECT TRUNCATE(1.223,1),TRUNCATE(1.999,1),TRUNCATE(1.999,0),
+TRUNCATE(-1.999,1),TRUNCATE(-1.999,0);
+
+SELECT TRUNCATE(122,-2),TRUNCATE(10.28*100,0);
+
+#查出kename字段中第一次出现.之前的字符串
+SET @kename='api-0.22.0-array';
+select @kename,substr(@kename,1,locate('.',@kename));#mysql中的start是从1开始的
+
+#在成功安装mysql后，可以直接使用root账户登录，注意这个账户是默认没有密码的。
+#因此为了数据库的安全，需要第一时间给root用户设置密码。 
+GRANT ALL PRIVILEGES ON *.* TO root@localhost IDENTIFIED BY "<password>";
+
+#这样就可以使用xavier用户，密码为xavier在本机登录MySQL操作db_web_monitor数据库了
+GRANT ALL PRIVILEGES ON db_web_monitor.* TO xavier@localhost IDENTIFIED BY "xavier";
+
+/*
+开放远程登录权限 
+1.首先修改MySQL的配置文件，允许监听远程登录。
+sudo vi /etc/mysql/my.cnf
+找到bind-address所在行 
+45 # Instead of skip-networking the default is now to listen only on 
+46 # localhost which is more compatible and is not less secure. 
+47 bind-address = 127.0.0.1
+将 bind-address值修改为本机IP即可。
+注意注释说明，如果是较老版本的MySQL，此处就应该是skip-networking，直接将其注释即可。
+*/
+
+#2. 授予用户远程登录权限
+GRANT ALL PRIVILEGES ON db_web_monitor.* TO xavier@"%" IDENTIFIED BY "xavier";
+#xavier用户就可以在任意主机通过IP访问到本机MySQL，对db_web_monitor数据库进行操作了
+
+
+
 
