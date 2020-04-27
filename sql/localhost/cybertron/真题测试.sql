@@ -1,19 +1,24 @@
-SELECT t1.*,t2.sorces AS score, IFNULL(t3.questionId, 0) collected,t3.createTime FROM xkb_questions t1
-		INNER JOIN xkb_paperques t2 ON t1.id=t2.question_id AND t2.paperId=1
-		LEFT JOIN xkb_good_question t3 ON t3.userName='xxxx' AND t1.id=t3.questionId;
 
-SELECT t1.*,t2.sorces AS score,IFNULL(t3.questionId, 0) collected,t3.createTime 
-		FROM xkb_questions t1
-		INNER JOIN xkb_paperques t2
-		ON t1.id=t2.question_id 
-		AND t2.paperId=1
-		AND t1.id IN (18292046,18292047,18292049)
-		LEFT JOIN xkb_good_question t3 ON t3.userName='xxxx' AND t1.id=t3.questionId;
+SELECT t1.*,t2.sorces AS score, t3.createTime goodTime, t4.createTime errorTime 
+	FROM xkb_questions t1
+	INNER JOIN xkb_paperques t2 ON t1.id=t2.question_id AND t2.paperId=1
+	LEFT JOIN xkb_good_question t3 ON t3.userName='xxxx' AND t1.id=t3.questionId
+	LEFT JOIN xkb_error_question t4 ON t4.userName='xxxx' AND t1.id=t4.questionId;
 
-SELECT t1.*,IFNULL(t2.questionId, 0) collected,t2.createTime  FROM (
+SELECT t1.*, t2.createTime goodTime, t3.createTime errorTime FROM (
 	SELECT * FROM xkb_questions WHERE id IN (18292046,18292047,18292049)
 ) t1
-LEFT JOIN xkb_good_question t2 ON t2.userName='xxxx' AND t1.id=t2.questionId;
+LEFT JOIN xkb_good_question t2  ON t2.userName='xxxx' AND t1.id=t2.questionId
+LEFT JOIN xkb_error_question t3 ON t3.userName='xxxx' AND t1.id=t3.questionId;
+
+SELECT t1.*, t2.sorces AS score, t3.createTime goodTime, t4.createTime errorTime
+		FROM xkb_questions t1
+		INNER JOIN xkb_paperques t2
+		ON t1.id=t2.question_id AND t2.paperId=1 AND t1.id IN (18292046,18292047,18292049)
+		LEFT JOIN xkb_good_question t3 ON t3.userName='xxxx' AND t1.id=t3.questionId
+		LEFT JOIN xkb_error_question t4 ON t4.userName='xxxx' AND t1.id=t4.questionId;
+
+
 
 ########################################################################
 
@@ -23,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `xkb_good_question` (
 	`questionId` int NOT NULL COMMENT '题目ID => xkb_questions.id',
 	`createTime` timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间，更新时间',
 	PRIMARY KEY (`id`),
-	UNIQUE `ui_name_id` (`userName`, `questionId`) USING BTREE
+	UNIQUE `ui_user_question` (`userName`, `questionId`) USING BTREE
 )DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci COMMENT='用户好题本';
 
 INSERT INTO xkb_good_question(userName,questionId) VALUES('xxxx', 17822408) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
@@ -60,17 +65,63 @@ DELETE FROM xkb_good_question WHERE userName='xxxx2';
 
 SELECT * FROM xkb_good_question;
 
-SELECT SQL_CALC_FOUND_ROWS t1.createTime,t2.* FROM (
-	SELECT questionId,createTime FROM xkb_good_question 
-	WHERE userName='xxxx'
-	ORDER BY createTime DESC
+SELECT SQL_CALC_FOUND_ROWS t1.createTime goodTime, t3.createTime errorTime, t2.* FROM (
+	SELECT questionId,createTime FROM xkb_good_question WHERE userName='xxxx'
 ) t1
-INNER JOIN xkb_questions t2
-ON t1.questionId=t2.id
+INNER JOIN xkb_questions t2 ON t1.questionId=t2.id
+LEFT JOIN xkb_error_question t3 ON t1.questionId=t3.questionId
+ORDER BY goodTime DESC
 LIMIT 0,5;
 SELECT FOUND_ROWS() AS queryOrderListCount;
 
 
+######################################################
+#错题本
+CREATE TABLE IF NOT EXISTS `xkb_error_question` (
+	`id`  int NOT NULL AUTO_INCREMENT ,
+	`userName`  varchar(64) NOT NULL COMMENT '用户名 => userinfotbl.UserName',
+	`questionId` int NOT NULL COMMENT '题目ID => xkb_questions.id',
+	`createTime` timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间，更新时间',
+	PRIMARY KEY (`id`),
+	UNIQUE `ui_user_error` (`userName`, `questionId`) USING BTREE
+)DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci COMMENT='用户好题本';
+
+
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx', 17822408) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx', 17822409) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx', 17822413) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx', 17822415) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx', 17822416) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx', 17822417) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx', 17822419) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx', 17822423) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx', 17822424) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx', 17822426) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+
+
+INSERT INTO xkb_error_question(userName,questionId)VALUES('xxxx', 123)ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_error_question(userName,questionId)VALUES('xxxx', 1234)ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_error_question(userName,questionId)VALUES('xxxx', 12345)ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx2', 17822434) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx2', 17822444) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx2', 17822446) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx2', 123456) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx2', 1234567) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx2', 12345678) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
+
+SELECT * FROM xkb_error_question WHERE questionId IN (17822409,17822408,17822545);
+
+SELECT SQL_CALC_FOUND_ROWS t3.createTime goodTime, t1.createTime errorTime, t2.* FROM (
+	SELECT questionId,createTime FROM xkb_error_question WHERE userName='xxxx'
+) t1
+INNER JOIN xkb_questions t2 ON t1.questionId=t2.id
+LEFT JOIN xkb_good_question t3 ON t1.questionId=t3.questionId
+ORDER BY errorTime DESC
+LIMIT 0,50;
+SELECT FOUND_ROWS() AS queryOrderListCount;
 
 
 /*
@@ -367,13 +418,14 @@ WHERE t1.id IN (
 LIMIT 0,10;
 SELECT FOUND_ROWS() AS queryOrderListCount;
 
-SELECT SQL_CALC_FOUND_ROWS t1.*,IFNULL(t2.questionId, 0) collected,t2.createTime FROM (
+SELECT SQL_CALC_FOUND_ROWS t1.*, t2.createTime goodTime, t3.createTime errorTime FROM (
 	SELECT * FROM xkb_questions
 	WHERE id IN (
 		SELECT question_id FROM xkb_question_knowledge_basic_id WHERE knowledge_basic_id in (25013,25014,25015,25016,25017,25019)
 	)
 ) t1
-LEFT JOIN xkb_good_question t2 ON t2.userName='xxxx' AND t1.id=t2.questionId
+LEFT JOIN xkb_good_question  t2 ON t2.userName='xxxx' AND t1.id=t2.questionId
+LEFT JOIN xkb_error_question t3 ON t3.userName='xxxx' AND t1.id=t3.questionId
 LIMIT 0,10;
 SELECT FOUND_ROWS() AS queryOrderListCount;
 
