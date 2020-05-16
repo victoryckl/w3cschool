@@ -1,3 +1,4 @@
+SELECT * FROM xkb_questions WHERE id IN (SELECT question_id FROM xkb_paperques WHERE paperId=226255);
 
 SELECT t1.*,t2.sorces AS score, t3.createTime goodTime, t4.createTime errorTime 
 	FROM xkb_questions t1
@@ -6,10 +7,18 @@ SELECT t1.*,t2.sorces AS score, t3.createTime goodTime, t4.createTime errorTime
 	LEFT JOIN xkb_error_question t4 ON t4.userName='test1' AND t1.id=t4.questionId;
 
 SELECT t1.*, t2.createTime goodTime, t3.createTime errorTime FROM (
-	SELECT * FROM xkb_questions WHERE id IN (18292046,18292047,18292049)
+	SELECT * FROM xkb_questions WHERE id IN (18292049,18292046,18292047)
 ) t1
 LEFT JOIN xkb_good_question t2  ON t2.userName='xxxx' AND t1.id=t2.questionId
 LEFT JOIN xkb_error_question t3 ON t3.userName='xxxx' AND t1.id=t3.questionId;
+
+SELECT t1.*, t2.createTime goodTime, t3.createTime errorTime FROM (
+	SELECT * FROM xkb_questions WHERE id IN (18378040,18378039,18407155,18378038,18407154,18378037,18287012)
+) t1
+LEFT JOIN xkb_good_question t2  ON t2.userName='xxxx' AND t1.id=t2.questionId
+LEFT JOIN xkb_error_question t3 ON t3.userName='xxxx' AND t1.id=t3.questionId
+ORDER BY FIELD(t1.id,18378040,18378039,18407155,18378038,18407154,18378037,18287012);
+
 
 SELECT t1.*, t2.sorces AS score, t3.createTime goodTime, t4.createTime errorTime
 		FROM xkb_questions t1
@@ -65,6 +74,17 @@ DELETE FROM xkb_good_question WHERE userName='xxxx2';
 
 SELECT * FROM xkb_good_question;
 
+SELECT questionId,createTime FROM xkb_good_question WHERE userName='xxxx' ORDER BY createTime DESC;
+
+SELECT SQL_CALC_FOUND_ROWS t1.createTime goodTime, t3.createTime errorTime, t2.* FROM (
+	SELECT questionId,createTime FROM xkb_good_question WHERE userName='test1'
+) t1
+INNER JOIN xkb_questions t2 ON t1.questionId=t2.id
+LEFT JOIN xkb_error_question t3 ON t3.userName='test1' AND t1.questionId=t3.questionId
+ORDER BY goodTime DESC
+LIMIT 0,10;
+SELECT FOUND_ROWS() AS queryOrderListCount;
+
 SELECT SQL_CALC_FOUND_ROWS t1.createTime goodTime, t3.createTime errorTime, t2.* FROM (
 	SELECT questionId,createTime FROM xkb_good_question WHERE userName='test1'
 ) t1
@@ -113,6 +133,8 @@ INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx2', 1234567) ON 
 INSERT INTO xkb_error_question(userName,questionId) VALUES('xxxx2', 12345678) ON DUPLICATE KEY UPDATE createTime=CURRENT_TIMESTAMP;
 
 SELECT * FROM xkb_error_question WHERE questionId IN (17822409,17822408,17822545);
+
+SELECT questionId,createTime FROM xkb_error_question WHERE userName='xxxx' ORDER BY createTime DESC;
 
 SELECT SQL_CALC_FOUND_ROWS t3.createTime goodTime, t1.createTime errorTime, t2.* FROM (
 	SELECT questionId,createTime FROM xkb_error_question WHERE userName='test1'
