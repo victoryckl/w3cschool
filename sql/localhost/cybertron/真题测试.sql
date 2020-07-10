@@ -1,3 +1,8 @@
+SELECT DISTINCT(SUBSTR(title FROM 1 FOR 5)) FROM xkb_questions WHERE SUBSTR(title FROM 1 FOR 1)='<';
+SELECT * FROM xkb_questions WHERE SUBSTR(title FROM 1 FOR 2)='<<';
+
+######################################
+
 SELECT * FROM xkb_questions WHERE id IN (SELECT question_id FROM xkb_paperques WHERE paperId=226255);
 
 SELECT t1.*,t2.sorces AS score, t3.createTime goodTime, t4.createTime errorTime 
@@ -430,8 +435,26 @@ SELECT * FROM xkb_questions WHERE id IN (
 SELECT t1.*,IFNULL(t2.questionId, 0) collected,t2.createTime
 
 ==================================================================================================================================
-未完成
-==================================================================================================================================
+SELECT ROUND(RAND() * ((SELECT MAX(id) FROM `xkb_questions`)-(SELECT MIN(id) FROM `xkb_questions`))+(SELECT MIN(id) FROM `xkb_questions`));
+
+SELECT t2.*, t3.createTime goodTime, t4.createTime errorTime FROM (
+	SELECT question_id FROM xkb_question_knowledge_basic_id 
+	WHERE knowledge_basic_id IN (25013,25014,25015,25016,25017,25019) 
+	ORDER BY RAND() LIMIT 0,5
+) t1
+INNER JOIN xkb_questions t2 ON t1.question_id = t2.id
+LEFT JOIN xkb_good_question  t3 ON t3.userName='xxxx' AND t2.id=t3.questionId
+LEFT JOIN xkb_error_question t4 ON t4.userName='xxxx' AND t2.id=t4.questionId;
+
+SELECT t1.*, t2.createTime goodTime, t3.createTime errorTime FROM (
+	SELECT * FROM xkb_questions
+	WHERE id IN (
+		SELECT question_id FROM xkb_question_knowledge_basic_id WHERE knowledge_basic_id IN (25013,25014,25015,25016,25017,25019) ORDER BY RAND() LIMIT 0,5
+	)
+) t1
+LEFT JOIN xkb_good_question  t2 ON t2.userName='xxxx' AND t1.id=t2.questionId
+LEFT JOIN xkb_error_question t3 ON t3.userName='xxxx' AND t1.id=t3.questionId
+
 SELECT SQL_CALC_FOUND_ROWS * 
 FROM xkb_questions t1
 WHERE t1.id IN (
@@ -448,7 +471,7 @@ SELECT SQL_CALC_FOUND_ROWS t1.*, t2.createTime goodTime, t3.createTime errorTime
 ) t1
 LEFT JOIN xkb_good_question  t2 ON t2.userName='xxxx' AND t1.id=t2.questionId
 LEFT JOIN xkb_error_question t3 ON t3.userName='xxxx' AND t1.id=t3.questionId
-LIMIT 0,10;
+LIMIT 0,1000;
 SELECT FOUND_ROWS() AS queryOrderListCount;
 
 SELECT SQL_CALC_FOUND_ROWS * 

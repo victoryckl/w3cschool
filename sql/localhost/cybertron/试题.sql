@@ -1,0 +1,7 @@
+SELECT * FROM shiti WHERE id=456;
+SELECT * FROM pointtbl WHERE id IN (20147,25942,20170);
+
+SELECT * FROM mfgexams WHERE id=7500001;
+SELECT * FROM mfgkpoints WHERE id IN (80000718,80000722);
+
+SELECT COUNT(*) FROM microvideoexam;
