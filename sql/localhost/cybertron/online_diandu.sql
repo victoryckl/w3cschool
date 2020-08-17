@@ -33,7 +33,7 @@ CREATE TABLE `online_book_page_tbl` (
   `ResID` char(64) DEFAULT NULL COMMENT '书本的资源ID',
   `PageNum` int(11) DEFAULT '0' COMMENT '页码',
   `Type` int(11) DEFAULT '0' COMMENT '页类型：1-封面，2-目录，3-正文',
-  `PageInfo` varchar(16000) DEFAULT NULL COMMENT '页信息(区域，文本、语音URL等)',
+  `PageInfo` mediumtext DEFAULT NULL COMMENT '页信息(区域，文本、语音URL等)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_resId_page` (`ResID`,`PageNum`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='在线书本的页信息表';
