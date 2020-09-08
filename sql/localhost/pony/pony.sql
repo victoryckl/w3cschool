@@ -1,3 +1,82 @@
+SELECT SQL_CALC_FOUND_ROWS t1.updateTime collectTime, t2.* FROM (
+	SELECT resId,updateTime FROM user_res_collect_tbl WHERE userId=76854661222633472 AND status=1
+) t1
+INNER JOIN resource_tbl t2 ON t1.resId=t2.id
+ORDER BY collectTime DESC
+LIMIT 0,2;
+SELECT FOUND_ROWS() AS queryOrderListCount;
+
+SELECT * FROM resource_tbl WHERE id IN 
+(SELECT resId FROM user_res_collect_tbl WHERE userId=76854661222633472);
+
+SELECT * FROM user_res_collect_tbl t1
+WHERE userId=76854661222633472;
+
+INSERT INTO user_res_collect_tbl(userId,resId,updateTime) 
+VALUES
+(76854661222633472,78767290807619584, REPLACE(unix_timestamp(current_timestamp(3)),'.','')),
+(76854661222633472,78767291134775296, REPLACE(unix_timestamp(current_timestamp(3)),'.','')),
+(76854661222633472,78767291403210752, REPLACE(unix_timestamp(current_timestamp(3)),'.','')),
+(76854661222633472,78767291776503808, REPLACE(unix_timestamp(current_timestamp(3)),'.',''));
+
+SELECT REPLACE(unix_timestamp(current_timestamp(3)),'.','');
+
+
+CREATE TABLE `user_res_collect_tbl` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userId` bigint(20) NOT NULL COMMENT '用户标识，user_tbl.userId',
+  `resId`  bigint(20) NOT NULL COMMENT '资源id，resource_tbl.id',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT '0-未收藏，1-已收藏',
+  `updateTime` bigint(20) DEFAULT NULL COMMENT '更新时间ms',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `u_user_res` (`userId`,`resId`)
+) ENGINE=InnoDB COMMENT='用户资源收藏表';
+
+
+
+SELECT * FROM model_tbl WHERE model='GOODGRADES-K1' AND status='enable';
+
+SELECT IFNULL((SELECT TRUE FROM model_tbl WHERE model='GOODGRADES-K1' AND status='enable'), FALSE);
+
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('37','GOODGRADES-K1','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('36','GOODGRADES-K01','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('35','admin','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('34','GOODGRADES P66','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('33','QUAD-CORE A50 a3','enable');
+
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('32','GOODGRADES-P88S','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('31','GOODGRADES-P68S','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('30','GOODGRADES-P88','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('29','GOODGRADES-P66S-4G','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('28','GOODGRADES-P66S-WIFI','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('27','GOODGRADES-P66S','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('26','GOODGRADES-P56','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('25','GOODGRADES-P60','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('24','GOODGRADES-P68','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('22','GOODGRADES-P66','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('20','GOODGRADES-P26S','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('17','GOODGRADES-P36','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('16','GOODGRADES-P22','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('15','GOODGRADES-P20','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('14','GOODGRADES-P26','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('12','GOODGRADES-P28','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('7','GOODGRADES-P12','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('5','GOODGRADES-P10','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('4','GOODGRADES-P16Plus','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('2','GOODGRADES-P16','enable');
+INSERT INTO model_tbl(`id`,`model`,`status`) VALUES('1','GOODGRADES-P18','enable');
+
+
+
+CREATE TABLE `model_tbl` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `model` char(64) NOT NULL COMMENT '机型名称，唯一',
+  `addTime` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` char(32) NOT NULL COMMENT '状态',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `u_model` (`model`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 SELECT * FROM `validate_code`;
 
 INSERT INTO validate_code(`phoneNumber`,`code`,`expiresTime`)
@@ -38,6 +117,12 @@ UPDATE `user` SET loginTime=1597002442969,model='GGGG',machineId='xxxx' WHERE ph
 SELECT * FROM resource_tbl WHERE 
 	`id`=76849742079987713 OR `fileName`='0074  Itsy Bitsy Spider.mp4'
 	AND 1=1;
+
+SELECT t1.*,t2.updateTime collectTime FROM (
+	SELECT * FROM resource_tbl WHERE 
+		fileName LIKE '%的%'
+) t1
+LEFT JOIN user_res_collect_tbl t2 ON t2.userId=76854661222633472 AND t2.resId=t1.id;
 
 SELECT * FROM resource_tbl WHERE `fileName` LIKE CONCAT('%','Here','%');
 SELECT * FROM resource_tbl WHERE `md5`='e10adc3949ba59abbe56e057f20f8333' OR fileName LIKE CONCAT('%','0083 Here is the Church.mp4','%');
@@ -84,10 +169,10 @@ SELECT * FROM resource_tbl WHERE id NOT IN (SELECT resId FROM res_to_album_tbl);
 
 
 SELECT GROUP_CONCAT(t2.albumId),t1.* FROM (SELECT * FROM resource_tbl WHERE id in (78767290807619584,78767292040744960)) t1
-INNER JOIN res_to_album_tbl t2 ON t1.id = t2.resId;
+LEFT JOIN res_to_album_tbl t2 ON t1.id = t2.resId;
 
 SELECT GROUP_CONCAT(t2.albumId) albumIds,t1.* FROM resource_tbl t1
-INNER JOIN res_to_album_tbl t2 ON t1.id = t2.resId
+LEFT JOIN res_to_album_tbl t2 ON t1.id = t2.resId
 WHERE t1.id in (78767290807619584,78767292040744960)
 GROUP BY t1.id;
 
@@ -96,13 +181,18 @@ SELECT * FROM `resource_tbl` WHERE id IN (
 			SELECT resId FROM `res_to_album_tbl` WHERE albumId=10001
 		) ORDER BY fileName ASC;
 
-SELECT GROUP_CONCAT(t2.albumId) albumIds,t1.* FROM resource_tbl t1
+SELECT SQL_CALC_FOUND_ROWS 
+t1.*, t3.updateTime collectTime, GROUP_CONCAT(t2.albumId) albumIds 
+FROM resource_tbl t1
 INNER JOIN res_to_album_tbl t2 ON t1.id = t2.resId
+LEFT JOIN user_res_collect_tbl t3 ON t3.userId=76854661222633472 AND t3.resId=t1.id
 WHERE t1.id IN (
 	SELECT resId FROM `res_to_album_tbl` WHERE albumId=10011
 )
 GROUP BY t1.id
-ORDER BY t1.fileName ASC;
+ORDER BY t1.fileName ASC
+LIMIT 0,100;
+SELECT FOUND_ROWS() AS queryOrderListCount;
 
 
 SELECT * FROM resource_tbl WHERE id IN ();
