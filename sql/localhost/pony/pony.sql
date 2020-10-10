@@ -1,3 +1,14 @@
+INSERT INTO `pony`.`resource_tbl` (`id`, `size`, `type`, `cost`, `playCount`, `uploadTime`, `suffix`, `md5`, `FileId`, `RequestId`, `name`, `fileName`, `url`, `coverMd5`, `coverUrl`) 
+VALUES ('123456115', '416320973', '1', '0', '1', '1597457242884', '.mp4', 'e20f8', '52858449999999999993', '9acfaf', '好好好好', '智能 体能宝宝如何平衡发展wfew.mp4', 'http://asdfasdf/xxxxfs/2.mp4', 'f10af5ffffff831', 'http://a4444fsfsf/xxxx/wefs/2.jpg');
+
+
+SELECT t1.resId FROM (SELECT DISTINCT(resId) FROM res_to_album_tbl) t1
+LEFT JOIN resource_tbl t2 ON t1.resId=t2.id WHERE t2.id IS NULL
+
+DELETE FROM resource_tbl WHERE id IN (
+	SELECT id FROM resource_tbl WHERE id=123456 OR FileId=52858449999999999993
+);
+
 SELECT SQL_CALC_FOUND_ROWS t1.updateTime collectTime, t2.* FROM (
 	SELECT resId,updateTime FROM user_res_collect_tbl WHERE userId=76854661222633472 AND status=1
 ) t1

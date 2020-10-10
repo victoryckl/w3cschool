@@ -1,3 +1,29 @@
+
+SELECT SQL_CALC_FOUND_ROWS t1.*, 
+	t3.updateTime collectTime,
+	GROUP_CONCAT(t2.albumId) albumIds 
+FROM resource_tbl t1
+INNER JOIN res_to_album_tbl t2 ON t1.id = t2.resId
+LEFT JOIN user_res_collect_tbl t3 ON t3.userId=86071125251067904 AND t3.resId=t1.id AND t3.status=1
+WHERE t1.id IN (
+	SELECT resId FROM `res_to_album_tbl` WHERE albumId=20010
+)
+GROUP BY t1.id
+ORDER BY t1.fileName ASC
+LIMIT 0, 100;
+
+SELECT SQL_CALC_FOUND_ROWS t1.updateTime collectTime, t2.* FROM (
+			SELECT resId,updateTime FROM user_res_collect_tbl WHERE userId=86071125251067904 AND status=1
+		) t1
+		INNER JOIN resource_tbl t2 ON t1.resId=t2.id
+		ORDER BY collectTime DESC
+		LIMIT 0, 100;
+
+DELETE FROM res_to_album_tbl WHERE resId IN (
+SELECT t1.resId FROM (SELECT DISTINCT(resId) FROM res_to_album_tbl) t1
+LEFT JOIN resource_tbl t2 ON t1.resId=t2.id WHERE t2.id IS NULL
+);
+
 SELECT * FROM `validate_code`;
 
 INSERT INTO validate_code(`phoneNumber`,`code`,`expiresTime`)
