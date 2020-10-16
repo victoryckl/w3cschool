@@ -1,3 +1,55 @@
+SELECT * FROM user_info_tbl WHERE userId=103669994386231296;
+
+INSERT INTO user_info_tbl VALUES(1111,'就了坚实的','男孩子','2010-1-2','广东','清远');
+INSERT INTO user_info_tbl VALUES(1112,'就了坚实的','男孩子','2010-1-2','广东','清远');
+INSERT INTO user_info_tbl VALUES(1113,'就了坚实的','男孩子','2010-1.2','广东','清远');
+INSERT INTO user_info_tbl VALUES(1115,'就了坚实的','男孩子','2010-01-12','广东','清远')
+ON DUPLICATE KEY UPDATE userName=VALUES(userName),sex=VALUES(sex),birthday=VALUES(birthday),province=VALUES(province),city=VALUES(city);
+
+CREATE TABLE `user_info_tbl` (
+  `userId` bigint(20) NOT NULL COMMENT '用户标识，唯一',
+  `userName` char(20) DEFAULT NULL,
+  `sex` char(10) DEFAULT NULL,
+  `birthday` date DEFAULT NULL,
+  `province` char(10) DEFAULT NULL,
+  `city` char(20) DEFAULT NULL,
+  PRIMARY KEY (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `stat_res_play_time` (
+	`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+	`resId` bigint(20) DEFAULT NULL COMMENT '资源标识',
+  `userId` bigint(20) DEFAULT NULL COMMENT '用户标识',
+  `model` char(64) DEFAULT NULL COMMENT '机型',
+  `machineId` char(64) DEFAULT NULL COMMENT '机器id',
+  `startTime` bigint(20) NOT NULL COMMENT '起始时间(秒)',
+  `endTime` bigint(20) NOT NULL COMMENT '结束时间(秒)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `stat_app_use_time` (
+	`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `userId` bigint(20) DEFAULT NULL COMMENT '用户标识',
+  `model` char(64) DEFAULT NULL COMMENT '机型',
+  `machineId` char(64) DEFAULT NULL COMMENT '机器id',
+  `startTime` bigint(20) NOT NULL COMMENT '起始时间(秒)',
+  `endTime` bigint(20) NOT NULL COMMENT '结束时间(秒)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO stat_app_use_time(userId,model,machineId,startTime,endTime)
+VALUES(NULL,'K20','44:44:44:44:44:44',1602044179,1602044379);
+
+
+UPDATE resource_tbl SET playCount=playCount+1 WHERE id=1;
+
+SELECT playCount FROM resource_tbl WHERE id=1;
+SELECT IFNULL((SELECT playCount FROM resource_tbl WHERE id=12), 0) AS playCount;
+
+INSERT INTO resource_tbl (`id`, `size`, `type`, `cost`, `playCount`, `uploadTime`, `suffix`, `md5`, `FileId`, `RequestId`, `name`, `fileName`, `url`, `coverMd5`, `coverUrl`) 
+VALUES ('1', '17626323', '1', '0', '1', '1599736153690', '.mp4', NULL, '528589086556534417', '06ee44c8-4000-42a5-93bf', 'Faces', '0207 Faces.mp4', 'http://1253695619.vod2.myqcloud.com/330bb76evodgzp1253695619/3474e9125285890807475653137/f0.mp4', NULL, '');
+
+
 INSERT INTO `pony`.`resource_tbl` (`id`, `size`, `type`, `cost`, `playCount`, `uploadTime`, `suffix`, `md5`, `FileId`, `RequestId`, `name`, `fileName`, `url`, `coverMd5`, `coverUrl`) 
 VALUES ('123456115', '416320973', '1', '0', '1', '1597457242884', '.mp4', 'e20f8', '52858449999999999993', '9acfaf', '好好好好', '智能 体能宝宝如何平衡发展wfew.mp4', 'http://asdfasdf/xxxxfs/2.mp4', 'f10af5ffffff831', 'http://a4444fsfsf/xxxx/wefs/2.jpg');
 
