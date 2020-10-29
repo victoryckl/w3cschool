@@ -1,3 +1,89 @@
+		SELECT SQL_CALC_FOUND_ROWS * FROM pay_order_tbl
+		where
+			create_at >= 0 AND create_at <= 2603801135860
+		ORDER BY create_at DESC LIMIT 0, 7;
+		
+		SELECT FOUND_ROWS() AS queryOrderListCount;
+
+SELECT SQL_CALC_FOUND_ROWS * FROM pay_order_tbl 
+WHERE create_at >= 0 AND create_at <= 2603851297922 
+#AND `status`!='closed'
+ORDER BY create_at DESC LIMIT 10,7;
+SELECT FOUND_ROWS() AS queryOrderListCount;
+
+
+UPDATE pay_order_tbl SET `status`='closed'
+WHERE `status` NOT IN ('success', 'closed') AND (unix_timestamp()*1000 > expire_at);
+
+SELECT from_unixtime(expire_at/1000) expire_date, pay_order_tbl.*  FROM pay_order_tbl 
+WHERE `status` NOT IN ('success', 'closed') AND (unix_timestamp()*1000 > expire_at);
+
+SELECT * FROM pay_order_tbl WHERE userId='103669994386231296' AND member_end_at > 1 ORDER BY member_end_at DESC LIMIT 1;
+
+SELECT DATE(expr)
+SELECT unix_timestamp(now());
+SELECT UNIX_TIMESTAMP(CURRENT_TIMESTAMP);
+SELECT unix_timestamp()*1000;
+
+SELECT * FROM pay_order_tbl WHERE out_order_no='HY20201027194855852010102';
+
+INSERT INTO pay_order_tbl(
+			out_order_no, order_no, userId, productId, total_amount, 
+			dayNumber, create_at, expire_at,
+			title, `describe`, detail, device_info, pay_url)
+		VALUES('XXXX', 'ZZZZZ', 1, 1, '0.01', 
+			1, 123, 456, 
+			'WWWW', 'EEEE', 'FFFF', 'GGGG', 'GGGG');
+
+SELECT * FROM pay_product_tbl WHERE debug=1;
+
+UPDATE pay_order_tbl SET finished_at=12233, platform='alipay', platform_no='132546464', platform_user='554646464' 
+WHERE out_order_no='hcj.order_546433131313';
+
+INSERT INTO pay_order_tbl(out_order_no,order_no,total_amount,expire_at,body,detail,device_info,pay_url)
+VALUES('hcj.order_546433131313', null, '0.01', 1603430276522, '测试-1个月(30天)', '超级会员30天', '设备信息', "https://xxxx.pay.com/xxx/xxx");
+
+CREATE TABLE IF NOT EXISTS `pay_order_tbl` (
+  `out_order_no` char(40) NOT NULL COMMENT '终端系统订单号',
+  `order_no` char(40) DEFAULT NULL COMMENT '小马订单号',
+  `userId` bigint(20) NOT NULL COMMENT '用户id',
+  `productId` int(11) NOT NULL DEFAULT '0' COMMENT '产品id',
+  `total_amount` char(20) DEFAULT NULL COMMENT '金额，元',
+  `dayNumber` int(11) NOT NULL DEFAULT '0' COMMENT '商品的有效天数',
+  `status` char(20) DEFAULT 'pending' COMMENT '订单状态：pending-待支付、paying-支付中、success-成功、closed-关闭',
+  `create_at` bigint(20) DEFAULT '0' COMMENT '下单时间,ms',
+  `expire_at` bigint(20) DEFAULT '0' COMMENT '订单过期时间,ms',
+  `finished_at` bigint(20) DEFAULT '0' COMMENT '支付完成时间,ms',
+  `member_end_at` bigint(20) DEFAULT '0' COMMENT '超级会员结束时间,ms',
+  `platform` char(40) DEFAULT NULL COMMENT '支付平台，例如alipay',
+  `platform_no` char(40) DEFAULT NULL COMMENT '支付平台流水号',
+  `platform_user` char(40) DEFAULT NULL COMMENT '支付平台用户凭据，可能为null',
+  `title` varchar(255) NOT NULL COMMENT '商品标题',
+  `describe` varchar(255) DEFAULT NULL COMMENT '描述',
+  `detail` varchar(1024) DEFAULT NULL COMMENT '商品信息',
+  `device_info` varchar(1024) DEFAULT NULL COMMENT '设备信息',
+  `pay_url` varchar(1024) DEFAULT NULL COMMENT '支付链接',
+  PRIMARY KEY (`out_order_no`),
+  UNIQUE KEY `un_pony_order` (`order_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单表';
+
+##########################################################
+
+CREATE TABLE IF NOT EXISTS `pay_product_tbl` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '商品id',
+  `debug` int(11) NOT NULL DEFAULT '0' COMMENT '是否是属于测试产品,1-测试产品，0-正式产品',
+  `title` varchar(255) NOT NULL COMMENT '商品名称',
+  `price` decimal(10,2) DEFAULT '0.00' COMMENT '价格，元',
+  `discount` decimal(10,2) DEFAULT '0.00' COMMENT '打折后价格，元',
+  `dayNumber` int(11) NOT NULL DEFAULT '0' COMMENT '商品的有效天数',
+  `status`  char(20) NOT NULL DEFAULT 'enable' COMMENT '商品状态(可用enable/下架stopSell等)',
+  `describe` varchar(255) DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='商品表';
+
+
+SELECT     LEFT(CONCAT("ID",da(TODAY(),"yyyyMMddHHmmss"),TIMESTAMP(TODAY())),28);
+
 SELECT * FROM user_info_tbl WHERE userId=103669994386231296;
 
 INSERT INTO user_info_tbl VALUES(1111,'就了坚实的','男孩子','2010-1-2','广东','清远');

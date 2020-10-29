@@ -1,3 +1,28 @@
+
+
+SELECT VideoResID,VideoDisplayName FROM videochaptertbl WHERE BookID IN (
+	SELECT DISTINCT(BookID) FROM videobooktbl WHERE ResType=9 AND Course=3 AND Grade IN (9,10,11,12,13,14)
+)
+AND VideoResID <> '' 
+AND VideoResID IS NOT NULL 
+AND ResType=9;
+
+SELECT * FROM videochaptertbl WHERE BookID IN (
+	SELECT DISTINCT(BookID) FROM videochaptertbl 
+	WHERE VideoResID <> '' 
+	AND VideoResID IS NOT NULL 
+	AND VideoDisplayName LIKE '%名师微课%'
+) AND ResType=9 AND VideoDisplayName LIKE '名师微课%';
+
+SELECT * FROM videobooktbl WHERE BookID IN (
+	SELECT DISTINCT(BookID) FROM videochaptertbl WHERE VideoDisplayName LIKE '%名师微课%'
+) AND ResType=9;
+
+SELECT * FROM videochaptertbl WHERE BookID=1550;
+
+SELECT DISTINCT(LayerName),VideoResID FROM `sxjmicrovideodb`
+WHERE VideoResID != '' AND BookID IN (SELECT DISTINCT(BookID) FROM sxjvideobooktbl WHERE Grade IN (9,10,11,12,13,14));
+
 SELECT * FROM mfgexams WHERE id in (SELECT QuesID FROM mfgkpoints WHERE id = 80001116);
 
 SELECT * FROM mfgexams WHERE id IN (9598125,9598126,9598127,9598128,9598129,9598130,9598131,9598132,9598133,9598134,9598135,9598136,9598137,9598138,9598139);
