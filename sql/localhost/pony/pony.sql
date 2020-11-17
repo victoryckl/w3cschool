@@ -1,7 +1,9 @@
+UPDATE pay_order_tbl SET userId='103669994386231296';
+
 		SELECT SQL_CALC_FOUND_ROWS * FROM pay_order_tbl
 		where
 			create_at >= 0 AND create_at <= 2603801135860
-		ORDER BY create_at DESC LIMIT 0, 7;
+		ORDER BY create_at DESC LIMIT 1, 1;
 		
 		SELECT FOUND_ROWS() AS queryOrderListCount;
 
@@ -18,7 +20,9 @@ WHERE `status` NOT IN ('success', 'closed') AND (unix_timestamp()*1000 > expire_
 SELECT from_unixtime(expire_at/1000) expire_date, pay_order_tbl.*  FROM pay_order_tbl 
 WHERE `status` NOT IN ('success', 'closed') AND (unix_timestamp()*1000 > expire_at);
 
-SELECT * FROM pay_order_tbl WHERE userId='103669994386231296' AND member_end_at > 1 ORDER BY member_end_at DESC LIMIT 1;
+SELECT member_end_at FROM pay_order_tbl WHERE userId='103669994386231296' AND `status`='success' ORDER BY member_end_at DESC LIMIT 1;
+
+SELECT * FROM pay_order_tbl WHERE userId='103669994386231296' AND `status`='success' AND member_end_at > 1 ORDER BY member_end_at DESC LIMIT 1;
 
 SELECT DATE(expr)
 SELECT unix_timestamp(now());
