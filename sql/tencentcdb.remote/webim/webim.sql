@@ -1,3 +1,9 @@
+SELECT DISTINCT(tablet_user) FROM im_mode_time_slot;
+
+SELECT count(DISTINCT(package_name)) FROM im_app;
+
+SELECT * FROM im_module_time WHERE tablet_user='P68-HV01-PO01.20181211-025363' ORDER BY start_time DESC;
+
 UPDATE im_module_time_pony SET app_name='小马快跑' WHERE package_name='com.cybertron.ponyrunning';
 
 
