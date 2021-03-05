@@ -1,6 +1,24 @@
+
+
+SELECT COUNT(*) FROM im_module_time WHERE start_time < 1598889600;
+
+
+SELECT * FROM im_module_time WHERE tablet_user='P68-HV01-PO01.20181211-025363';
+
+SELECT * FROM im_module_time WHERE tablet_user='P68S-HV01-PO01.20200113-912704';
+
+SELECT * FROM im_module_time WHERE tablet_user='P68S-HV01-PO01.20200408-484372';
+
+SELECT * FROM im_module_time WHERE tablet_user='P68S-HV01-PO01.20200428-404537';
+
+
+SELECT package_name,app_name FROM im_app GROUP BY package_name ORDER BY package_name ASC;
+
 SELECT DISTINCT(tablet_user) FROM im_mode_time_slot;
 
 SELECT count(DISTINCT(package_name)) FROM im_app;
+
+SELECT COUNT(DISTINCT package_name) FROM im_module_time;
 
 SELECT * FROM im_module_time WHERE tablet_user='P68-HV01-PO01.20181211-025363' ORDER BY start_time DESC;
 

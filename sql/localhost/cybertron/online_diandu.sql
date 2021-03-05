@@ -1,3 +1,86 @@
+UPDATE `cybertron`.`online_book_tbl` SET `id`='10', `ResID`='a048242257b4530ae4d88bb2dc5b0987', `BookID`='1251', `Subject`='1', `Grade`='11', `ResType`='0', `Term`='2', `UpdateMs`='1596244372739', `ISBN`='0', `Owner`='0', `bookVersion`='29', `AppName`='', `Name`='人教PEP小学英语三起三年级下册12版', `Publisher`='人民教育出版社', `versionName`='人民教育出版社（人教PEP）', `ImageUrl`='', `FileInfo`='{\"Version\":\"V01.00.02\",\"GenData\":\"20200801-09:10:49\",\"HCJMagic\":\"6C6AEBE0\"}', `BookInfo`='{\"BookID\":\"1251\",\"Name\":\"人教PEP小学英语三起三年级下册12版\",\"ResID\":\"a048242257b4530ae4d88bb2dc5b0987\",\"Subject\":1,\"Grade\":11,\"Term\":2,\"Publisher\":\"人民教育出版社\",\"PrintInfo\":\"2012年出版 2015年印刷\",\"GeneratePages\":75,\"TotalPages\":76,\"CatalogNum\":1,\"CatalogBegPageNum\":0,\"ImgPath\":\"AIStudy/1251/tbr/img/\",\"VocPath\":\"AIStudy/1251/tbr/voc/\"}' WHERE (`id`='10');
+
+SELECT * FROM online_book_tbl WHERE Grade=13 AND Subject=2 AND bookVersion=3
+LEFT JOIN bookresourcetbl;
+
+SELECT t2.ImageUrl ImageUrl,t1.* 
+FROM (SELECT * FROM online_book_tbl WHERE Grade=13 AND Subject=2 ) t1
+LEFT JOIN bookresourcetbl t2 ON t1.ResID=t2.ResourceID;
+
+SELECT * FROM bookresourcetbl
+WHERE course=2 AND resourceName LIKE "%二%" AND AppName LIKE "%dianxue%" ;
+
+SELECT IF(ISNULL(t2.ResID), false, true) online,t1.* FROM bookresourcetbl t1
+LEFT JOIN online_book_tbl t2 ON t1.ResourceID=t2.ResID
+WHERE course=2 AND resourceName LIKE "%三%" AND t1.AppName LIKE "%dianxue%" ;
+
+SELECT COUNT(id) FROM bookresourcetbl;
+
+SELECT * FROM online_book_tbl WHERE `Subject`=2;
+
+SELECT * FROM online_book_page_tbl WHERE ResID='7db399552c36aed606baab5c1639a752' AND Type<>1 ORDER BY PageNum ASC;
+
+SELECT * FROM online_book_page_tbl WHERE ResID='7db399552c36aed606baab5c1639a752' AND Type<>1 ORDER BY PageNum ASC LIMIT 25,1;
+
+update `online_book_tbl` set
+	`BookID`=1251,
+	`Subject`=1,
+	`Grade`=11,
+	`ResType`=0,
+	`Term`=2,
+	`UpdateMs`='1596244372739',
+	`ISBN`='0',
+	`Owner`=0,
+	`bookVersion`=29,
+	`AppName`='',
+	`Name`='人教PEP小学英语三起三年级下册12版',
+	`Publisher`='人民教育出版社',
+	`versionName`='人民教育出版社（人教PEP）',
+	`ImageUrl`='',
+	`FileInfo`='{"Version":"V01.00.02","GenData":"20200801-09:10:49","HCJMagic":"6C6AEBE0"}',
+	`BookInfo`='{"BookID":"1251","Name":"人教PEP小学英语三起三年级下册12版","ResID":"a048242257b4530ae4d88bb2dc5b0987","Subject":1,"Grade":11,"Term":2,"Publisher":"人民教育出版社","PrintInfo":"2012年出版 2015年印刷","GeneratePages":75,"TotalPages":76,"CatalogNum":1,"CatalogBegPageNum":0,"ImgPath":"AIStudy/1251/tbr/img/","VocPath":"AIStudy/1251/tbr/voc/"}'
+	 where `ResID`='a048242257b4530ae4d88bb2dc5b0987' 
+
+#修改云点读书本表，增加字段bookVersion，versionName，去掉字段PrintInfo
+ALTER TABLE `online_book_tbl`
+CHANGE COLUMN `PrintInfo` `versionName`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '出版社版本名称' AFTER `Publisher`,
+ADD COLUMN `bookVersion`  int(11) NULL DEFAULT 0 COMMENT '出版社版本ID' AFTER `Owner`;
+
+#更新bookVersion，versionName字段
+UPDATE online_book_tbl t1
+INNER JOIN bookresourcetbl t2 ON t1.ResID=t2.ResourceID
+SET t1.bookVersion=t2.BookVersion;
+
+UPDATE online_book_tbl t1
+INNER JOIN resattrtbl t2 ON t2.Type=4 AND t1.bookVersion=t2.AttributeID
+SET t1.versionName=t2.Attribute;
+
+SELECT t2.BookVersion,t3.Attribute, t1.ResID,t1.BookID,t1.bookVersion,t1.versionName,t1.Name,t1.Publisher
+FROM online_book_tbl t1
+INNER JOIN bookresourcetbl t2 ON t1.ResID=t2.ResourceID
+INNER JOIN resattrtbl t3 ON t3.Type=4 AND t1.bookVersion=t3.AttributeID;
+
+SELECT * FROM online_book_page_tbl WHERE ResID='b75dcfd155c4a0a038d6b6ca0fcf73ca';
+
+SELECT id,ResID,PageNum,Type,LENGTH(PageInfo) infoLen FROM online_book_page_tbl ORDER BY infoLen DESC;
+SELECT SUM(LENGTH(PageInfo)) sumLen FROM online_book_page_tbl; #102567434
+SELECT count(*) FROM online_book_page_tbl;#35108
+
+SELECT SUM(LENGTH(PageInfo)) sumLen FROM online_book_page_tbl WHERE LENGTH(PageInfo) > 1900; #89896185
+SELECT count(*) FROM online_book_page_tbl WHERE LENGTH(PageInfo) > 1900;#20306
+# 89896185 / 20306 = 
+
+SELECT * FROM online_book_tbl ORDER BY Publisher;
+
+#按出版社分组统计
+SELECT Publisher,COUNT(*) bookCount FROM online_book_tbl GROUP BY Publisher ORDER BY bookCount DESC;
+
+SELECT Publisher,COUNT(*) bookCount,GROUP_CONCAT(Name) FROM online_book_tbl GROUP BY Publisher ORDER BY bookCount DESC;
+
+SELECT t1.Publisher,t2.Attribute,COUNT(*) bookCount FROM online_book_tbl t1
+INNER JOIN resattrtbl t2 ON t2.Type=1 AND t2.AttributeID=t1.Grade
+GROUP BY t1.Publisher,t1.Grade ORDER BY Publisher,Attribute,bookCount DESC;
+
 CREATE TABLE `online_book_tbl` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `ResID` char(64) NOT NULL COMMENT '书本的资源ID，同bookresourcetbl.ResourceID',
@@ -75,4 +158,10 @@ DELETE FROM online_book_page_tbl WHERE `ResID`='a048242257b4530ae4d88bb2dc5b0987
 
 SELECT * FROM online_book_tbl WHERE `ResID`='a048242257b4530ae4d88bb2dc5b0987';
 
-SELECT * FROM online_book_page_tbl WHERE `ResID`='a048242257b4530ae4d88bb2dc5b0987' ORDER BY PageNum ASC;
+SELECT t2.ImageUrl ImageUrl,t1.* 
+FROM (SELECT * FROM online_book_tbl WHERE `ResID`='a048242257b4530ae4d88bb2dc5b0987') t1
+LEFT JOIN bookresourcetbl t2 ON t1.ResID=t2.ResourceID;
+
+SELECT * FROM online_book_page_tbl WHERE `ResID`='a048242257b4530ae4d88bb2dc5b0987'  ORDER BY PageNum ASC;
+
+

@@ -12,7 +12,7 @@ INSERT INTO call_function VALUES
 (4,'图灵幼儿bot聊天服务');
 
 DROP TABLE call_function_stat;
-CREATE TABLE `call_function_stat` (
+CREATE TABLE IF NOT EXISTS `call_function_stat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dayMs` bigint(20) NOT NULL DEFAULT '0' COMMENT '当天00:00:00对应的时间戳',
   `functionId` int(11) NOT NULL DEFAULT '0' COMMENT '要统计的功能ID，call_funtion.id',

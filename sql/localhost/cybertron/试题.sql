@@ -1,3 +1,26 @@
+SELECT * FROM mfgkpoints ORDER BY id DESC LIMIT 100;
+
+CREATE TABLE `mfgkpoints_bak` (
+  `id` int(11) NOT NULL,
+  `PointName` varchar(255) DEFAULT NULL,
+  `Grade` int(11) DEFAULT NULL,
+  `Subject` int(11) DEFAULT NULL,
+  `QuesID` mediumtext,
+  `QuesIDOnlyXuanze` mediumtext,
+  `QuesIDOnlyTiankong` mediumtext,
+  `QuesIDOnlyJieda` mediumtext,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `u_name_grade_subject` (`PointName`,`Grade`,`Subject`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+#QuesID字段增加''，避免导出为excel时部分QuesID错误的问题
+DELETE FROM mfgkpoints_bak;
+INSERT INTO mfgkpoints_bak SELECT id,PointName,Grade,Subject, CONCAT("'",QuesID,"'"),CONCAT("'",QuesIDOnlyXuanze,"'"),
+CONCAT("'",QuesIDOnlyTiankong,"'"),CONCAT("'",QuesIDOnlyJieda,"'") FROM mfgkpoints;
+
+
+SELECT id,PointName,Grade,Subject, CONCAT("'",QuesID,"'"),CONCAT("'",QuesIDOnlyXuanze,"'"),
+CONCAT("'",QuesIDOnlyTiankong,"'"),CONCAT("'",QuesIDOnlyJieda,"'") FROM mfgkpoints;
 
 
 SELECT VideoResID,VideoDisplayName FROM videochaptertbl WHERE BookID IN (

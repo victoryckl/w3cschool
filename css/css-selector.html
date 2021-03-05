@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+	<meta http-equiv="Content-Type"content="text/html;charset=utf-8"/> 
+	<title>css选择器</title>
+	<style>
+		#test1 p { color: red; }
+		#test2>p { color: blue; }
+		#test3+p { font-size:24px; }
+		#test4~p { text-shadow:2px 2px gray; }
+	</style>
+</head>
+<body> 
+	<h2>选择器</h2>
+	<hr/>
+	E F 后代选择器（包含选择器），选择E元素包含所有的F元素
+	<div id="test1">
+		<p>test 11</p>
+		<p>test 12</p>
+		<a href="#">test 14 <p>test 15</p></a>
+	</div>
+	
+	<hr/>
+	E>F 子选择器，仅选择E的子代中的F元素，包括
+	<div id="test2">
+		<p>test 21</p>
+		<p>test 22</p>
+		<a href="#">test 24<p>test 25</p></a>
+	</div>
+	
+	<hr/>
+	E+F 相邻兄弟选择器，选择匹配的F元素，且匹配的F元素紧位于匹配的E元素的后面
+	<div id="test3">
+		<p>test 31</p>
+	</div>
+	<p>test 32</p>
+	<p>test 33</p>
+	<hr/>
+	E~F 通用选择器，选择匹配的F元素，且位于匹配的E元素后的所有匹配的F元素
+	<div id="test4">
+		<p>test 41</p>
+	</div>
+	<p>test 42</p>
+	<p>test 43</p>
+	<a href="#">test 44<p>test 45</p></a>
+</body> 
+</html> 
