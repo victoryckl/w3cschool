@@ -1,7 +1,54 @@
-UPDATE `cybertron`.`online_book_tbl` SET `id`='10', `ResID`='a048242257b4530ae4d88bb2dc5b0987', `BookID`='1251', `Subject`='1', `Grade`='11', `ResType`='0', `Term`='2', `UpdateMs`='1596244372739', `ISBN`='0', `Owner`='0', `bookVersion`='29', `AppName`='', `Name`='人教PEP小学英语三起三年级下册12版', `Publisher`='人民教育出版社', `versionName`='人民教育出版社（人教PEP）', `ImageUrl`='', `FileInfo`='{\"Version\":\"V01.00.02\",\"GenData\":\"20200801-09:10:49\",\"HCJMagic\":\"6C6AEBE0\"}', `BookInfo`='{\"BookID\":\"1251\",\"Name\":\"人教PEP小学英语三起三年级下册12版\",\"ResID\":\"a048242257b4530ae4d88bb2dc5b0987\",\"Subject\":1,\"Grade\":11,\"Term\":2,\"Publisher\":\"人民教育出版社\",\"PrintInfo\":\"2012年出版 2015年印刷\",\"GeneratePages\":75,\"TotalPages\":76,\"CatalogNum\":1,\"CatalogBegPageNum\":0,\"ImgPath\":\"AIStudy/1251/tbr/img/\",\"VocPath\":\"AIStudy/1251/tbr/voc/\"}' WHERE (`id`='10');
 
-SELECT * FROM online_book_tbl WHERE Grade=13 AND Subject=2 AND bookVersion=3
-LEFT JOIN bookresourcetbl;
+SELECT * FROM online_book_tbl WHERE Grade=11 ORDER BY Subject ASC,Term ASC;
+
+select * from ResAttrTbl WHERE Type=1 ORDER BY Type ASC, AttrOrder ASC, AttributeID ASC;
+
+SELECT * FROM resattrtbl WHERE Type=1 ORDER BY AttrOrder ASC;
+
+SELECT * FROM online_book_tbl WHERE Grade=11 AND Subject=2 AND bookVersion=3;
+
+
+SELECT * FROM online_book_tbl WHERE Grade=11 AND Subject=1;
+SELECT * FROM online_book_tbl WHERE Grade=11 AND Subject=2;
+SELECT * FROM online_book_tbl WHERE Grade=11 AND Subject=3;
+SELECT * FROM online_book_tbl WHERE Grade=11 AND Subject=4;
+
+SELECT * FROM online_book_tbl WHERE Grade=11 AND bookVersion=29;
+
+SELECT * FROM online_book_tbl WHERE Grade=11
+AND (
+	(Subject=1 AND BookVersion IN(29,43)) 
+	OR (Subject=2 AND BookVersion IN(3,197))
+	OR (Subject=3 AND BookVersion IN(3, 48))
+) 
+ORDER BY Subject ASC,Term ASC;
+
+SELECT t2.ImageUrl ImageUrl,t1.* 
+FROM (
+	SELECT * FROM online_book_tbl WHERE Grade=11
+	AND (
+		(Subject=1 AND BookVersion=29) 
+		OR (Subject=2 AND BookVersion=3)
+		OR (Subject=3 AND BookVersion=48)
+	) 
+) t1
+INNER JOIN bookresourcetbl t2 ON t1.ResID=t2.ResourceID
+ORDER BY Subject ASC,Term ASC;
+
+SELECT t2.ImageUrl, t1.* FROM online_book_tbl t1
+INNER JOIN bookresourcetbl t2 ON t1.ResID=t2.ResourceID
+WHERE t1.Grade=11
+	AND (
+		(t1.Subject=1 AND t1.BookVersion=29) 
+		OR (t1.Subject=2 AND t1.BookVersion=3)
+		OR (t1.Subject=3 AND t1.BookVersion=48)
+	) 
+ORDER BY Subject ASC,Term ASC;
+
+SELECT * FROM BookVersionTbl WHERE Grade=11 AND Course = 2 GROUP BY BookVersion;
+SELECT * FROM BookVersionTbl WHERE Grade=11 GROUP BY Course, BookVersion;
+
+UPDATE `cybertron`.`online_book_tbl` SET `id`='10', `ResID`='a048242257b4530ae4d88bb2dc5b0987', `BookID`='1251', `Subject`='1', `Grade`='11', `ResType`='0', `Term`='2', `UpdateMs`='1596244372739', `ISBN`='0', `Owner`='0', `bookVersion`='29', `AppName`='', `Name`='人教PEP小学英语三起三年级下册12版', `Publisher`='人民教育出版社', `versionName`='人民教育出版社（人教PEP）', `ImageUrl`='', `FileInfo`='{\"Version\":\"V01.00.02\",\"GenData\":\"20200801-09:10:49\",\"HCJMagic\":\"6C6AEBE0\"}', `BookInfo`='{\"BookID\":\"1251\",\"Name\":\"人教PEP小学英语三起三年级下册12版\",\"ResID\":\"a048242257b4530ae4d88bb2dc5b0987\",\"Subject\":1,\"Grade\":11,\"Term\":2,\"Publisher\":\"人民教育出版社\",\"PrintInfo\":\"2012年出版 2015年印刷\",\"GeneratePages\":75,\"TotalPages\":76,\"CatalogNum\":1,\"CatalogBegPageNum\":0,\"ImgPath\":\"AIStudy/1251/tbr/img/\",\"VocPath\":\"AIStudy/1251/tbr/voc/\"}' WHERE (`id`='10');
 
 SELECT t2.ImageUrl ImageUrl,t1.* 
 FROM (SELECT * FROM online_book_tbl WHERE Grade=13 AND Subject=2 ) t1
