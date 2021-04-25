@@ -1,3 +1,14 @@
+SELECT tixing,tixingid FROM mfgexams GROUP BY tixing;
+
+SELECT * FROM mfgexams WHERE tixingid=20 AND `Subject`=3 AND timu LIKE '%光明幼儿园有大%';
+
+SELECT * FROM mfgexams WHERE timu LIKE '%光明幼儿园有大%';
+
+SELECT * FROM shiti WHERE tixingid=20 AND `Subject`=3 AND timu LIKE '%光明幼儿园有大%';
+
+SELECT * FROM shiti WHERE timu LIKE '%光明幼儿园有大%';
+
+
 SELECT * FROM mfgkpoints ORDER BY id DESC LIMIT 100;
 
 CREATE TABLE `mfgkpoints_bak` (
