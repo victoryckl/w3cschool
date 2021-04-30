@@ -1,3 +1,5 @@
+SELECT * FROM module_time_stat WHERE tabletUser='P56-HV01-PO01.20200416-366255';
+
 #UPDATE module_time_stat SET moduleId=255 WHERE moduleId=5586;
 
 SELECT * FROM module_time_stat WHERE tabletUser='P66-HV01-PO01.20180509-416905' ORDER BY lastUseMs DESC;

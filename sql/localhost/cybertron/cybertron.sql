@@ -1,3 +1,8 @@
+SELECT * FROM machinemodeltbl;
+
+
+SELECT DISTINCT(author) author FROM kwyd_res_author_tbl ORDER BY author;
+
 SELECT COUNT(*),resId FROM kwyd_res_genre_tbl GROUP BY resId;
 SELECT * FROM bookresourcetbl WHERE AppName='kewaiyuedu';
 
@@ -405,39 +410,39 @@ GROUP BY t1.ResourceID ORDER BY t1.ResourceName;
 
 ##########################################
 
-INSERT INTO kwyd_res_genre_tbl (resId, genreId, modifyMs)
-VALUES('02242fa98cd2e5efa7c10ec61f38bbe5', 1, 1212413),
-('02242fa98cd2e5efa7c10ec61f38bbe5', 2, 1212414),
-('02242fa98cd2e5efa7c10ec61f38bbe5', 3, 1212415),
-('6419477ef7b13371bf2dc0de36789823', 3, 1212416),
-('5acad5760cd9172fb396c07e28ed128e', 4, 1212417),
-('7397b5a5358b97e51e96c74058c31752', 1, 1212418),
-('251dab896542757bc21ddb82b1011fb8', 1, 1212419),
-('daf5bf5f196e25271e92cf7925147d93', 1, 1212420),
-('e6bb51df03df04f2d740c71b89cc6f9c', 1, 1212421),
-('1571a963c75e42a3a29a188a2d50340e', 1, 1212422),
+INSERT INTO kwyd_res_genre_tbl (resId, genreId,)
+VALUES('02242fa98cd2e5efa7c10ec61f38bbe5', 1),
+('02242fa98cd2e5efa7c10ec61f38bbe5', 2),
+('02242fa98cd2e5efa7c10ec61f38bbe5', 3),
+('6419477ef7b13371bf2dc0de36789823', 3),
+('5acad5760cd9172fb396c07e28ed128e', 4),
+('7397b5a5358b97e51e96c74058c31752', 1),
+('251dab896542757bc21ddb82b1011fb8', 1),
+('daf5bf5f196e25271e92cf7925147d93', 1),
+('e6bb51df03df04f2d740c71b89cc6f9c', 1),
+('1571a963c75e42a3a29a188a2d50340e', 1),
 
 
-('54934104e4ad15a803c682a463af91c3', 2, 1212423),
-('b0cf315bb45c9dcd1d0a8f7861e4fece', 2, 1212424),
-('8d261a07030c4a63f7769e9b298e670f', 2, 1212425),
-('6250dc4c99bf5fe735438cad81de3b36', 2, 1212426),
-('9232cbe8d3818c91d176e7bdf29c954f', 2, 1212427),
+('54934104e4ad15a803c682a463af91c3', 2),
+('b0cf315bb45c9dcd1d0a8f7861e4fece', 2),
+('8d261a07030c4a63f7769e9b298e670f', 2),
+('6250dc4c99bf5fe735438cad81de3b36', 2),
+('9232cbe8d3818c91d176e7bdf29c954f', 2),
 
-('90998a8f96b754cef87be2fea995d08d', 2, 1212428),
-('85c66b9a3dc0ec7d0faf88492cfbb788', 2, 1212429),
+('90998a8f96b754cef87be2fea995d08d', 2),
+('85c66b9a3dc0ec7d0faf88492cfbb788', 2),
 
-('141d31dd43c859aa9d51cba0b0b80778', 2, 1212430),
-('338322481f5a976b5c7281bf69d964a0', 2, 1212431),
+('141d31dd43c859aa9d51cba0b0b80778', 2),
+('338322481f5a976b5c7281bf69d964a0', 2),
 
-('d4f369db616917db3fc006652c8dcc15', 2, 1212432),
-('77a68816dae06f12d7623c85400af0e1', 2, 1212433),
-('1a8ff89e79bceb801545c5824111af5c', 2, 1212434),
-('46eabfea225ac510d5dc695bd45e68e2', 2, 1212435),
-('161f8c1cff099e0c14246cf0269d02ab', 2, 1212436),
+('d4f369db616917db3fc006652c8dcc15', 2),
+('77a68816dae06f12d7623c85400af0e1', 2),
+('1a8ff89e79bceb801545c5824111af5c', 2),
+('46eabfea225ac510d5dc695bd45e68e2', 2),
+('161f8c1cff099e0c14246cf0269d02ab', 2),
 
-('dc30a063aa32c45d4b1e08c219b367ad', 2, 1212437)
-ON DUPLICATE KEY UPDATE modifyMs=VALUES(modifyMs);
+('dc30a063aa32c45d4b1e08c219b367ad', 2)
+ON DUPLICATE KEY UPDATE genreId=VALUES(genreId);
 
 CREATE TABLE IF NOT EXISTS `kwyd_res_genre_tbl` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -453,37 +458,37 @@ CREATE TABLE IF NOT EXISTS `kwyd_res_genre_tbl` (
 
 SELECT * FROM kwyd_res_author_tbl WHERE resId='ssd111';
 
-INSERT INTO kwyd_res_author_tbl (resId, author, modifyMs)
-VALUES('02242fa98cd2e5efa7c10ec61f38bbe5', '叶圣陶', 1212413),
-('6419477ef7b13371bf2dc0de36789823', '(奥地利)费利克斯·萨尔腾', 1212416),
-('5acad5760cd9172fb396c07e28ed128e', '（法）法布尔', 1212417),
+INSERT INTO kwyd_res_author_tbl (resId, author)
+VALUES('02242fa98cd2e5efa7c10ec61f38bbe5', '叶圣陶'),
+('6419477ef7b13371bf2dc0de36789823', '(奥地利)费利克斯·萨尔腾'),
+('5acad5760cd9172fb396c07e28ed128e', '（法）法布尔'),
 
-('7397b5a5358b97e51e96c74058c31752', '杨鹏', 1212418),
-('251dab896542757bc21ddb82b1011fb8', '杨鹏', 1212419),
-('daf5bf5f196e25271e92cf7925147d93', '杨鹏', 1212420),
-('e6bb51df03df04f2d740c71b89cc6f9c', '杨鹏', 1212421),
-('1571a963c75e42a3a29a188a2d50340e', '杨鹏', 1212422),
+('7397b5a5358b97e51e96c74058c31752', '杨鹏'),
+('251dab896542757bc21ddb82b1011fb8', '杨鹏'),
+('daf5bf5f196e25271e92cf7925147d93', '杨鹏'),
+('e6bb51df03df04f2d740c71b89cc6f9c', '杨鹏'),
+('1571a963c75e42a3a29a188a2d50340e', '杨鹏'),
 
-('54934104e4ad15a803c682a463af91c3', '(德)施瓦布', 1212423),
-('b0cf315bb45c9dcd1d0a8f7861e4fece', '(德)施瓦布', 1212424),
-('8d261a07030c4a63f7769e9b298e670f', '(德)施瓦布', 1212425),
-('6250dc4c99bf5fe735438cad81de3b36', '(德)施瓦布', 1212426),
-('9232cbe8d3818c91d176e7bdf29c954f', '(德)施瓦布', 1212427),
+('54934104e4ad15a803c682a463af91c3', '(德)施瓦布'),
+('b0cf315bb45c9dcd1d0a8f7861e4fece', '(德)施瓦布'),
+('8d261a07030c4a63f7769e9b298e670f', '(德)施瓦布'),
+('6250dc4c99bf5fe735438cad81de3b36', '(德)施瓦布'),
+('9232cbe8d3818c91d176e7bdf29c954f', '(德)施瓦布'),
 
-('90998a8f96b754cef87be2fea995d08d', 'C·S·刘易斯', 1212428),
-('85c66b9a3dc0ec7d0faf88492cfbb788', 'C·S·刘易斯', 1212429),
+('90998a8f96b754cef87be2fea995d08d', 'C·S·刘易斯'),
+('85c66b9a3dc0ec7d0faf88492cfbb788', 'C·S·刘易斯'),
 
-('141d31dd43c859aa9d51cba0b0b80778', '鲁迅', 1212430),
-('338322481f5a976b5c7281bf69d964a0', '施耐庵', 1212431),
+('141d31dd43c859aa9d51cba0b0b80778', '鲁迅'),
+('338322481f5a976b5c7281bf69d964a0', '施耐庵'),
 
-('d4f369db616917db3fc006652c8dcc15', 'C·S·刘易斯', 1212432),
-('77a68816dae06f12d7623c85400af0e1', 'C·S·刘易斯', 1212433),
-('1a8ff89e79bceb801545c5824111af5c', 'C·S·刘易斯', 1212434),
-('46eabfea225ac510d5dc695bd45e68e2', 'C·S·刘易斯', 1212435),
-('161f8c1cff099e0c14246cf0269d02ab', 'C·S·刘易斯', 1212436),
+('d4f369db616917db3fc006652c8dcc15', 'C·S·刘易斯'),
+('77a68816dae06f12d7623c85400af0e1', 'C·S·刘易斯'),
+('1a8ff89e79bceb801545c5824111af5c', 'C·S·刘易斯'),
+('46eabfea225ac510d5dc695bd45e68e2', 'C·S·刘易斯'),
+('161f8c1cff099e0c14246cf0269d02ab', 'C·S·刘易斯'),
 
-('dc30a063aa32c45d4b1e08c219b367ad', '茅盾', 1212437)
-ON DUPLICATE KEY UPDATE modifyMs=VALUES(modifyMs);
+('dc30a063aa32c45d4b1e08c219b367ad', '茅盾')
+ON DUPLICATE KEY UPDATE author=VALUES(author);
 
 CREATE TABLE IF NOT EXISTS `kwyd_res_author_tbl` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -497,18 +502,9 @@ CREATE TABLE IF NOT EXISTS `kwyd_res_author_tbl` (
 
 ##################################
 
-DELETE FROM kwyd_genre_tbl WHERE genreId IN (1244);
+#DELETE FROM kwyd_genre_tbl WHERE genreId IN (1244);
 
 SELECT * FROM kwyd_genre_tbl ORDER BY sequence, genreId
-
-INSERT INTO kwyd_genre_tbl (genreId, genreName, sequence, modifyMs)
-VALUES 
-(12121, '信息1', 999, 124578),
-(12123, '信息21', 999, 124578),
-(12124, '信息31', 999, 124578)
-ON DUPLICATE KEY UPDATE 
-	genreName=VALUES(genreName),
-	sequence=VALUES(sequence),modifyMs=VALUES(modifyMs);
 
 CREATE TABLE IF NOT EXISTS `kwyd_genre_tbl` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -526,10 +522,10 @@ SELECT * FROM imei_tbl WHERE user is NULL ORDER BY imei ASC LIMIT 2;
 
 SELECT * FROM imei_tbl WHERE user='xxx' ORDER BY imei ASC;
 
-INSERT INTO imei_tbl (imei,uploadMs) VALUES(867400020100008,1618899631231);
+#INSERT INTO imei_tbl (imei,uploadMs) VALUES(867400020100008,1618899631231);
 
-UPDATE imei_tbl 
-SET user='xxx', uploadMs=1618899631232,bindMs=1618899631233 WHERE imei=867400020100008;
+#UPDATE imei_tbl 
+#SET user='xxx', uploadMs=1618899631232,bindMs=1618899631233 WHERE imei=867400020100008;
 
 CREATE TABLE IF NOT EXISTS `imei_tbl` (
 `id`  int NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -542,7 +538,7 @@ UNIQUE INDEX `u_imei` (`imei`),
 INDEX `idx_user` (`user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO imei_tbl (imei, uploadMs) VALUES (1222, CURRENT_TIMESTAMP()) ON DUPLICATE KEY UPDATE uploadMs=VALUES(uploadMs);
+#INSERT INTO imei_tbl (imei, uploadMs) VALUES (1222, CURRENT_TIMESTAMP()) ON DUPLICATE KEY UPDATE uploadMs=VALUES(uploadMs);
 
 
 ####################################
@@ -595,7 +591,7 @@ ON citytbl_city=version_city;
 SELECT * FROM new_version_tbl WHERE grade='三年级';
 
 SELECT DISTINCT(province) FROM new_version_tbl;
-
+/*
 UPDATE new_version_tbl SET city='石家庄市' WHERE province='河北' AND city='石家庄';
 UPDATE new_version_tbl SET province='内蒙古' WHERE province='内蒙';
 UPDATE new_version_tbl SET city='防城港市' WHERE province='广西' AND city='防城港';
@@ -682,7 +678,7 @@ UPDATE new_version_tbl SET city='普洱市' WHERE province='云南' AND city='�
 UPDATE new_version_tbl SET city='曲靖市' WHERE province='云南' AND city='曲靖';
 UPDATE new_version_tbl SET city='楚雄彝族自治州' WHERE province='云南' AND city='楚雄';
 UPDATE new_version_tbl SET city='红河哈尼族彝族自治州' WHERE province='云南' AND city='红河';
-
+*/
 
 CREATE TABLE `new_version_tbl` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -701,7 +697,7 @@ CREATE TABLE `new_version_tbl` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-UPDATE appmarket_app_tbl set Label='咔哒故事' WHERE PackName='com.hhdd.kada';
+#UPDATE appmarket_app_tbl set Label='咔哒故事' WHERE PackName='com.hhdd.kada';
 
 SELECT Label,PackName,VerName,Author FROM `appmarket_app_tbl` WHERE `UpdateTime`  > 1615135356000 GROUP BY `PackName` ORDER BY `UpdateTime` DESC;
 

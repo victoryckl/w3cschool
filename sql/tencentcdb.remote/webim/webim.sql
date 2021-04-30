@@ -1,3 +1,25 @@
+SELECT * FROM im_module_time WHERE tablet_user='P56-HV01-PO01.20200416-366255';
+
+
+#1619625600  2021-04-29 00:00:00 
+#1619712000  2021-04-30 00:00:00 
+SELECT package_name, app_name,
+date_format(date_sub(from_unixtime(start_time), INTERVAL 0 HOUR), '%Y-%m-%d %H:%i:%s') start_time,
+date_format(date_sub(from_unixtime(end_time), INTERVAL 0 HOUR), '%Y-%m-%d %H:%i:%s') end_time
+FROM im_module_time
+WHERE
+	tablet_user='P56-HV01-PO01.20200416-366255'
+	AND start_time > 1619625600 AND start_time < 1619712000
+ORDER BY start_time;
+
+SELECT package_name, app_name,
+date_format(date_sub(from_unixtime(start_time), INTERVAL 0 HOUR), '%Y-%m-%d %H:%i:%s') start_time,
+date_format(date_sub(from_unixtime(end_time), INTERVAL 0 HOUR), '%Y-%m-%d %H:%i:%s') end_time
+FROM im_module_time
+WHERE
+	tablet_user='P68-HV01-PO01.20181211-025363'
+	AND start_time > 1619712000
+ORDER BY start_time;
 
 
 SELECT COUNT(*) FROM im_module_time WHERE start_time < 1598889600;
