@@ -1,3 +1,10 @@
+
+#统计每日调用总数
+select FROM_UNIXTIME(UploadMs/1000, '%Y-%m-%d') day, count(*) as count 
+from aft_backup_tbl group by day ORDER BY day;
+
+SELECT COUNT(*) FROM aft_backup_tbl WHERE UploadMs > 1561122277399 AND UploadMs < 1566243359220;
+
 SELECT * FROM machinemodeltbl;
 
 
