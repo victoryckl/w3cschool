@@ -1,3 +1,5 @@
+#DELETE FROM mfgexams WHERE id >= 9599213;
+
 SELECT tixing,tixingid FROM mfgexams GROUP BY tixing;
 
 SELECT * FROM mfgexams WHERE tixingid=20 AND `Subject`=3 AND timu LIKE '%光明幼儿园有大%';
