@@ -1,10 +1,4 @@
 
-#统计每日调用总数
-select FROM_UNIXTIME(UploadMs/1000, '%Y-%m-%d') day, count(*) as count 
-from aft_backup_tbl group by day ORDER BY day;
-
-SELECT COUNT(*) FROM aft_backup_tbl WHERE UploadMs > 1561122277399 AND UploadMs < 1566243359220;
-
 SELECT * FROM machinemodeltbl;
 
 
@@ -22,8 +16,8 @@ ON t1.genreId=t2.genreId
 ORDER BY t1.count desc;
 
 SELECT t1.ResourceID,
-GROUP_CONCAT(DISTINCT(t3.author)) authors, 
-GROUP_CONCAT(DISTINCT(t4.genreName)) genreNames ,
+GROUP_CONCAT(DISTINCT(t3.author) ORDER BY t3.author ASC SEPARATOR ';') authors, 
+GROUP_CONCAT(DISTINCT(t4.genreName) ORDER BY t4.sequence ASC SEPARATOR ';') genreNames,
 t1.ResourceName, t5.Attribute
 FROM (SELECT * FROM bookresourcetbl WHERE AppName='kewaiyuedu') t1
 LEFT JOIN kwyd_res_author_tbl t3 ON t3.resId=t1.ResourceID
@@ -32,7 +26,6 @@ LEFT JOIN kwyd_genre_tbl t4 ON t2.genreId=t4.genreId
 LEFT JOIN resattrtbl t5 ON t5.Type=1 AND t1.Grade=t5.AttributeID
 GROUP BY t1.ResourceID
 ORDER BY t3.author ASC, t1.ResourceName ASC;
-
 
 SELECT t1.ResourceID,
 GROUP_CONCAT(DISTINCT(t3.author)) authors, 
@@ -392,7 +385,6 @@ SELECT * FROM bookresourcetbl WHERE AppName='kewaiyuedu';
 
 SELECT * FROM bookresourcetbl WHERE Grade=12 AND AppName='kewaiyuedu' AND ResourceName LIKE '%童话集%';
 
-
 SELECT SQL_CALC_FOUND_ROWS 
 	GROUP_CONCAT(DISTINCT(t3.genreId)) genreIds, 
 	GROUP_CONCAT(DISTINCT(t2.author)) authors, t1.* 
@@ -414,42 +406,8 @@ INNER JOIN kwyd_res_genre_tbl t2 ON t1.Grade=12 AND t1.ResourceName LIKE '%童�
 INNER JOIN kwyd_res_author_tbl t3 ON t3.author LIKE '%叶%' AND t1.ResourceID=t3.resId
 GROUP BY t1.ResourceID ORDER BY t1.ResourceName;
 
-
 ##########################################
 
-INSERT INTO kwyd_res_genre_tbl (resId, genreId,)
-VALUES('02242fa98cd2e5efa7c10ec61f38bbe5', 1),
-('02242fa98cd2e5efa7c10ec61f38bbe5', 2),
-('02242fa98cd2e5efa7c10ec61f38bbe5', 3),
-('6419477ef7b13371bf2dc0de36789823', 3),
-('5acad5760cd9172fb396c07e28ed128e', 4),
-('7397b5a5358b97e51e96c74058c31752', 1),
-('251dab896542757bc21ddb82b1011fb8', 1),
-('daf5bf5f196e25271e92cf7925147d93', 1),
-('e6bb51df03df04f2d740c71b89cc6f9c', 1),
-('1571a963c75e42a3a29a188a2d50340e', 1),
-
-
-('54934104e4ad15a803c682a463af91c3', 2),
-('b0cf315bb45c9dcd1d0a8f7861e4fece', 2),
-('8d261a07030c4a63f7769e9b298e670f', 2),
-('6250dc4c99bf5fe735438cad81de3b36', 2),
-('9232cbe8d3818c91d176e7bdf29c954f', 2),
-
-('90998a8f96b754cef87be2fea995d08d', 2),
-('85c66b9a3dc0ec7d0faf88492cfbb788', 2),
-
-('141d31dd43c859aa9d51cba0b0b80778', 2),
-('338322481f5a976b5c7281bf69d964a0', 2),
-
-('d4f369db616917db3fc006652c8dcc15', 2),
-('77a68816dae06f12d7623c85400af0e1', 2),
-('1a8ff89e79bceb801545c5824111af5c', 2),
-('46eabfea225ac510d5dc695bd45e68e2', 2),
-('161f8c1cff099e0c14246cf0269d02ab', 2),
-
-('dc30a063aa32c45d4b1e08c219b367ad', 2)
-ON DUPLICATE KEY UPDATE genreId=VALUES(genreId);
 
 CREATE TABLE IF NOT EXISTS `kwyd_res_genre_tbl` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -464,38 +422,6 @@ CREATE TABLE IF NOT EXISTS `kwyd_res_genre_tbl` (
 ########################################
 
 SELECT * FROM kwyd_res_author_tbl WHERE resId='ssd111';
-
-INSERT INTO kwyd_res_author_tbl (resId, author)
-VALUES('02242fa98cd2e5efa7c10ec61f38bbe5', '叶圣陶'),
-('6419477ef7b13371bf2dc0de36789823', '(奥地利)费利克斯·萨尔腾'),
-('5acad5760cd9172fb396c07e28ed128e', '（法）法布尔'),
-
-('7397b5a5358b97e51e96c74058c31752', '杨鹏'),
-('251dab896542757bc21ddb82b1011fb8', '杨鹏'),
-('daf5bf5f196e25271e92cf7925147d93', '杨鹏'),
-('e6bb51df03df04f2d740c71b89cc6f9c', '杨鹏'),
-('1571a963c75e42a3a29a188a2d50340e', '杨鹏'),
-
-('54934104e4ad15a803c682a463af91c3', '(德)施瓦布'),
-('b0cf315bb45c9dcd1d0a8f7861e4fece', '(德)施瓦布'),
-('8d261a07030c4a63f7769e9b298e670f', '(德)施瓦布'),
-('6250dc4c99bf5fe735438cad81de3b36', '(德)施瓦布'),
-('9232cbe8d3818c91d176e7bdf29c954f', '(德)施瓦布'),
-
-('90998a8f96b754cef87be2fea995d08d', 'C·S·刘易斯'),
-('85c66b9a3dc0ec7d0faf88492cfbb788', 'C·S·刘易斯'),
-
-('141d31dd43c859aa9d51cba0b0b80778', '鲁迅'),
-('338322481f5a976b5c7281bf69d964a0', '施耐庵'),
-
-('d4f369db616917db3fc006652c8dcc15', 'C·S·刘易斯'),
-('77a68816dae06f12d7623c85400af0e1', 'C·S·刘易斯'),
-('1a8ff89e79bceb801545c5824111af5c', 'C·S·刘易斯'),
-('46eabfea225ac510d5dc695bd45e68e2', 'C·S·刘易斯'),
-('161f8c1cff099e0c14246cf0269d02ab', 'C·S·刘易斯'),
-
-('dc30a063aa32c45d4b1e08c219b367ad', '茅盾')
-ON DUPLICATE KEY UPDATE author=VALUES(author);
 
 CREATE TABLE IF NOT EXISTS `kwyd_res_author_tbl` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
