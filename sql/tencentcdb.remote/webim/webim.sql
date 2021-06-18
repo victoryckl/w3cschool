@@ -1,6 +1,7 @@
 SELECT * FROM im_module_time WHERE tablet_user='P56-HV01-PO01.20200416-366255';
 
 
+#统计指定用户在某个时间段内的使用情况
 #1619625600  2021-04-29 00:00:00 
 #1619712000  2021-04-30 00:00:00 
 SELECT package_name, app_name,
@@ -8,9 +9,9 @@ date_format(date_sub(from_unixtime(start_time), INTERVAL 0 HOUR), '%Y-%m-%d %H:%
 date_format(date_sub(from_unixtime(end_time), INTERVAL 0 HOUR), '%Y-%m-%d %H:%i:%s') end_time
 FROM im_module_time
 WHERE
-	tablet_user='P56-HV01-PO01.20200416-366255'
-	AND start_time > 1619625600 AND start_time < 1619712000
-ORDER BY start_time;
+	tablet_user='P68S-HV01-PO01.20201223-645559'
+	AND start_time > 1623686400 #AND start_time < 1623772800
+ORDER BY start_time DESC;
 
 SELECT package_name, app_name,
 date_format(date_sub(from_unixtime(start_time), INTERVAL 0 HOUR), '%Y-%m-%d %H:%i:%s') start_time,

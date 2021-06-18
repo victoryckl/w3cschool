@@ -1,19 +1,68 @@
+SELECT COUNT(*) FROM VideoBookTbl WHERE ResType=9;
+
+SELECT * FROM VideoBookTbl WHERE ResType=9 AND BookName LIKE '%冀教%' ORDER BY Size DESC;
+
+SELECT * FROM bookresourcetbl WHERE ResourceID IN (
+	SELECT VideoResID FROM videochaptertbl WHERE ResType=9 AND VideoResID <> '' AND VideoDisplayName LIKE '%杜甫%'
+);
+
+SELECT * FROM videochaptertbl WHERE ResType=9 AND VideoResID <> '';
+
+SELECT * FROM bookresourcetbl WHERE ResourceID IN (
+'e62d8007eddbdce251f7471644b12fab','cff85ff6f5cc3c377927ac215983a95f','9af85a1fbccffaf0ac3eda89dd0b7210'
+);
+
+
+SELECT * FROM VideoChapterTbl WHERE ResType=16 AND VideoResName<>''
+GROUP BY BookID;
+
+SELECT * FROM bookversiontbl WHERE ID IN (
+	SELECT DISTINCT(BookID) FROM VideoChapterTbl WHERE ResType=16 AND VideoResName<>''
+)
+ORDER BY ID;
+
+SELECT COUNT(*) FROM bookversiontbl;
+
+SELECT SQL_CALC_FOUND_ROWS id,PointName,Grade,Subject FROM mfgkpoints 
+WHERE Grade=9 AND `Subject`=2 AND PointName LIKE '%小%'
+ORDER BY id
+LIMIT 0, 10;
+
+SELECT FOUND_ROWS() AS tikuListCount;
+
+SELECT id,PointName,Grade,Subject FROM mfgkpoints;
+
+SELECT count(*) FROM mfgkpoints;
 
 SELECT * FROM machinemodeltbl;
 
 
 SELECT DISTINCT(author) author FROM kwyd_res_author_tbl ORDER BY author;
-
 SELECT COUNT(*),resId FROM kwyd_res_genre_tbl GROUP BY resId;
-SELECT * FROM bookresourcetbl WHERE AppName='kewaiyuedu';
 
-SELECT t2.genreName, t1.count FROM
+#课文阅读统计
+SELECT t1.ResourceName '书名', 
+GROUP_CONCAT(DISTINCT(t3.author) ORDER BY t3.author ASC SEPARATOR ';') '作者', 
+GROUP_CONCAT(DISTINCT(t4.genreName) ORDER BY t4.sequence ASC SEPARATOR ';') '体裁',
+t5.Attribute '年级', t1.ResourceID '资源ID'
+FROM (SELECT * FROM bookresourcetbl WHERE AppName='kewaiyuedu') t1
+LEFT JOIN kwyd_res_author_tbl t3 ON t3.resId=t1.ResourceID
+LEFT JOIN kwyd_res_genre_tbl t2 ON t1.ResourceID=t2.resId
+LEFT JOIN kwyd_genre_tbl t4 ON t2.genreId=t4.genreId
+LEFT JOIN resattrtbl t5 ON t5.Type=1 AND t1.Grade=t5.AttributeID
+GROUP BY t1.ResourceID
+ORDER BY t4.id ASC, t3.author ASC, t1.ResourceName ASC;
+
+SELECT t2.genreName 体裁, t1.count 总数 FROM
 (
 	SELECT genreId,COUNT(resId) count FROM kwyd_res_genre_tbl GROUP BY genreId
 ) t1
 INNER JOIN kwyd_genre_tbl t2
 ON t1.genreId=t2.genreId
 ORDER BY t1.count desc;
+
+SELECT COUNT(*) 总数 FROM kwyd_res_genre_tbl;
+
 
 SELECT t1.ResourceID,
 GROUP_CONCAT(DISTINCT(t3.author) ORDER BY t3.author ASC SEPARATOR ';') authors, 
@@ -41,7 +90,7 @@ GROUP BY t1.ResourceID
 ORDER BY t5.AttrOrder ASC, t1.ResourceName ASC;
 
 
-INSERT INTO kwyd_res_genre_tbl (resId, genreId)
+#INSERT INTO kwyd_res_genre_tbl (resId, genreId)
 VALUES
 ('9a53195ad9f6ec7957b2235059b3b45f', 2),
 ('303adc7e52c3f6385a27bf96255c394b', 2),
@@ -204,7 +253,7 @@ VALUES
 ('b92e51859f22419db6e85ed9b09740eb', 1)
 ON DUPLICATE KEY UPDATE genreId=VALUES(genreId);
 
-INSERT INTO kwyd_res_author_tbl (resId, author)
+#INSERT INTO kwyd_res_author_tbl (resId, author)
 VALUES
 ('9a53195ad9f6ec7957b2235059b3b45f', '吴承恩'),
 ('303adc7e52c3f6385a27bf96255c394b', '曹雪芹'),
