@@ -1,3 +1,7 @@
+SELECT id,PointName,Grade,Subject FROM pointtbl ORDER BY id ASC;
+SELECT id,PointName,Grade,Subject FROM mfgkpoints ORDER BY id ASC;
+
+
 SELECT * FROM not_origin_tbl WHERE status='created' OR status='editing'
 ORDER BY createTime DESC LIMIT 0,10;
 

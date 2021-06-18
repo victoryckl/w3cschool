@@ -1,3 +1,25 @@
+#DELETE FROM not_origin_to_origin_tbl WHERE notOriginId=1 AND originId IN (1,2);
+
+SELECT * FROM not_origin_to_origin_tbl WHERE notOriginId=1;
+SELECT COUNT(*) FROM not_origin_to_origin_tbl WHERE notOriginId=17;
+
+#INSERT INTO not_origin_to_origin_tbl (notOriginId, originId) VALUE(1,9605190),(1,9605189)
+ON DUPLICATE KEY UPDATE updateTime=VALUES(updateTime);
+
+CREATE TABLE IF NOT EXISTS `not_origin_to_origin_tbl` (
+	`id`  int NOT NULL AUTO_INCREMENT ,
+	`notOriginId`  int NULL ,
+	`originId`  int NOT NULL COMMENT '关联的原题id，来自mfgexams.id' ,
+	`updateTime`  bigint NULL DEFAULT 0 COMMENT '更新时间,时间戳ms' ,
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `u_n_originId` (`notOriginId`, `originId`) 
+)
+ENGINE=InnoDB 
+DEFAULT CHARSET=utf8 
+COLLATE=utf8_general_ci 
+COMMENT='非原题与原题的关联表';
+
+
 #ALTER TABLE `not_origin_tbl`
 #ADD COLUMN `orcText`  varchar(1024) NULL DEFAULT NULL COMMENT 'Ocr结果' AFTER `points`;
 

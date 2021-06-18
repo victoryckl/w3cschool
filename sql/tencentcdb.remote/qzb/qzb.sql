@@ -27,9 +27,9 @@ SELECT t2.name,t2.package,t1.* FROM module_time_stat t1
 INNER JOIN module_list t2 ON t1.tabletUser='P68-HV01-PO01.20181211-025363' AND t1.dayMs=1611072000000 AND t1.moduleId = t2.id 
 ORDER BY t1.lastUseMs DESC;
 
-
+#统计指定用户使用时间
 SELECT t2.name,t2.package,t1.* FROM module_time_stat t1 
 INNER JOIN module_list t2 
-ON t1.tabletUser='P66-HV01-PO01.20180509-416905' AND t1.dayMs=1610985600000 AND t1.moduleId = t2.id 
+ON t1.tabletUser='P68S-HV01-PO01.20201223-645559' AND t1.moduleId = t2.id 
 ORDER BY t1.lastUseMs DESC; 
 
