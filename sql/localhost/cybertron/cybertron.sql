@@ -1,3 +1,73 @@
+
+SELECT (Layer-Layer%1000000) unitLayer, GROUP_CONCAT(VideoResName) knows 
+FROM VideoChapterTbl 
+WHERE BookID=1427 AND ResType=13 
+AND VideoResName IS NOT NULL AND VideoResName <> ''
+GROUP BY (Layer-Layer%1000000);
+
+SELECT * FROM microvideoexam WHERE zhishidianid IN
+(20101,20102,20103,20105,20106,20107,20108,20109,20110,20111,20112);
+
+SELECT * FROM microvideoexam WHERE zhishidianid IN
+(20302,20303,20305,20306,20307,20308);
+
+SELECT * FROM microvideoexam WHERE zhishidianid IN
+(20277,20318,21095,20319,20320,20310,20321,21097,20322,20323,20324,21096,20325,20326,20327,20328,21098,20329);
+
+SELECT * FROM microvideoexam WHERE zhishidianid IN
+(20184,20185,20186,20187,20188,20189,20190,20192,20193,20194,20195,20196,20197,20198,20199,20200,20201,20202,20203,20204,20205,20207,21080,21079,20206);
+
+SELECT * FROM microvideoexam WHERE zhishidianid IN
+(20455,20456,20470,20457,20458,20466,20467,20468,20469,20471);
+
+SELECT (Layer-Layer%1000000) unitLayer, GROUP_CONCAT(VideoResName) knows 
+FROM VideoChapterTbl 
+WHERE BookID=1060 AND ResType=13 
+AND VideoResName IS NOT NULL AND VideoResName <> ''
+GROUP BY (Layer-Layer%1000000);
+
+SELECT DISTINCT(VideoResName) FROM VideoChapterTbl WHERE BookID=1060 AND ResType=13 
+AND Layer>=7000000 AND Layer<8000000 
+AND VideoResName IS NOT NULL AND VideoResName <> '';
+
+SELECT DISTINCT(VideoResName) FROM VideoChapterTbl WHERE BookID=1060 AND ResType=13 AND Layer=7000000 
+AND VideoResName IS NOT NULL AND VideoResName <> '';
+
+select * from sxjmicrovideodb WHERE VideoResID IS NOT NULL 
+AND (
+	CONCAT(',',VideoResName,',') LIKE "%,28067,%" 
+	OR CONCAT(',',VideoResName,',') LIKE "%,28068,%" 
+	OR CONCAT(',',VideoResName,',') LIKE "%,80000922,%"
+);
+
+select * from sxjmicrovideodb WHERE VideoResID IS NOT NULL 
+AND (
+	CONCAT(',',VideoResName,',') LIKE "%,80000979,%"
+);
+
+
+#查找是否有视频
+SELECT IFNULL((SELECT 1 from sxjmicrovideodb WHERE VideoResID IS NOT NULL 
+	AND (
+		CONCAT(',',VideoResName,',') LIKE "%,28067,%" 
+		OR CONCAT(',',VideoResName,',') LIKE "%,28068,%" 
+		OR CONCAT(',',VideoResName,',') LIKE "%,80000922,%"
+	) LIMIT 1
+), 0);
+
+select * from sxjmicrovideodb WHERE VideoResID IS NOT NULL AND CONCAT(',',VideoResName,',') LIKE "%,28068,%";
+select * from sxjmicrovideodb WHERE VideoResID IS NOT NULL AND CONCAT(',',VideoResName,',') LIKE "%,80000922,%";
+
+SELECT VideoResName FROM VideoChapterTbl WHERE BookID=1060 AND ResType=13 AND VideoResName IS NOT NULL AND VideoResName <> '';
+
+SELECT * FROM VideoChapterTbl WHERE BookID=1060 AND ResType=13 AND VideoResName IS NOT NULL AND VideoResName <> '';
+
+SELECT * FROM VideoChapterTbl WHERE VideoResName IS NULL;
+
+SELECT CONCAT(',',VideoResName,',') FROM sxjmicrovideodb ;
+
+SELECT * FROM sxjmicrovideodb WHERE VideoResID IS NOT NULL AND CONCAT(',',VideoResName,',') LIKE '%,28068,%';
+
 SELECT COUNT(*) FROM VideoBookTbl WHERE ResType=9;
 
 SELECT * FROM VideoBookTbl WHERE ResType=9 AND BookName LIKE '%冀教%' ORDER BY Size DESC;
