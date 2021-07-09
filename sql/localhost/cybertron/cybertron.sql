@@ -3,7 +3,7 @@ SELECT (Layer-Layer%1000000) unitLayer, GROUP_CONCAT(VideoResName) knows
 FROM VideoChapterTbl 
 WHERE BookID=1427 AND ResType=13 
 AND VideoResName IS NOT NULL AND VideoResName <> ''
-GROUP BY (Layer-Layer%1000000);
+GROUP BY unitLayer;
 
 SELECT * FROM microvideoexam WHERE zhishidianid IN
 (20101,20102,20103,20105,20106,20107,20108,20109,20110,20111,20112);
@@ -24,7 +24,7 @@ SELECT (Layer-Layer%1000000) unitLayer, GROUP_CONCAT(VideoResName) knows
 FROM VideoChapterTbl 
 WHERE BookID=1060 AND ResType=13 
 AND VideoResName IS NOT NULL AND VideoResName <> ''
-GROUP BY (Layer-Layer%1000000);
+GROUP BY unitLayer;
 
 SELECT DISTINCT(VideoResName) FROM VideoChapterTbl WHERE BookID=1060 AND ResType=13 
 AND Layer>=7000000 AND Layer<8000000 
