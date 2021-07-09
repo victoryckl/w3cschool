@@ -1,3 +1,12 @@
+
+#DELETE FROM mfgexams WHERE id IN (7500473,7501826,7501970,7502086,7503728,7533420,7533470,7533648,7744812,8000016,8000028,8022852,8045975);
+
+select * from mfgexams where id > 0 limit 5000;
+
+select id,timu,Subject,tixingid from mfgexams where id > 0 limit 5000;
+
+SELECT count(*) FROM mfgexams WHERE tixingid=12;
+
 SELECT id,PointName,Grade,Subject FROM pointtbl ORDER BY id ASC;
 SELECT id,PointName,Grade,Subject FROM mfgkpoints ORDER BY id ASC;
 

@@ -1,3 +1,8 @@
+#统计每日阿凡题搜题数
+select FROM_UNIXTIME(updateTime/1000, '%Y-%m-%d') day, count(*) as count 
+from aft_search_tbl group by day ORDER BY day;
+
+
 #DELETE FROM not_origin_to_origin_tbl WHERE notOriginId=1 AND originId IN (1,2);
 
 SELECT * FROM not_origin_to_origin_tbl WHERE notOriginId=1;
