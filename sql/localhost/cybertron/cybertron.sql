@@ -1,5 +1,25 @@
 
-SELECT (Layer-Layer%1000000) unitLayer, GROUP_CONCAT(VideoResName) knows 
+
+#表mfgkpoints_20210813中知识点名称恢复了空格
+SELECT a.id,a.PointName,b.PointName 
+FROM mfgkpoints a
+INNER JOIN mfgkpoints_20210813 b
+ON a.id = b.id AND a.PointName <> b.PointName;
+
+#UPDATE mfgkpoints a,mfgkpoints_20210813 b 
+SET a.PointName = b.PointName 
+WHERE a.id = b.id AND a.PointName <> b.PointName
+
+
+SELECT (Layer-Layer%10000) lessonLayer,
+	GROUP_CONCAT(DISTINCT VideoResName ORDER BY VideoResName ASC) knows #去重，排序
+FROM VideoChapterTbl 
+WHERE BookID=1003 AND ResType=13 
+AND VideoResName IS NOT NULL AND VideoResName <> ''
+GROUP BY lessonLayer;
+
+SELECT (Layer-Layer%1000000) unitLayer, 
+	GROUP_CONCAT(DISTINCT VideoResName ORDER BY VideoResName ASC) knows #去重，排序
 FROM VideoChapterTbl 
 WHERE BookID=1427 AND ResType=13 
 AND VideoResName IS NOT NULL AND VideoResName <> ''
@@ -22,7 +42,7 @@ SELECT * FROM microvideoexam WHERE zhishidianid IN
 
 SELECT (Layer-Layer%1000000) unitLayer, GROUP_CONCAT(VideoResName) knows 
 FROM VideoChapterTbl 
-WHERE BookID=1060 AND ResType=13 
+WHERE BookID=1003 AND ResType=13 
 AND VideoResName IS NOT NULL AND VideoResName <> ''
 GROUP BY unitLayer;
 
@@ -53,7 +73,14 @@ SELECT IFNULL((SELECT 1 from sxjmicrovideodb WHERE VideoResID IS NOT NULL
 		OR CONCAT(',',VideoResName,',') LIKE "%,28068,%" 
 		OR CONCAT(',',VideoResName,',') LIKE "%,80000922,%"
 	) LIMIT 1
-), 0);
+), 0) haveMsjt;
+
+#UPDATE sxjmicrovideodb SET VideoResName=REPLACE(VideoResName,'\r','') WHERE VideoResName LIKE "%\r%";
+
+SELECT * FROM sxjmicrovideodb WHERE VideoResID IS NOT NULL AND VideoResName LIKE "%\r%" 
+
+#175 \n   3497
+#175 \r\n 3546
 
 select * from sxjmicrovideodb WHERE VideoResID IS NOT NULL AND CONCAT(',',VideoResName,',') LIKE "%,28068,%";
 select * from sxjmicrovideodb WHERE VideoResID IS NOT NULL AND CONCAT(',',VideoResName,',') LIKE "%,80000922,%";

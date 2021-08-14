@@ -1,3 +1,9 @@
+SELECT QuesIDOnlyReading FROM pointtbl WHERE id=20007;
+
+SELECT QuesIDOnlyReading FROM mfgkpoints WHERE id=80001024;
+
+SELECT * FROM mfgexams WHERE id IN (80001491, 80001492, 80001639, 80001493, 80001494, 80001638, 80000791);
+
 #INSERT INTO `cybertron`.`mfgexams` (`timu`, `md5`, `danan`, `jiexi`, `zhishidian`, `tixing`, `nandu`, `kemu`, `nianji`, `tiid`, `laiyuan`, `danyuan`, `status`, `qid`, `tixingid`, `Subject`, `Grade`, `zhishidianid`, `TPID`, `SimilarExamID`) 
 VALUES ('{\"zhutigan\":\"课外阅读。\\n认真阅读下面的三份材料，然后回答问题。\\n材料1：<img alt=\\\"\\\" src=\\\"/MFGExamImage/ModifyImage/2/14/41BAFC49/21-1.jpg\\\" />\\n材料2：<img alt=\\\"\\\" src=\\\"/MFGExamImage/ModifyImage/2/14/41BAFC49/21-2.jpg\\\" />\\n材料3：<img alt=\\\"\\\" src=\\\"/MFGExamImage/ModifyImage/2/14/41BAFC49/21-3.jpg\\\" />\",\"ziti\":[{\"zitigan\":\"<table style=\\\"WORD-BREAK: break-all\\\" border=\\\"0\\\" cellspacing=\\\"0\\\" width=\\\"100%\\\"><tbody><tr><td>1．填空。<br>天文馆一层共有_______个展览馆，分别是______、__________、__________、。这一层还有____个休息厅，____个小卖部和____个书店。</td></tr></tbody></table>\",\"daan\":\"<table style=\\\"word-break:break-all;\\\" width=\\\"100%\\\"><tbody><tr><td>3 地球馆、古代天文学馆、太空科技馆 2  1  1</td></tr></tbody></table>\",\"jiexi\":\"<table style=\\\"word-break:break-all;\\\" width=\\\"100%\\\"><tbody><tr><td></td></tr></tbody></table>\",\"tixing\":\"填空题\",\"tixingId\":20},{\"zitigan\":\"<table style=\\\"WORD-BREAK: break-all\\\" border=\\\"0\\\" cellspacing=\\\"0\\\" width=\\\"100%\\\"><tbody><tr><td>2．填空。<br>想直接到地球馆，走_______门比较近。从服务台向_______走可以到达宇宙剧场的入口。</td></tr></tbody></table>\",\"daan\":\"<table style=\\\"word-break:break-all;\\\" width=\\\"100%\\\"><tbody><tr><td>北 东</td></tr></tbody></table>\",\"jiexi\":\"<table style=\\\"word-break:break-all;\\\" width=\\\"100%\\\"><tbody><tr><td></td></tr></tbody></table>\",\"tixing\":\"填空题\",\"tixingId\":20},{\"zitigan\":\"<table style=\\\"WORD-BREAK: break-all\\\" border=\\\"0\\\" cellspacing=\\\"0\\\" width=\\\"100%\\\"><tbody><tr><td>3．回答问题，并说明理由。<br>10月1日下午妈妈带小华参观天文馆，由于路上堵车，他们4点才到，还能进馆参观吗？<br>____________________________</td></tr></tbody></table>\",\"daan\":\"<table style=\\\"word-break:break-all;\\\" width=\\\"100%\\\"><tbody><tr><td>能。因为10月1日是国庆节，天文馆规定的闭馆时间是17:00，他们是16:00到的，所以能进馆参观。</td></tr></tbody></table>\",\"jiexi\":\"<table style=\\\"word-break:break-all;\\\" width=\\\"100%\\\"><tbody><tr><td></td></tr></tbody></table>\",\"tixing\":\"简答题\",\"tixingId\":31},{\"zitigan\":\"<table style=\\\"WORD-BREAK: break-all\\\" border=\\\"0\\\" cellspacing=\\\"0\\\" width=\\\"100%\\\"><tbody><tr><td>4．回答问题，并说明理由。<br>10月28日，学校下午3:30放学了，小华和同学商量到天文馆参观，他们能去吗？<br>____________________________</td></tr></tbody></table>\",\"daan\":\"<table style=\\\"word-break:break-all;\\\" width=\\\"100%\\\"><tbody><tr><td>不能。因力10月28日是周一，天文馆周一闭馆，不允许参观。</td></tr></tbody></table>\",\"jiexi\":\"<table style=\\\"word-break:break-all;\\\" width=\\\"100%\\\"><tbody><tr><td></td></tr></tbody></table>\",\"tixing\":\"简答题\",\"tixingId\":31},{\"zitigan\":\"{\\\"body\\\":\\\"<tr><td>5．对“他不说话，盯着乱哄哄的人们”这句话理解不正确的是<br></td></tr><tr><td><div align=\\\\\\\"right\\\\\\\">[&nbsp;&nbsp;&nbsp;&nbsp; ]</div></td></tr>\\\",\\\"option\\\":[{\\\"name\\\":\\\"A.\\\",\\\"content\\\":\\\"他担心儿子的安全，要从乱哄哄的人群中找到他。\\\"},{\\\"name\\\":\\\"B.\\\",\\\"content\\\":\\\"老汉的目光是犀利、沉着、冷静、镇定的。<img alt=\\\\\\\"\\\\\\\" src=\\\\\\\"/MFGExamImage/ModifyImage/2/14/41BAFC49/21-3.jpg\\\\\\\" />\\\"}],\\\"answer\\\":\\\"A\\\"}\",\"daan\":\"A\",\"jiexi\":\"<img alt=\\\"\\\" src=\\\"/MFGExamImage/ModifyImage/2/14/41BAFC49/21-3.jpg\\\" />\",\"tixing\":\"单选题\",\"tixingId\":12}]}', 'a18d5f3d534b7890a52a3689cb0e4576', '', NULL, NULL, '阅读理解', NULL, '', NULL, NULL, 'DIY', NULL, NULL, NULL, '50', '2', '14', NULL, NULL, NULL);
 
@@ -31,15 +37,15 @@ SELECT * FROM `sxjmicrovideodb` WHERE VideoResID IS NOT NULL AND CONCAT(',', REP
 SELECT DISTINCT(tixingid) FROM shiti ORDER BY tixingid ASC;
 
 #ALTER TABLE `pointtbl`
-MODIFY COLUMN `QuesIDOnlyXuanze`    mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '选择题题目ID' AFTER `QuesID`,
-MODIFY COLUMN `QuesIDOnlyTiankong`  mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '填空题题目ID' AFTER `QuesIDOnlyXuanze`,
-MODIFY COLUMN `QuesIDOnlyJieda`        mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '解答题题目ID' AFTER `QuesIDOnlyTiankong`,
-ADD COLUMN `QuesIDOnlyReading`          mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '阅读理解题题目ID' AFTER `QuesIDOnlyJieda`;
+#MODIFY COLUMN `QuesIDOnlyXuanze`    mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '选择题题目ID' AFTER `QuesID`,
+#MODIFY COLUMN `QuesIDOnlyTiankong`  mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '填空题题目ID' AFTER `QuesIDOnlyXuanze`,
+#MODIFY COLUMN `QuesIDOnlyJieda`        mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '解答题题目ID' AFTER `QuesIDOnlyTiankong`,
+#ADD COLUMN `QuesIDOnlyReading`          mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '阅读理解题题目ID' AFTER `QuesIDOnlyJieda`;
 
 #唯一键，去掉isDeal
 #ALTER TABLE `shitierrorrecordtbl`
-DROP INDEX `shitid-type-deal-unique` ,
-ADD UNIQUE INDEX `shitid-type-unique` (`ShitiID`, `ErrorType`, `ModelType`) USING BTREE ;
+#DROP INDEX `shitid-type-deal-unique` ,
+#ADD UNIQUE INDEX `shitid-type-unique` (`ShitiID`, `ErrorType`, `ModelType`) USING BTREE ;
 
 #筛选出所有ShitiID,ErrorType,ModelType重复的记录
 SELECT t2.* FROM (
