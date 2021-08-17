@@ -1,3 +1,12 @@
+select * from sxjmicrovideodb 
+ 	 	WHERE VideoResID IS NOT NULL AND CONCAT(',',REPLACE(VideoResName,'\r\n',''),',') LIKE "%20136%";
+select * from sxjmicrovideodb 
+ 	 	WHERE VideoResName LIKE "%20136%";
+
+SELECT * FROM microvideoexam WHERE zhishidianid=20136
+
+SELECT DISTINCT(`Subject`) FROM microvideoexam;
+SELECT DISTINCT(`Grade`) FROM microvideoexam;
 
 
 #表mfgkpoints_20210813中知识点名称恢复了空格
