@@ -1,3 +1,29 @@
+
+SELECT a.Grade,b.Attribute,a.count FROM (
+	SELECT Grade, COUNT(*) count FROM mfgkpoints GROUP BY Grade ORDER BY Grade
+) a, resattrtbl b
+WHERE a.Grade=b.AttributeID AND b.Type=1;
+
+
+SELECT COUNT(*) FROM mfgexams;
+
+SELECT * FROM afanti2videourl;
+
+SELECT Grade,COUNT(*) FROM mfgexams GROUP BY Grade ORDER BY Grade;
+SELECT `Subject`,COUNT(*) FROM mfgexams GROUP BY Subject ORDER BY Subject;
+
+SELECT DISTINCT(nianji) FROM shiti;
+SELECT COUNT(*) FROM shiti WHERE nianji=10;#2667157 #初中数学
+SELECT COUNT(*) FROM shiti WHERE nianji=1;#116926 #政治
+SELECT COUNT(*) FROM shiti WHERE nianji=2;#7278 #小学数学
+SELECT COUNT(*) FROM shiti WHERE nianji=3;#13533 
+SELECT COUNT(*) FROM shiti WHERE nianji=4;#11634
+SELECT COUNT(*) FROM shiti WHERE nianji=5;#13297
+SELECT COUNT(*) FROM shiti WHERE nianji=6;#16525
+
+
+SELECT count(*) FROM shiti WHERE Grade IS NULL;
+
 SELECT QuesIDOnlyReading FROM pointtbl WHERE id=20007;
 
 SELECT QuesIDOnlyReading FROM mfgkpoints WHERE id=80001024;
