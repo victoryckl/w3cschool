@@ -1,3 +1,79 @@
+SELECT * FROM `shitierrorrecordtbl` WHERE ShitiID=3477977;
+
+SELECT * FROM `shitierrorrecordtbl` WHERE isDeal=0 AND ModelType=3 AND `ModelType` != 4 GROUP BY `ShitiID`;
+
+SELECT COUNT(*) FROM 
+  (SELECT ShitiID FROM `shitierrorrecordtbl` WHERE isDeal=0 AND ModelType=3 AND `ModelType` != 4 GROUP BY `ShitiID`) a
+
+SELECT SQL_CALC_FOUND_ROWS ShitiID,COUNT(*)
+  FROM `shitierrorrecordtbl` 
+  WHERE IsDeal=0 AND ModelType=3 AND ModelType!=4
+  GROUP BY ShitiID
+  ORDER BY COUNT(*) DESC, updateMs DESC
+  LIMIT 0,100000;
+SELECT FOUND_ROWS() AS queryOrderListCount;
+
+SELECT DISTINCT(shitiID) FROM shitierrorrecordtbl WHERE IsDeal=0 AND ModelType=3 AND ModelType!=4;
+
+SELECT id, ShitiID, ModelType, ErrorType, 
+  TRIM(BOTH ';' FROM GROUP_CONCAT(DISTINCT TRIM(BOTH '\n' FROM ErrorInfo) separator ';')) ErrorInfo,
+  IsDeal, 
+  createMs, updateMs, ReportName, ReportPhone, COUNT(*) count 
+  FROM `shitierrorrecordtbl` 
+  WHERE IsDeal=0 AND ModelType!=4 AND ShitiID IN(4226,1469117,126662,3486574,3477977,3477987)
+  GROUP BY ShitiID
+  ORDER BY count DESC, updateMs DESC;
+
+SELECT id, ShitiID, ModelType, ErrorType, 
+  TRIM(BOTH ';' FROM GROUP_CONCAT(DISTINCT TRIM(BOTH '\n' FROM ErrorInfo) separator ';')) ErrorInfo,
+  IsDeal, 
+  createMs, updateMs, ReportName, ReportPhone, COUNT(*) count 
+  FROM `shitierrorrecordtbl` 
+  WHERE IsDeal=0 AND ModelType!=4 AND ShitiID IN(4226,1469117,126662,3486574,3477977,3477987)
+  GROUP BY ShitiID
+  ORDER BY COUNT(*) DESC, updateMs DESC;
+
+SELECT id, ShitiID, ModelType, ErrorType, 
+TRIM(BOTH ';' FROM GROUP_CONCAT(DISTINCT TRIM(BOTH '\n' FROM ErrorInfo) separator ';')) ErrorInfo, 
+IsDeal,createMs, updateMs, ReportName, ReportPhone
+FROM `shitierrorrecordtbl` 
+WHERE  ModelType=3          
+AND ModelType!=4     
+AND ShitiID IN (3479959,3451405,8511633)     
+GROUP BY ShitiID ORDER BY COUNT(*) DESC, updateMs DESC
+
+#PointName-Grade-Subject重复的知识点
+SELECT * FROM pointtbl WHERE
+(PointName='弘扬和培育民族精神'	AND Grade=0	AND `Subject`=5)
+ OR (PointName='分配制度'	AND Grade=0	AND `Subject`=5)
+ OR (PointName='中华文化'	AND Grade=0	AND `Subject`=5)
+ OR (PointName='十一届三中全会'	AND Grade=0	AND `Subject`=4)
+ OR (PointName='第二次世界大战'	AND Grade=0	AND `Subject`=4)
+ OR (PointName='穆罕默德·阿里改革'	AND Grade=0	AND `Subject`=4)
+ OR (PointName='日本明治维新'	AND Grade=0	AND `Subject`=4)
+ OR (PointName='成语'	AND Grade=0	AND `Subject`=2)
+ OR (PointName='修辞方法'	AND Grade=0	AND `Subject`=2)
+ OR (PointName='文言文阅读'	AND Grade=0	AND `Subject`=2)
+ OR (PointName='现代文阅读'	AND Grade=0	AND `Subject`=2)
+ OR (PointName='不定代词'	AND Grade=0	AND `Subject`=1)
+ OR (PointName='感叹句'	AND Grade=0	AND `Subject`=1)
+ OR (PointName='反意疑问句'	AND Grade=0	AND `Subject`=1)
+ OR (PointName='翻译能力'	AND Grade=0	AND `Subject`=1)
+ OR (PointName='扩展语段'	AND Grade=0	AND `Subject`=2)
+ OR (PointName='形容词的比较级，形容词的最高级'	AND Grade=0	AND `Subject`=1)
+ OR (PointName='情景交际'	AND Grade=0	AND `Subject`=1)
+ OR (PointName='人物传记类阅读'	AND Grade=0	AND `Subject`=1)
+ OR (PointName='科教类阅读'	AND Grade=0	AND `Subject`=1)
+ OR (PointName='政治经济类阅读'	AND Grade=0	AND `Subject`=1)
+ OR (PointName='历史文化类阅读'	AND Grade=0	AND `Subject`=1)
+ OR (PointName='健康环保类阅读'	AND Grade=0	AND `Subject`=1)
+ OR (PointName='人生感悟类阅读'	AND Grade=0	AND `Subject`=1)
+ORDER BY id;
+
+#PointName-Grade-Subject重复的知识点
+SELECT *,COUNT(*) xx FROM pointtbl 
+GROUP BY PointName,Grade,`Subject` HAVING xx > 1
+ORDER BY id;
 
 SELECT a.Grade,b.Attribute,a.count FROM (
 	SELECT Grade, COUNT(*) count FROM mfgkpoints GROUP BY Grade ORDER BY Grade
