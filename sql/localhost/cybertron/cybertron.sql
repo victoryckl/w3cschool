@@ -1,3 +1,6 @@
+SELECT LENGTH(UserName),UserName FROM acctusertbl GROUP BY LENGTH(UserName) ORDER BY LENGTH(UserName);
+
+
 select * from sxjmicrovideodb 
  	 	WHERE VideoResID IS NOT NULL AND CONCAT(',',REPLACE(VideoResName,'\r\n',''),',') LIKE "%20136%";
 select * from sxjmicrovideodb 
