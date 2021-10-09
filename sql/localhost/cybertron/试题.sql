@@ -1,3 +1,4 @@
+
 SELECT * FROM `shitierrorrecordtbl` WHERE ShitiID=3477977;
 
 SELECT * FROM `shitierrorrecordtbl` WHERE isDeal=0 AND ModelType=3 AND `ModelType` != 4 GROUP BY `ShitiID`;
