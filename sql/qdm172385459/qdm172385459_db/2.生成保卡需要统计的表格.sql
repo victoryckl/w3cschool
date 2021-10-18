@@ -1,6 +1,6 @@
 # 记得修改对应的日期
-set @start_time = '2021-09-22 00:00:00';
-set @end_time =  '2021-10-07 23:59:59';
+set @start_time = '2021-10-08 00:00:00';
+set @end_time =  '2021-10-17 23:59:59';
 #succ
 select wp_tpxguarantee.id,wp_tpxguarantee.devtype,wp_tpxguarantee.devid,wp_tpxguarantee.guaranter,
 wp_tpxguarantee.flag,wp_tpxguarantee.remark,wp_tpxguarantee.isiden,FROM_UNIXTIME(wp_tpxguarantee.cTime) time, 
