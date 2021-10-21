@@ -149,6 +149,22 @@ SELECT * FROM machinemodeltbl;
 SELECT DISTINCT(author) author FROM kwyd_res_author_tbl ORDER BY author;
 SELECT COUNT(*),resId FROM kwyd_res_genre_tbl GROUP BY resId;
 
+SELECT SQL_CALC_FOUND_ROWS 
+	GROUP_CONCAT(DISTINCT(t3.genreId)) genreIds, 
+	GROUP_CONCAT(DISTINCT(t2.author)) authors, t1.* 
+	FROM bookresourcetbl t1
+	INNER JOIN kwyd_res_author_tbl t2 
+		ON t1.AppName='kewaiyuedu' AND t1.ResourceID=t2.resId 
+			AND (t1.ResourceName LIKE '%拉%' OR t2.author LIKE '%拉%')
+	INNER JOIN kwyd_res_genre_tbl t3 
+		ON t1.ResourceID=t3.resId AND t3.genreId=2
+	LEFT JOIN resattrtbl t4 
+		ON t4.Type=1 AND t1.Grade=t4.AttributeID
+	GROUP BY t1.ResourceID ORDER BY t4.AttrOrder ASC, t1.ResourceName ASC LIMIT 0,100;
+SELECT FOUND_ROWS() AS queryOrderListCount;
+#			AND t2.author LIKE '%刘易斯%'
+
+
 #课文阅读统计
 SELECT t1.ResourceName '书名', 
 GROUP_CONCAT(DISTINCT(t3.author) ORDER BY t3.author ASC SEPARATOR ';') '作者', 
