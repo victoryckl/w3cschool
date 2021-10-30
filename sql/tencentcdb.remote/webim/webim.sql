@@ -1,3 +1,11 @@
+#DELETE FROM im_module_time WHERE start_time < 1625068800;
+
+SELECT count(*) FROM im_module_time WHERE start_time < 1625068800
+
+select count(*) FROM im_module_time;
+
+SELECT MAX(start_time),MIN(start_time) FROM im_module_time;
+
 SELECT * FROM im_module_time WHERE tablet_user='P56-HV01-PO01.20200416-366255';
 
 
