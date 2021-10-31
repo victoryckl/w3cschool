@@ -1,3 +1,14 @@
+#Optimize local Table acctusertbl;
+
+select table_schema db, table_name, data_free, engine from information_schema.tables 
+where table_schema='cybertron' and table_name='alltpoint' and data_free > 10000000;
+
+select table_name, data_free from information_schema.tables 
+where table_schema='cybertron' and table_name='alltpoint';
+
+select table_schema db, table_name, data_free, engine from information_schema.tables 
+where table_schema not in ('information_schema', 'mysql')  and data_free > 0;
+
 SELECT LENGTH(UserName),UserName FROM acctusertbl GROUP BY LENGTH(UserName) ORDER BY LENGTH(UserName);
 
 
