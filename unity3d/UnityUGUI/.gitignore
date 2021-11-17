@@ -61,7 +61,3 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
-#git push error: RPC failed; HTTP 413 curl 22 The requested URL returned error: 413
-Assets/StylizedWoodenBarrelPack.meta
-Assets/StylizedWoodenBarrelPack/
-
