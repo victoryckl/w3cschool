@@ -3,7 +3,6 @@
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
 Assets/StandardAssets/
-Assets/StandardAssets.meta
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -14,6 +13,7 @@ Assets/StandardAssets.meta
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
+Assets/StandardAssets.meta
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
