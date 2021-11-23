@@ -1,0 +1,7 @@
+E:\myprj\w3cschool\unity3d-bilibili\csharp\SolutionBase\SolutionBase\bin\Debug\SolutionBase.exe.config
+E:\myprj\w3cschool\unity3d-bilibili\csharp\SolutionBase\SolutionBase\bin\Debug\SolutionBase.exe
+E:\myprj\w3cschool\unity3d-bilibili\csharp\SolutionBase\SolutionBase\bin\Debug\SolutionBase.pdb
+E:\myprj\w3cschool\unity3d-bilibili\csharp\SolutionBase\SolutionBase\obj\Debug\SolutionBase.csprojAssemblyReference.cache
+E:\myprj\w3cschool\unity3d-bilibili\csharp\SolutionBase\SolutionBase\obj\Debug\SolutionBase.csproj.CoreCompileInputs.cache
+E:\myprj\w3cschool\unity3d-bilibili\csharp\SolutionBase\SolutionBase\obj\Debug\SolutionBase.exe
+E:\myprj\w3cschool\unity3d-bilibili\csharp\SolutionBase\SolutionBase\obj\Debug\SolutionBase.pdb
