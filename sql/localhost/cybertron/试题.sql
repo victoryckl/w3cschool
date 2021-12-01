@@ -1,3 +1,14 @@
+SELECT COUNT(*) from shiti;     #3034024
+SELECT count(*) from mfgexams;  #258402
+SELECT count(*) from xkb_questions; #311565
+SELECT count(*) from microvideoexam; #315389
+
+SELECT count(*) FROM pointtbl; #8214
+SELECT count(*) from mfgkpoints; #1987
+SELECT count(*) from xkb_knowledge_basic; #10669
+
+
+
 
 SELECT * FROM `shitierrorrecordtbl` WHERE ShitiID=3477977;
 
