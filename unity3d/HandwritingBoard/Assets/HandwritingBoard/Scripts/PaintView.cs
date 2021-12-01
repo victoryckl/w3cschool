@@ -264,7 +264,6 @@ public class PaintView : MonoBehaviour
     private void LerpPaint(Vector2 point)
     {
         Paint(point);
-
         if (_lastPoint == Vector2.zero)
         {
             _lastPoint = point;
@@ -288,18 +287,23 @@ public class PaintView : MonoBehaviour
     //画点
     private void Paint(Vector2 point)
     {
-		//if (point.x < 0 || point.x > _screenWidth || point.y < 0 || point.y > _screenHeight)
-		//	return;
+        Debug.Log("point=" + point+ ", transform.position=" + _paintCanvas.transform.position + ", rectTransform.rect"+ _paintCanvas.rectTransform.rect);
+        //if (point.x < 0 || point.x > _screenWidth || point.y < 0 || point.y > _screenHeight)
+        //	return;
 
-		point.x -= (_paintCanvas.transform.position.x - _paintCanvas.rectTransform.rect.width / 2);
+        point.x -= (_paintCanvas.transform.position.x - _paintCanvas.rectTransform.rect.width / 2);
 		point.y -= (_paintCanvas.transform.position.y - _paintCanvas.rectTransform.rect.height / 2);
 
-		Vector2 uv = new Vector2(point.x / (float)_paintCanvas.rectTransform.rect.width,
-			point.y / (float)_paintCanvas.rectTransform.rect.height);
+        float x2 = point.x / _paintCanvas.rectTransform.rect.width;
+        float y2 = point.y / _paintCanvas.rectTransform.rect.height;
+        x2 = Math.Min(1, Math.Max(0, x2));
+        y2 = Math.Min(1, Math.Max(0, y2));
 
-		//Vector2 uv = new Vector2(point.x / (float)_screenWidth,
-		//point.y / (float)_screenHeight);
+        Vector2 uv = new Vector2(x2, y2);
 
+        //Vector2 uv = new Vector2(point.x / (float)_screenWidth,
+        //point.y / (float)_screenHeight);
+        Debug.Log("uv=("+ uv.x+", "+ uv.y+")");
 
 		_paintBrushMat.SetVector("_UV", uv);
         Graphics.Blit(_renderTex, _renderTex, _paintBrushMat);
@@ -318,6 +322,6 @@ public class PaintView : MonoBehaviour
         return returnValue;
     }
 
-    #endregion
+#endregion
 
 }
