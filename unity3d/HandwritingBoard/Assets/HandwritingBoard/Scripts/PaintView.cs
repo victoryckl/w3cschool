@@ -123,7 +123,7 @@ public class PaintView : MonoBehaviour
     public void BrushSizeChanged(Slider slider)
     {
       //  float value = slider.maxValue + slider.minValue - slider.value;
-        SetBrushSize(Remap(slider.value,300.0f,30.0f));
+        SetBrushSize(Remap(slider.value,100.0f,10.0f));
         if (_brushSizeText == null)
         {
             _brushSizeText=slider.transform.Find("Background/Text").GetComponent<Text>();
@@ -311,7 +311,7 @@ public class PaintView : MonoBehaviour
     /// <returns></returns>
     private float Remap(float value, float startValue, float enValue)
     {
-        float returnValue = (value - 1.0f) / (100.0f - 1.0f);
+        float returnValue = (value - _Slider.minValue) / (_Slider.maxValue - _Slider.minValue);
         returnValue = (enValue - startValue) * returnValue + startValue;
         return returnValue;
     }
