@@ -56,13 +56,19 @@ public class PaintView : MonoBehaviour
     private float _brushLerpSize;
     //默认上一次点的位置
     private Vector2 _lastPoint;
+
+    public Slider _Slider;
 	#endregion
 
 	private Canvas canvas;
+    private Rect scaledRect;
 	void Start()
 	{
 		canvas = transform.GetComponent<Canvas>();
-		InitData();
+        Vector3 scale = canvas.transform.localScale;
+        scaledRect = new Rect(0, 0, scale.x * _paintCanvas.rectTransform.rect.width, 
+            scale.y * _paintCanvas.rectTransform.rect.height);
+        InitData();
 	}
 
 	private void Update()
@@ -224,21 +230,13 @@ public class PaintView : MonoBehaviour
 	//初始化数据
 	void InitData()
     {
-        _brushSize = 300.0f;
+        if (_paintBrushMat == null) UpdateBrushMaterial();
+        BrushSizeChanged(_Slider);
         _brushLerpSize = (_defaultBrushTex.width + _defaultBrushTex.height) / 2.0f / _brushSize;
         _lastPoint = Vector2.zero;
-
-        if (_paintBrushMat == null)
-        {
-            UpdateBrushMaterial();
-        }
-        if(_clearBrushMat==null)
-        _clearBrushMat = new Material(_clearBrushShader);
+        if(_clearBrushMat==null) _clearBrushMat = new Material(_clearBrushShader);
         if (_renderTex == null)
 		{
-			//_screenWidth = Screen.width;
-			//_screenHeight = Screen.height;
-
 			_screenWidth = (int)_paintCanvas.rectTransform.rect.width;
 			_screenHeight = (int)_paintCanvas.rectTransform.rect.height;
 
@@ -287,24 +285,20 @@ public class PaintView : MonoBehaviour
     //画点
     private void Paint(Vector2 point)
     {
-        Debug.Log("point=" + point+ ", transform.position=" + _paintCanvas.transform.position + ", rectTransform.rect"+ _paintCanvas.rectTransform.rect);
         //if (point.x < 0 || point.x > _screenWidth || point.y < 0 || point.y > _screenHeight)
         //	return;
 
-        point.x -= (_paintCanvas.transform.position.x - _paintCanvas.rectTransform.rect.width / 2);
-		point.y -= (_paintCanvas.transform.position.y - _paintCanvas.rectTransform.rect.height / 2);
+        point.x -= (_paintCanvas.transform.position.x - scaledRect.width / 2);
+		point.y -= (_paintCanvas.transform.position.y - scaledRect.height / 2);
 
-        float x2 = point.x / _paintCanvas.rectTransform.rect.width;
-        float y2 = point.y / _paintCanvas.rectTransform.rect.height;
+        float x2 = point.x / scaledRect.width;
+        float y2 = point.y / scaledRect.height;
         x2 = Math.Min(1, Math.Max(0, x2));
         y2 = Math.Min(1, Math.Max(0, y2));
 
         Vector2 uv = new Vector2(x2, y2);
-
-        //Vector2 uv = new Vector2(point.x / (float)_screenWidth,
-        //point.y / (float)_screenHeight);
         Debug.Log("uv=("+ uv.x+", "+ uv.y+")");
-
+  
 		_paintBrushMat.SetVector("_UV", uv);
         Graphics.Blit(_renderTex, _renderTex, _paintBrushMat);
     }
