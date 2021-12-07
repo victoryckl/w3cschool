@@ -19,8 +19,8 @@
 			};
 
 			struct v2f {
-				fixed4 position : SV_POSITION;
-				float3 temp : COLOR0;
+				float4 position : SV_POSITION;
+				fixed3 temp : COLOR0;
 			};
 
 			v2f vert(a2v v) {
