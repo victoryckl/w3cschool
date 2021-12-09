@@ -4,17 +4,24 @@
 
 // Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
 
-Shader "Siki/13-Rock Normal Map" {
+Shader "Siki/14-Rock Alpha" {
 	Properties{
 		//_Diffuse("Diffuse Color", Color) = (1,1,1,1)
 		_MainTex("Main Tex", 2D) = "white"{}
 		_Color("Color", Color) = (1,1,1,1)
 		_NormalMap("Normal Map", 2D) = "bump"{}
-		_BumpScale("Bump Scale", Float) = 1
+		_BumpScale("Bump Scale", Range(0,10)) = 1
+		_AlphaScale("Alpha Scale", Range(0,1)) = 1
 	}
 	SubShader{
+		Tags{ "Queue" = "Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
+
 		Pass{
 			Tags{"LightMode" = "ForwardBase"}
+
+			ZWrite Off
+			Blend SrcAlpha OneMinusSrcAlpha
+
 			CGPROGRAM
 	#include "Lighting.cginc"
 
@@ -28,6 +35,7 @@ Shader "Siki/13-Rock Normal Map" {
 			sampler2D _NormalMap;
 			float4 _NormalMap_ST;
 			float _BumpScale;
+			fixed _AlphaScale;
 
 			struct a2v {
 				float4 vertex:POSITION;
@@ -82,7 +90,7 @@ Shader "Siki/13-Rock Normal Map" {
 
 				fixed3  tempColor = diffuse + UNITY_LIGHTMODEL_AMBIENT.rgb * texColor;
 				
-				return fixed4(tempColor, 1);
+				return fixed4(tempColor, _AlphaScale);
 			}
 
 			ENDCG
