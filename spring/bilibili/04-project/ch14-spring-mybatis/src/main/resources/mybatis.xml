@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration  PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 设置日志 -->
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+
+    <!-- 别名 -->
+    <typeAliases> <!-- 扫描包下的bean -->
+        <package name="com.bjpowernode.domain"/>
+    </typeAliases>
+
+    <!-- 指定mapper文件的位置-->
+    <mappers>
+        <package name="com.bjpowernode.dao"/><!-- 采用包扫描方式 -->
+    </mappers>
+</configuration>
