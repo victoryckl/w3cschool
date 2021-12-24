@@ -14,4 +14,11 @@ public class MyTest {
         String res = service.doOther();
         System.out.println(res);
     }
+
+    @Test
+    public void test02() {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        SomeService service = (SomeService) ctx.getBean("someService");
+        service.doSome2();
+    }
 }

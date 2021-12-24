@@ -6,6 +6,7 @@
     <bean id="someService" class="com.bjpowernode.service.impl.SomeServiceImpl" />
 
     <bean id="myAspect" class="com.bjpowernode.handle.MyAspect"/>
+    <bean id="myAspect2" class="com.bjpowernode.handle.MyAspect2"/>
 
     <aop:aspectj-autoproxy />
 
