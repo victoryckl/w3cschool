@@ -7,6 +7,8 @@ import com.bjpowernode.dao.SaleDao;
 import com.bjpowernode.entity.Goods;
 import com.bjpowernode.entity.Sale;
 
+import java.util.stream.Stream;
+
 public class BuyGoodsServiceImpl implements BuyGoodsService {
 
     private SaleDao saleDao;
@@ -20,9 +22,24 @@ public class BuyGoodsServiceImpl implements BuyGoodsService {
         this.goodsDao = goodsDao;
     }
 
+    //可能有个的业务方法
+    public void addSale() {}
+    public void addGoods() {}
+
+    public void modifySale() {}
+    public void modifyGoods() {}
+
+    public void removeSale() {}
+    public void removeGoods() {}
+
+    public void querySale() {}
+    public void findGoods() {}
+
     @Override
     public void buy(Integer goodsId, int num) {
         System.out.println("====buy方法的开始====");
+        System.out.println("=============================================");
+        Stream.of(new Throwable().getStackTrace()).forEach(System.out::println);
 
         //生成销售记录
         Sale sale = new Sale();
