@@ -1,0 +1,36 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+    <servlet-name>AddStudentServlet</servlet-name>
+    <servlet-class>com.bjpowernode.controller.AddStudentServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>AddStudentServlet</servlet-name>
+    <url-pattern>/add</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>QueryStudentServlet</servlet-name>
+    <servlet-class>com.bjpowernode.controller.QueryStudentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>QueryStudentServlet</servlet-name>
+    <url-pattern>/queryId</url-pattern>
+  </servlet-mapping>
+
+  <!--自定义容器的配置路径，给listener提供参数-->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:spring-beans.xml</param-value>
+  </context-param>
+  <!--声明监听器，用来创建spring容器，并放入ServletContext中-->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+</web-app>
