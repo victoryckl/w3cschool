@@ -77,7 +77,7 @@ public class MultiThreadServer {
         public void run() {
             while (true) {
                 try {
-                    selector.select();//阻塞
+                    selector.select();//阻塞，如果没有wakeup，会阻塞住sc.register
                     Iterator<SelectionKey> iter = selector.selectedKeys().iterator();
                     while (iter.hasNext()) {
                         SelectionKey key = iter.next();
