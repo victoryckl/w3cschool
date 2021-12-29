@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class QueryStudentServlet extends HttpServlet {
+    private byte[] bytes;
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -34,15 +36,15 @@ public class QueryStudentServlet extends HttpServlet {
 
         //使用spring提供的方法获取
         ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-        
-        System.out.println("在servlet中创建的容器对象==="+ctx);
+
+        System.out.println("在servlet中创建的容器对象===" + ctx);
 
         StudentService service = (StudentService) ctx.getBean("studentService");
 
         Student student = service.findStudentById(Integer.valueOf(stuid));
 
         System.out.println("student===" + student);
-        System.out.println("servlet request="+request);//这里打印出页面request对象
+        System.out.println("servlet request=" + request);//这里打印出页面request对象
         request.setAttribute("stu", student);
         request.getRequestDispatcher("/show.jsp").forward(request, response);
     }
