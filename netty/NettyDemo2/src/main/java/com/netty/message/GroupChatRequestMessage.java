@@ -10,10 +10,11 @@ public class GroupChatRequestMessage extends Message {
     private String groupName;
     private String from;
 
-    public GroupChatRequestMessage(String from, String groupName, String content) {
+    public GroupChatRequestMessage(int sequenceId, String from, String groupName, String content) {
         this.content = content;
         this.groupName = groupName;
         this.from = from;
+        setSequenceId(sequenceId);
     }
 
     @Override

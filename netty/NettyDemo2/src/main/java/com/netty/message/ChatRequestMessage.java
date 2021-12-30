@@ -1,5 +1,6 @@
 package com.netty.message;
 
+import com.netty.protocol.SequenceIdGenerator;
 import lombok.Data;
 import lombok.ToString;
 
@@ -14,10 +15,11 @@ public class ChatRequestMessage extends Message {
     public ChatRequestMessage() {
     }
 
-    public ChatRequestMessage(String from, String to, String content) {
+    public ChatRequestMessage(int sequenceId, String from, String to, String content) {
         this.from = from;
         this.to = to;
         this.content = content;
+        setSequenceId(sequenceId);
     }
 
     @Override

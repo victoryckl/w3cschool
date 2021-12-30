@@ -19,7 +19,7 @@ public class GroupChatRequestMessageHandler extends SimpleChannelInboundHandler<
                 .getMembersChannel(msg.getGroupName());
 
         for (Channel channel : channels) {
-            channel.writeAndFlush(new GroupChatResponseMessage(msg.getFrom(), msg.getContent()));
+            channel.writeAndFlush(new GroupChatResponseMessage(msg.getSequenceId(), msg.getFrom(), msg.getContent()));
         }
     }
 }

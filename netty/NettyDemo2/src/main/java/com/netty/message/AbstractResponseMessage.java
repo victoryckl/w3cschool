@@ -10,10 +10,16 @@ public abstract class AbstractResponseMessage extends Message {
     private String reason;
 
     public AbstractResponseMessage() {
+
     }
 
-    public AbstractResponseMessage(boolean success, String reason) {
+    public AbstractResponseMessage(int sequenceId) {
+        setSequenceId(sequenceId);
+    }
+
+    public AbstractResponseMessage(int sequenceId, boolean success, String reason) {
         this.success = success;
         this.reason = reason;
+        setSequenceId(sequenceId);
     }
 }

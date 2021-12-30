@@ -16,6 +16,6 @@ public class GroupMembersRequestMessageHandler extends SimpleChannelInboundHandl
     protected void channelRead0(ChannelHandlerContext ctx, GroupMembersRequestMessage msg) throws Exception {
         Set<String> members = GroupSessionFactory.getGroupSession()
                 .getMembers(msg.getGroupName());
-        ctx.writeAndFlush(new GroupMembersResponseMessage(members));
+        ctx.writeAndFlush(new GroupMembersResponseMessage(msg.getSequenceId(), members));
     }
 }

@@ -23,12 +23,12 @@ public class TestMessageCodec {
                 MESSAGE_CODEC
         );
 
-        LoginRequestMessage message = new LoginRequestMessage("zhangsan", "123");
+        LoginRequestMessage message = new LoginRequestMessage(1, "zhangsan", "123");
         message.setSequenceId(11);
         message.setMessageType(22);
         channel.writeOutbound(message);
 
-        LoginResponseMessage response = new LoginResponseMessage(true, "ok");
+        LoginResponseMessage response = new LoginResponseMessage(2, true, "ok");
         response.setSequenceId(33);
         response.setMessageType(44);
         channel.writeOutbound(response);

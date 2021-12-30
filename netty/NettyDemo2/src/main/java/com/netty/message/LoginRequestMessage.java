@@ -13,9 +13,10 @@ public class LoginRequestMessage extends Message {
     public LoginRequestMessage() {
     }
 
-    public LoginRequestMessage(String username, String password) {
+    public LoginRequestMessage(int sequenceId, String username, String password) {
         this.username = username;
         this.password = password;
+        setSequenceId(sequenceId);
     }
 
     @Override

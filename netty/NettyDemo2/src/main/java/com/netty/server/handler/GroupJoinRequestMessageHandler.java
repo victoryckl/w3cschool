@@ -14,9 +14,9 @@ public class GroupJoinRequestMessageHandler extends SimpleChannelInboundHandler<
     protected void channelRead0(ChannelHandlerContext ctx, GroupJoinRequestMessage msg) throws Exception {
         Group group = GroupSessionFactory.getGroupSession().joinMember(msg.getGroupName(), msg.getUsername());
         if (group != null) {
-            ctx.writeAndFlush(new GroupJoinResponseMessage(true, msg.getGroupName() + "群加入成功"));
+            ctx.writeAndFlush(new GroupJoinResponseMessage(msg.getSequenceId(), true, msg.getGroupName() + "群加入成功"));
         } else {
-            ctx.writeAndFlush(new GroupJoinResponseMessage(true, msg.getGroupName() + "群不存在"));
+            ctx.writeAndFlush(new GroupJoinResponseMessage(msg.getSequenceId(), true, msg.getGroupName() + "群不存在"));
         }
     }
 }

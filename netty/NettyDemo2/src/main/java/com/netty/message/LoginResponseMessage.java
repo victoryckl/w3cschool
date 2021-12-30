@@ -7,8 +7,8 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class LoginResponseMessage extends AbstractResponseMessage {
 
-    public LoginResponseMessage(boolean success, String reason) {
-        super(success, reason);
+    public LoginResponseMessage(int sequenceId, boolean success, String reason) {
+        super(sequenceId, success, reason);
     }
 
     @Override

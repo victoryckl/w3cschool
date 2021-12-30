@@ -10,9 +10,10 @@ public class GroupJoinRequestMessage extends Message {
 
     private String username;
 
-    public GroupJoinRequestMessage(String username, String groupName) {
+    public GroupJoinRequestMessage(int sequenceId, String username, String groupName) {
         this.groupName = groupName;
         this.username = username;
+        setSequenceId(sequenceId);
     }
 
     @Override

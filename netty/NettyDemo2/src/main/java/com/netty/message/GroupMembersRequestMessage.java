@@ -8,8 +8,9 @@ import lombok.ToString;
 public class GroupMembersRequestMessage extends Message {
     private String groupName;
 
-    public GroupMembersRequestMessage(String groupName) {
+    public GroupMembersRequestMessage(int sequenceId, String groupName) {
         this.groupName = groupName;
+        setSequenceId(sequenceId);
     }
 
     @Override

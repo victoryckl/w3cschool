@@ -9,11 +9,16 @@ public class ChatResponseMessage extends AbstractResponseMessage {
     private String from;
     private String content;
 
-    public ChatResponseMessage(boolean success, String reason) {
-        super(success, reason);
+    public ChatResponseMessage(int sequenceId) {
+        setSequenceId(sequenceId);
     }
 
-    public ChatResponseMessage(String from, String content) {
+    public ChatResponseMessage(int sequenceId, boolean success, String reason) {
+        super(sequenceId, success, reason);
+    }
+
+    public ChatResponseMessage(int sequenceId, String from, String content) {
+        super(sequenceId);
         this.from = from;
         this.content = content;
     }

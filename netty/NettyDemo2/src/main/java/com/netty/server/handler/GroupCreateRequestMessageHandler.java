@@ -24,14 +24,14 @@ public class GroupCreateRequestMessageHandler extends SimpleChannelInboundHandle
         Group group = groupSession.createGroup(groupName, members);
         if (group != null) {
             // 发生成功消息
-            ctx.writeAndFlush(new GroupCreateResponseMessage(true, groupName + "创建成功"));
+            ctx.writeAndFlush(new GroupCreateResponseMessage(msg.getSequenceId(), true, groupName + "创建成功"));
             // 发送拉群消息
             List<Channel> channels = groupSession.getMembersChannel(groupName);
             for (Channel channel : channels) {
-                channel.writeAndFlush(new GroupCreateResponseMessage(true, "您已被拉入" + groupName));
+                channel.writeAndFlush(new GroupCreateResponseMessage(msg.getSequenceId(), true, "您已被拉入" + groupName));
             }
         } else {
-            ctx.writeAndFlush(new GroupCreateResponseMessage(false, groupName + "已经存在"));
+            ctx.writeAndFlush(new GroupCreateResponseMessage(msg.getSequenceId(), false, groupName + "已经存在"));
         }
     }
 }

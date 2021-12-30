@@ -6,8 +6,8 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 public class GroupQuitResponseMessage extends AbstractResponseMessage {
-    public GroupQuitResponseMessage(boolean success, String reason) {
-        super(success, reason);
+    public GroupQuitResponseMessage(int sequenceId, boolean success, String reason) {
+        super(sequenceId, success, reason);
     }
 
     @Override

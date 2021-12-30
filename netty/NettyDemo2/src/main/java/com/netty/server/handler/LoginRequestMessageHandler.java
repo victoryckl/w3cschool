@@ -20,9 +20,9 @@ public class LoginRequestMessageHandler extends SimpleChannelInboundHandler<Logi
         LoginResponseMessage response;
         if (login) {
             SessionFactory.getSession().bind(ctx.channel(), username);
-            response = new LoginResponseMessage(true, "登录成功");
+            response = new LoginResponseMessage(msg.getSequenceId(), true, "登录成功");
         } else {
-            response = new LoginResponseMessage(false, "登录失败");
+            response = new LoginResponseMessage(msg.getSequenceId(), false, "登录失败");
         }
         ctx.writeAndFlush(response);
     }

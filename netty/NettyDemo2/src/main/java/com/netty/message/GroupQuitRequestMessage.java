@@ -10,9 +10,10 @@ public class GroupQuitRequestMessage extends Message {
 
     private String username;
 
-    public GroupQuitRequestMessage(String username, String groupName) {
+    public GroupQuitRequestMessage(int sequenceId, String username, String groupName) {
         this.groupName = groupName;
         this.username = username;
+        setSequenceId(sequenceId);
     }
 
     @Override

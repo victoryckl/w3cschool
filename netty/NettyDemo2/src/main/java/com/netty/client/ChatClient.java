@@ -3,12 +3,16 @@ package com.netty.client;
 import com.netty.message.*;
 import com.netty.protocol.MessageCodecSharable;
 import com.netty.protocol.ProtocolFrameDecoder;
+import com.netty.protocol.SequenceIdGenerator;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
@@ -34,10 +38,33 @@ public class ChatClient {
                 .handler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new ProtocolFrameDecoder())
-                            //.addLast(loggingHandler)
-                            .addLast(messageCodec)
-                            .addLast("client handler", new ChannelInboundHandlerAdapter() {
+                        ch.pipeline()
+                                .addLast(new ProtocolFrameDecoder())
+                                //.addLast(loggingHandler)
+                                .addLast(messageCodec)
+
+                                //用来判断是不是 读空闲时间过长 或 写空闲时间过长
+                                // 5s 内如果没有向服务器写数据，会触发一个 IdleState#WRITE_IDLE 事件
+                                .addLast(new IdleStateHandler(0, 3, 0))
+                                // ChannelDuplexHandler可以同时作为入站和出站处理器
+                                .addLast(new ChannelDuplexHandler() {
+                                    //用来触发特殊事件，例如 READ_IDLE
+                                    @Override
+                                    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+                                        log.debug("{}", evt);
+                                        if (evt instanceof IdleStateEvent) {
+                                            IdleStateEvent event = (IdleStateEvent) evt;
+                                            //触发读空闲事件
+                                            if (event.state() == IdleState.WRITER_IDLE) {
+                                                //log.debug("已经 3s 没有写数据了，发送一个心跳包");
+                                                ctx.writeAndFlush(new PingMessage(SequenceIdGenerator.nextId()));
+                                            }
+                                        }
+                                        super.userEventTriggered(ctx, evt);
+                                    }
+                                })
+
+                                .addLast("client handler", new ChannelInboundHandlerAdapter() {
                                 @Override
                                 public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
                                     log.debug("msg: {}", msg);
@@ -58,7 +85,7 @@ public class ChatClient {
                                         System.out.println("请输入密码");
                                         String password = scanner.nextLine();
 
-                                        LoginRequestMessage message = new LoginRequestMessage(username, password);
+                                        LoginRequestMessage message = new LoginRequestMessage(SequenceIdGenerator.nextId(), username, password);
                                         ctx.writeAndFlush(message);
 
                                         try {
@@ -84,36 +111,50 @@ public class ChatClient {
                                             try {
                                                 command = scanner.nextLine();
                                             } catch (Exception e) {
-
+                                                ctx.channel().close();
+                                                return;
                                             }
 
                                             String[] s = command.split(" ");
                                             switch (s[0]) {
                                                 case "send":
-                                                    ctx.writeAndFlush(new ChatRequestMessage(username, s[1], s[2]));
+                                                    ctx.writeAndFlush(new ChatRequestMessage(SequenceIdGenerator.nextId(), username, s[1], s[2]));
                                                     break;
                                                 case "gsend":
-                                                    ctx.writeAndFlush(new GroupChatRequestMessage(username, s[1], s[2]));
+                                                    ctx.writeAndFlush(new GroupChatRequestMessage(SequenceIdGenerator.nextId(), username, s[1], s[2]));
                                                     break;
                                                 case "gcreate":
                                                     Set<String> set = new HashSet<>(Arrays.asList(s[2].split(",")));
-                                                    ctx.writeAndFlush(new GroupCreateRequestMessage(s[1], set));
+                                                    set.add(username);
+                                                    ctx.writeAndFlush(new GroupCreateRequestMessage(SequenceIdGenerator.nextId(), s[1], set));
                                                     break;
                                                 case "gmembers":
-                                                    ctx.writeAndFlush(new GroupMembersRequestMessage(s[1]));
+                                                    ctx.writeAndFlush(new GroupMembersRequestMessage(SequenceIdGenerator.nextId(), s[1]));
                                                     break;
                                                 case "gjoin":
-                                                    ctx.writeAndFlush(new GroupJoinRequestMessage(username, s[1]));
+                                                    ctx.writeAndFlush(new GroupJoinRequestMessage(SequenceIdGenerator.nextId(), username, s[1]));
                                                     break;
                                                 case "gquit":
-                                                    ctx.writeAndFlush(new GroupQuitRequestMessage(username, s[1]));
+                                                    ctx.writeAndFlush(new GroupQuitRequestMessage(SequenceIdGenerator.nextId(), username, s[1]));
                                                     break;
                                                 case "quit":
                                                     ctx.channel().close();
-                                                    break;
+                                                    return;
                                             }
                                         }
                                     }, "system in").start();
+                                }
+
+                                // 在连接断开时触发
+                                @Override
+                                public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+                                    log.debug("连接已经断开");
+                                }
+
+                                // 在出现异常时触发
+                                @Override
+                                public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+                                    log.debug("连接已经断开 {}", cause.getMessage());
                                 }
                             });
                     }
@@ -125,6 +166,7 @@ public class ChatClient {
             log.debug("client error", e);
         } finally {
             group.shutdownGracefully();
+            log.debug("group shoutdown");
         }
     }
 }

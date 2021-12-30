@@ -14,9 +14,9 @@ public class GroupQuitRequestMessageHandler extends SimpleChannelInboundHandler<
     protected void channelRead0(ChannelHandlerContext ctx, GroupQuitRequestMessage msg) throws Exception {
         Group group = GroupSessionFactory.getGroupSession().removeMember(msg.getGroupName(), msg.getUsername());
         if (group != null) {
-            ctx.writeAndFlush(new GroupJoinResponseMessage(true, "已退出群" + msg.getGroupName()));
+            ctx.writeAndFlush(new GroupJoinResponseMessage(msg.getSequenceId(), true, "已退出群" + msg.getGroupName()));
         } else {
-            ctx.writeAndFlush(new GroupJoinResponseMessage(true, msg.getGroupName() + "群不存在"));
+            ctx.writeAndFlush(new GroupJoinResponseMessage(msg.getSequenceId(), true, msg.getGroupName() + "群不存在"));
         }
     }
 }
