@@ -17,7 +17,7 @@ public class EventLoopServer {
         //如果读写handler任务耗时较多，可以新建一个EventLoopGroup单独处理，避免阻塞NioEventLoopGroup
         EventLoopGroup group = new DefaultEventLoopGroup();
 
-        new ServerBootstrap()
+        Channel channel = new ServerBootstrap()
                 //boss 和 worker
                 // boos 只负责ServerSocketChannel上的 accept事件
                 // worker 只负责 SocketChannel 上的读写事件
@@ -26,7 +26,7 @@ public class EventLoopServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
-                        ch.pipeline().addLast("handler1", new ChannelInboundHandlerAdapter(){
+                        ch.pipeline().addLast("handler1", new ChannelInboundHandlerAdapter() {
                             @Override                                          //ByteBuf
                             public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
                                 ByteBuf buf = (ByteBuf) msg;
@@ -47,7 +47,12 @@ public class EventLoopServer {
                     }
                 })
                 .bind(8080)
-                .sync();
+                .sync()
+                .channel();
         log.debug("server stated");
+
+        channel.closeFuture().addListener((ChannelFutureListener) future1 -> {
+            group.shutdownGracefully();
+        });
     }
 }
