@@ -15,6 +15,7 @@ public class GroupChatRequestMessage extends Message {
         this.groupName = groupName;
         this.from = from;
         setSequenceId(sequenceId);
+        setMessageType(getMessageType());
     }
 
     @Override

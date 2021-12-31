@@ -12,7 +12,7 @@ public class GroupMembersResponseMessage extends AbstractResponseMessage {
     private Set<String> members;
 
     public GroupMembersResponseMessage(int sequenceId, Set<String> members) {
-        super(sequenceId);
+        super(sequenceId, false, null);
         this.members = members;
     }
 

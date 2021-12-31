@@ -1,5 +1,6 @@
 package com.netty.protocol;
 
+import com.netty.config.Config;
 import com.netty.message.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
@@ -28,7 +29,8 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         // 2. 1 字节的版本,
         out.writeByte(1);
         // 3. 1 字节的序列化方式 jdk 0 , json 1
-        out.writeByte(0);
+        int serializerType = Config.getAlgorithm().ordinal();
+        out.writeByte(serializerType);
         // 4. 1 字节的指令类型
         out.writeByte(msg.getMessageType());
         // 5. 4 个字节
@@ -40,10 +42,8 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         //Lenght 为 4字节
 
         // 6. 获取内容的字节数组
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(bos);
-        oos.writeObject(msg);
-        byte[] bytes = bos.toByteArray();
+        Serializer.Algorithm algorithm = Serializer.Algorithm.values()[serializerType];
+        byte[] bytes = algorithm.serialize(msg);
         // 7. 长度
         out.writeInt(bytes.length);
         // 8. 写入内容
@@ -63,8 +63,10 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         int length = in.readInt();
         byte[] bytes = new byte[length];
         in.readBytes(bytes, 0, length);
-        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bytes));
-        Message message = (Message) ois.readObject();
+
+        Class<? extends Message> clazz = Message.getMessageClass(messageType);
+        Serializer.Algorithm algorithm = Serializer.Algorithm.values()[serializerType];
+        Message message = algorithm.deserialize(clazz, bytes);
         //log.debug("{}, {}, {}, {}, {}, {}", magicNum, version, serializerType, messageType, sequenceId, length);
         //log.debug("{}", message);
         out.add(message);

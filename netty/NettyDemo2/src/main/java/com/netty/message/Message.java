@@ -21,7 +21,7 @@ public abstract class Message implements Serializable {
      * @return 消息 class
      */
     public static Class<? extends Message> getMessageClass(int messageType) {
-        return Message.class;
+        return messageClasses.get(messageType);
     }
 
     private int sequenceId;

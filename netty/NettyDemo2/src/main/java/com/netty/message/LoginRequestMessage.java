@@ -17,6 +17,7 @@ public class LoginRequestMessage extends Message {
         this.username = username;
         this.password = password;
         setSequenceId(sequenceId);
+        setMessageType(getMessageType());
     }
 
     @Override

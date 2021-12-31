@@ -4,6 +4,7 @@ public class PingMessage extends Message {
 
     public PingMessage(int sequenceId) {
         setSequenceId(sequenceId);
+        setMessageType(getMessageType());
     }
 
     @Override

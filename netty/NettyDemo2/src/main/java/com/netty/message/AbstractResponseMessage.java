@@ -13,13 +13,10 @@ public abstract class AbstractResponseMessage extends Message {
 
     }
 
-    public AbstractResponseMessage(int sequenceId) {
-        setSequenceId(sequenceId);
-    }
-
     public AbstractResponseMessage(int sequenceId, boolean success, String reason) {
         this.success = success;
         this.reason = reason;
         setSequenceId(sequenceId);
+        setMessageType(getMessageType());
     }
 }

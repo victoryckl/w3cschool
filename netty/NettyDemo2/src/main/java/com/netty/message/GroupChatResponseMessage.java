@@ -14,7 +14,7 @@ public class GroupChatResponseMessage extends AbstractResponseMessage {
     }
 
     public GroupChatResponseMessage(int sequenceId, String from, String content) {
-        super(sequenceId);
+        super(sequenceId, false, null);
         this.from = from;
         this.content = content;
     }

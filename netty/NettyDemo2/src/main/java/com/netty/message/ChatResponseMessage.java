@@ -18,7 +18,7 @@ public class ChatResponseMessage extends AbstractResponseMessage {
     }
 
     public ChatResponseMessage(int sequenceId, String from, String content) {
-        super(sequenceId);
+        super(sequenceId, false, null);
         this.from = from;
         this.content = content;
     }

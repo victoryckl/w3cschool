@@ -15,6 +15,7 @@ public class GroupCreateRequestMessage extends Message {
         this.groupName = groupName;
         this.members = members;
         setSequenceId(sequenceId);
+        setMessageType(getMessageType());
     }
 
     @Override

@@ -14,6 +14,7 @@ public class GroupQuitRequestMessage extends Message {
         this.groupName = groupName;
         this.username = username;
         setSequenceId(sequenceId);
+        setMessageType(getMessageType());
     }
 
     @Override

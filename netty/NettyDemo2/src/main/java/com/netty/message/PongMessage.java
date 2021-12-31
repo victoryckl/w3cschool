@@ -4,6 +4,7 @@ public class PongMessage extends Message {
 
     public PongMessage(int sequenceId) {
         setSequenceId(sequenceId);
+        setMessageType(getMessageType());
     }
 
     @Override

@@ -20,6 +20,7 @@ public class ChatRequestMessage extends Message {
         this.to = to;
         this.content = content;
         setSequenceId(sequenceId);
+        setMessageType(getMessageType());
     }
 
     @Override

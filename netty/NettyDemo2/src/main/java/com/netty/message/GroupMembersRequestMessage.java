@@ -11,6 +11,7 @@ public class GroupMembersRequestMessage extends Message {
     public GroupMembersRequestMessage(int sequenceId, String groupName) {
         this.groupName = groupName;
         setSequenceId(sequenceId);
+        setMessageType(getMessageType());
     }
 
     @Override
