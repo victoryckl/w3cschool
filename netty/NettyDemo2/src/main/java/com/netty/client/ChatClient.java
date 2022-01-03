@@ -31,6 +31,7 @@ public class ChatClient {
         MessageCodecSharable messageCodec = new MessageCodecSharable();
         CountDownLatch WAIT_FOR_LOGIN = new CountDownLatch(1);
         AtomicBoolean LOGIN = new AtomicBoolean(false);
+
         try {
             Channel channel = new Bootstrap()
                 .group(group)
@@ -92,6 +93,8 @@ public class ChatClient {
                                             WAIT_FOR_LOGIN.await();
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
+                                            ctx.channel().close();
+                                            return;
                                         }
                                         if (!LOGIN.get()) {
                                             ctx.channel().close();

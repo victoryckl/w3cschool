@@ -22,7 +22,6 @@
         <property name="configLocation" value="classpath:mybatis.xml"/>
     </bean>
 
-
     <!-- 声明MapperScannerConfigurer，扫描interface，创建dao，保存到Spring中 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="factory"/>

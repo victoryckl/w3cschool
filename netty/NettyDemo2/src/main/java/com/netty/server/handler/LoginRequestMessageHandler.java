@@ -11,6 +11,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 @ChannelHandler.Sharable
 public class LoginRequestMessageHandler extends SimpleChannelInboundHandler<LoginRequestMessage> {
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginRequestMessage msg) throws Exception {
         String username = msg.getUsername();
