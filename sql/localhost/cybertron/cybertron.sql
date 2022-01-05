@@ -798,7 +798,7 @@ UPDATE new_version_tbl SET city='楚雄彝族自治州' WHERE province='云南' 
 UPDATE new_version_tbl SET city='红河哈尼族彝族自治州' WHERE province='云南' AND city='红河';
 */
 
-CREATE TABLE `new_version_tbl` (
+CREATE TABLE `new_version_tbl4` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `province` char(20) DEFAULT NULL,
   `city` char(20) DEFAULT NULL,
