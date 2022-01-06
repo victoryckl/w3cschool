@@ -1,3 +1,5 @@
+SELECT COUNT(*) FROM acctusertbl WHERE UserName='test1';
+
 #Optimize local Table acctusertbl;
 
 select table_schema db, table_name, data_free, engine from information_schema.tables 
