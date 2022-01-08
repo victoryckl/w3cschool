@@ -1,21 +1,17 @@
+INSERT INTO arith_room_tbl (battleType, createMs, creater, count)
+VALUES(1, 123456, 'user1', 10);
+
 UPDATE arith_user_tbl set userName = 'xx22' WHERE userId = 'xxx10' LIMIT 1;
 
 SELECT COUNT(*) FROM arith_user_tbl WHERE userId='xxx10' LIMIT 1;
 
-INSERT IGNORE INTO arith_user_tbl (createMs, updateMs, userId, userName, pwd, imageUrl)
-VALUES(1235, 2245, 'xxx10', 'namexxx9', '2235', 'http://xxxx.com/xxx.jpg5');
+#INSERT IGNORE INTO arith_user_tbl (createMs, updateMs, userId, userName, pwd, imageUrl)
+#VALUES(1235, 2245, 'xxx10', 'namexxx9', '2235', 'http://xxxx.com/xxx.jpg5');
 
 
-INSERT INTO arith_user_tbl (createMs, updateMs, userId, userName, pwd, imageUrl)
-VALUES(1235, 2245, 'xxx8', 'namexxx8', '2235', 'http://xxxx.com/xxx.jpg5')
-ON DUPLICATE KEY UPDATE updateMs=VALUES(updateMs), userName=VALUES(userName);
-
-  `createMs` bigint(20) DEFAULT '0' COMMENT ' 创建时间，ms',
-  `updateMs` bigint(20) DEFAULT '0' COMMENT '更新时间，ms',
-  `userId` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `userName` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pwd` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `imageUrl` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '头像url',
+#INSERT INTO arith_user_tbl (createMs, updateMs, userId, userName, pwd, imageUrl)
+#VALUES(1235, 2245, 'xxx8', 'namexxx8', '2235', 'http://xxxx.com/xxx.jpg5')
+#ON DUPLICATE KEY UPDATE updateMs=VALUES(updateMs), userName=VALUES(userName);
 
 
 SELECT id,gradeId,termId,versionId FROM arith_type_tbl 
@@ -24,10 +20,11 @@ ORDER BY versionId,gradeId,termId,orderNumber;
 
 SELECT * FROM cybertron2.arith_type_tbl WHERE gradeName='一年级';
 
-UPDATE cybertron2.arith_type_tbl 
-SET gradeId=(SELECT AttributeID FROM cybertron.resattrtbl WHERE Type = 1 AND Attribute='六年级')
-WHERE gradeName='六年级';
+#UPDATE cybertron2.arith_type_tbl 
+#SET gradeId=(SELECT AttributeID FROM cybertron.resattrtbl WHERE Type = 1 AND Attribute='六年级')
+#WHERE gradeName='六年级';
 
+/* 
 UPDATE cybertron2.arith_type_tbl SET termId=1 WHERE termName='上学期';
 UPDATE cybertron2.arith_type_tbl SET termId=2 WHERE termName='下学期';
 
@@ -38,7 +35,7 @@ UPDATE cybertron2.arith_type_tbl SET versionId=26 WHERE versionName='苏教版';
 UPDATE cybertron2.arith_type_tbl SET versionId=7 WHERE versionName='北师大版';
 UPDATE cybertron2.arith_type_tbl SET versionId=4 WHERE versionName='冀教版';
 UPDATE cybertron2.arith_type_tbl SET versionId=104 WHERE versionName='西师大版';
-
+*/
 
 ############################################################################
 
@@ -60,7 +57,6 @@ CREATE TABLE IF NOT EXISTS `arith_formula_tbl` (
 CREATE TABLE IF NOT EXISTS `arith_battle_tbl` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `battleType` int(11) NOT NULL COMMENT '对战类型，关联arith_type_tbl.id',
-  `createMs` bigint(20) DEFAULT '0' COMMENT '房间创建时间，ms',
   `beginMs` bigint(20) DEFAULT '0' COMMENT '游戏开始时间，ms',
   `endMs` bigint(20) DEFAULT '0' COMMENT '游戏结束时间，ms',
   `count` int(11) DEFAULT '0' COMMENT '此局总题数',
@@ -81,6 +77,19 @@ CREATE TABLE IF NOT EXISTS `arith_battle_tbl` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
+CREATE TABLE IF NOT EXISTS `arith_room_tbl` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `battleType` int(11) NOT NULL COMMENT '对战类型，关联arith_type_tbl.id',
+  `createMs` bigint(20) DEFAULT '0' COMMENT '房间创建时间，ms',
+  `count` int(11) DEFAULT '0' COMMENT '此局总题数',
+  `name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '对战名称',
+  `status` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT 'waitPlayer' COMMENT '状态,waitPlayer-等待参与者加入，waitReady-等待参与者准备好，waitStart-等待创建者开始，battling-对战中，over-结束',
+  `creater` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '房间的创建者',
+  `player` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '游戏的参与者',
+  PRIMARY KEY (`id`),
+  KEY `f2_battle_type` (`battleType`),
+  CONSTRAINT `f2_battle_type` FOREIGN KEY (`battleType`) REFERENCES `arith_type_tbl` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `arith_type_tbl` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
