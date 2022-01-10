@@ -1,7 +1,10 @@
-INSERT INTO arith_room_tbl (battleType, createMs, creater, count)
-VALUES(1, 123456, 'user1', 10);
 
-UPDATE arith_user_tbl set userName = 'xx22' WHERE userId = 'xxx10' LIMIT 1;
+SELECT SQL_CALC_FOUND_ROWS * FROM arith_room_tbl ; SELECT FOUND_ROWS() AS selectListCount;
+
+#INSERT INTO arith_room_tbl (battleType, createMs, creater, count)
+#VALUES(1, 123456, 'user1', 10);
+
+#UPDATE arith_user_tbl set userName = 'xx22' WHERE userId = 'xxx10' LIMIT 1;
 
 SELECT COUNT(*) FROM arith_user_tbl WHERE userId='xxx10' LIMIT 1;
 
