@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>MavenTest</artifactId>
+        <groupId>com.maven.test</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>module1</artifactId>
+
+
+    <build>
+        <!--<resources>
+            <resource>
+                <directory>src/main/java</directory> &lt;!&ndash; 代码所在的目录 &ndash;&gt;
+                <includes> &lt;!&ndash; 包括目录下的.properties..xml文件都会扫描到 &ndash;&gt;
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>-->
+
+        <plugins>
+            <!-- 打jar包 没有主清单属性，需在pom.xml中配置maven-jar-plugin，指定mainClass -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.maven.test.AppMain</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
