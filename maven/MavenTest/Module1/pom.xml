@@ -11,17 +11,32 @@
 
     <artifactId>module1</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.16</version>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
 
     <build>
-        <!--<resources>
+        <resources>
             <resource>
-                <directory>src/main/java</directory> &lt;!&ndash; 代码所在的目录 &ndash;&gt;
-                <includes> &lt;!&ndash; 包括目录下的.properties..xml文件都会扫描到 &ndash;&gt;
+                <directory>src/main/java</directory> <!-- 代码所在的目录 -->
+                <includes> <!-- 包括目录下的.properties,.xml文件都会扫描到 -->
                     <include>**/*.properties</include>
                     <include>**/*.xml</include>
                 </includes>
             </resource>
-        </resources>-->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
 
         <plugins>
             <!-- 打jar包 没有主清单属性，需在pom.xml中配置maven-jar-plugin，指定mainClass -->
@@ -32,10 +47,33 @@
                 <configuration>
                     <archive>
                         <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>com.maven.test.AppMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
+            </plugin>
+            <!--将依赖库打包到lib/目录下-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
