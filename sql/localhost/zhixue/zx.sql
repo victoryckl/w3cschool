@@ -1,5 +1,8 @@
 SELECT * FROM region_tbl;
 
+SELECT * FROM region_tbl WHERE parentId=1;
+SELECT * FROM region_tbl WHERE parentId=430000;
+SELECT * FROM region_tbl WHERE parentId=431100;
 
 /*
 省市地区表 处理级别字段
@@ -62,16 +65,17 @@ CREATE TABLE `teacher_tbl` (
   `name` char(20) NOT NULL COMMENT '姓名',
   `sex` char(6) DEFAULT NULL,
   `birthday` date DEFAULT NULL,
-  `phone` char(20) DEFAULT NULL COMMENT '电话号码/手机号',
+  `phone` char(20) NOT NULL COMMENT '电话号码/手机号',
   `regionId` int(11) DEFAULT NULL COMMENT '省市县ID，参考region_tbl.regionId',
   `status` char(20) DEFAULT 'normal' COMMENT '状态，normal-正常，其他状态待定',
   `createTime` bigint(20) DEFAULT NULL COMMENT '时间戳,ms',
   `updateTime` bigint(20) DEFAULT NULL COMMENT '时间戳,ms',
   `deleted` tinyint(4) DEFAULT '0' COMMENT '此条记录是否删除，0-未删除，1-已删除',
   `address` varchar(150) DEFAULT NULL COMMENT '详细地址',
-  PRIMARY KEY (`id`)
+  `email` varchar(70) DEFAULT NULL COMMENT 'Email',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `u_phone` (`phone`) COMMENT '电话唯一标识'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='老师表';
-
 
 */
 
@@ -103,8 +107,10 @@ CREATE TABLE `student_tbl` (
   `updateTime` bigint(20) DEFAULT NULL COMMENT '时间戳,ms',
   `deleted` tinyint(4) DEFAULT '0' COMMENT '此条记录是否删除，0-未删除，1-已删除',
   `address` varchar(150) DEFAULT NULL COMMENT '详细地址',
+  `email` varchar(70) DEFAULT NULL COMMENT 'Email',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='学生表';
+
 */
 
 
