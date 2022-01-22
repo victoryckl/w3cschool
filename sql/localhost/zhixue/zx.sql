@@ -80,10 +80,9 @@ CREATE TABLE `user_token_cycle` (
   `userId` bigint(20) NOT NULL COMMENT '用户标识，唯一',
   `life` bigint(20) DEFAULT '2592000000' COMMENT 'token生存周期，默认30天(2592000000ms)',
   `visit` bigint(20) DEFAULT '0' COMMENT '最后访问时间 ms',
-  `access` bigint(20) DEFAULT NULL COMMENT '权限',
-  `mac` char(40) DEFAULT NULL COMMENT 'MAC地址',
   PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='token生命周期表';
+
 
 CREATE TABLE `user_validate_code` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -103,6 +102,9 @@ CREATE TABLE `teacher_tbl` (
   `phone` char(20) NOT NULL COMMENT '电话号码/手机号',
   `regionId` int(11) DEFAULT NULL COMMENT '省市县ID，参考region_tbl.regionId',
   `roleId` int(11) DEFAULT '1' COMMENT '角色ID，默认1-助教',
+  `access` bigint(20) DEFAULT NULL COMMENT '权限',
+  `mark` bigint(20) DEFAULT '-1' COMMENT '权限掩码',
+  `mac` char(40) DEFAULT NULL,
   `pwd` char(40) NOT NULL COMMENT '密码MD5',
   `status` char(20) DEFAULT 'normal' COMMENT '状态，normal-正常，其他状态待定',
   `createTime` bigint(20) DEFAULT NULL COMMENT '时间戳,ms',
@@ -112,7 +114,8 @@ CREATE TABLE `teacher_tbl` (
   `email` varchar(70) DEFAULT NULL COMMENT 'Email',
   PRIMARY KEY (`id`),
   UNIQUE KEY `u_phone` (`phone`) COMMENT '电话唯一标识'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='老师表';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='老师表';
+
 
 */
 
