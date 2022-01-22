@@ -1,3 +1,5 @@
+
+
 SELECT * FROM region_tbl;
 
 SELECT * FROM region_tbl WHERE parentId=1;
@@ -59,14 +61,49 @@ CREATE TABLE `region_tbl` (
 
 */
 
+
 /*
-CREATE TABLE `teacher_tbl` (
+CREATE TABLE `role_tbl` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) NOT NULL COMMENT '角色名称',
+  `access` bigint(20) NOT NULL COMMENT '角色的权限',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `u_role_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
+
+INSERT INTO `zhixue`.`role_tbl` (`id`, `name`, `access`) VALUES ('1', '助教', '-1');
+*/
+
+/*
+
+CREATE TABLE `user_token_cycle` (
+  `userId` bigint(20) NOT NULL COMMENT '用户标识，唯一',
+  `life` bigint(20) DEFAULT '2592000000' COMMENT 'token生存周期，默认30天(2592000000ms)',
+  `visit` bigint(20) DEFAULT '0' COMMENT '最后访问时间 ms',
+  `access` bigint(20) DEFAULT NULL COMMENT '权限',
+  `mac` char(40) DEFAULT NULL COMMENT 'MAC地址',
+  PRIMARY KEY (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='token生命周期表';
+
+CREATE TABLE `user_validate_code` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `phone` char(32) NOT NULL COMMENT '手机号',
+  `code` char(10) NOT NULL COMMENT '验证码',
+  `expires` bigint(20) DEFAULT '0' COMMENT '失效时间(时间戳ms)',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `u_phone` (`phone`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=628 DEFAULT CHARSET=utf8mb4 COMMENT='验证码表';
+
+
+CREATE TABLE `teacher_tbl` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
   `name` char(20) NOT NULL COMMENT '姓名',
   `sex` char(6) DEFAULT NULL,
   `birthday` date DEFAULT NULL,
   `phone` char(20) NOT NULL COMMENT '电话号码/手机号',
   `regionId` int(11) DEFAULT NULL COMMENT '省市县ID，参考region_tbl.regionId',
+  `roleId` int(11) DEFAULT '1' COMMENT '角色ID，默认1-助教',
+  `pwd` char(40) NOT NULL COMMENT '密码MD5',
   `status` char(20) DEFAULT 'normal' COMMENT '状态，normal-正常，其他状态待定',
   `createTime` bigint(20) DEFAULT NULL COMMENT '时间戳,ms',
   `updateTime` bigint(20) DEFAULT NULL COMMENT '时间戳,ms',
@@ -75,7 +112,7 @@ CREATE TABLE `teacher_tbl` (
   `email` varchar(70) DEFAULT NULL COMMENT 'Email',
   PRIMARY KEY (`id`),
   UNIQUE KEY `u_phone` (`phone`) COMMENT '电话唯一标识'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='老师表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='老师表';
 
 */
 
