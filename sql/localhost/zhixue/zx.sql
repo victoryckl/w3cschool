@@ -1,4 +1,4 @@
-
+SELECT regionId FROM region_tbl WHERE parentId=430000;
 
 SELECT * FROM region_tbl;
 

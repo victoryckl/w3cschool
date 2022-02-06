@@ -1,0 +1,1 @@
+#delete from tb_brand where id=333
