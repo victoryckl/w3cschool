@@ -1,3 +1,13 @@
+SELECT DISTINCT(vb.ResType),vb.BookID, ra.Attribute FROM videobooktbl vb
+LEFT JOIN resattrtbl ra ON vb.ResType = ra.AttributeID AND ra.Type = 5
+ORDER BY vb.ResType ASC;
+
+SELECT COUNT(DISTINCT BookID) FROM videobooktbl;
+
+SELECT count(*) FROM videobooktbl;
+SELECT count(*) FROM videochaptertbl;
+
+
 SELECT (Layer-Layer%1000000) unitLayer, 
 	GROUP_CONCAT(DISTINCT VideoResName ORDER BY VideoResName ASC) knows 
 FROM VideoChapterTbl 
