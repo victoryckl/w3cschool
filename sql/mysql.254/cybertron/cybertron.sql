@@ -1,11 +1,15 @@
+SELECT count(*) FROM bookversiontbl;
+
 SELECT DISTINCT(vb.ResType),vb.BookID, ra.Attribute FROM videobooktbl vb
 LEFT JOIN resattrtbl ra ON vb.ResType = ra.AttributeID AND ra.Type = 5
 ORDER BY vb.ResType ASC;
 
-SELECT COUNT(DISTINCT BookID) FROM videobooktbl;
+SELECT COUNT( BookID) FROM videobooktbl;
 
 SELECT count(*) FROM videobooktbl;
 SELECT count(*) FROM videochaptertbl;
+
+SELECT COUNT(DISTINCT BookID) FROM bookresourcetbl WHERE BookID > 0;
 
 
 SELECT (Layer-Layer%1000000) unitLayer, 
