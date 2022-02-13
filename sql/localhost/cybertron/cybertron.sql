@@ -1,3 +1,13 @@
+
+
+SELECT COUNT(*) FROM bookversiontbl; #2554
+SELECT COUNT(DISTINCT(BookName)) FROM bookversiontbl; #2554
+
+SELECT * FROM bookversiontbl WHERE LENGTH(bookName) = 86;
+SELECT MAX(LENGTH(bookName)) FROM bookversiontbl;
+SELECT DISTINCT(versionName),PressName,BookName FROM bookversiontbl GROUP BY VersionName;
+SELECT * FROM bookversiontbl LIMIT 100;
+
 SELECT COUNT(*) FROM acctusertbl WHERE UserName='test1';
 
 #Optimize local Table acctusertbl;
