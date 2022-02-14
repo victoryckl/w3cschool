@@ -1,3 +1,110 @@
+
+SELECT * FROM zhixue.book_version_tbl WHERE phaseId=10;
+SELECT * FROM zhixue.book_version_tbl;
+
+SELECT gradeId,Attribute,GROUP_CONCAT(DISTINCT(subjectId)) 
+FROM book_version_tbl bv, resattrtbl r 
+WHERE bv.gradeId=r.AttributeID AND r.Type=1 GROUP BY gradeId;
+
+SELECT * FROM grade_subject_tbl;
+SELECT gradeId, GROUP_CONCAT(subjectId) FROM grade_subject_tbl WHERE toClient=1 GROUP BY gradeId;
+SELECT GROUP_CONCAT(subjectId) subjectId FROM grade_subject_tbl WHERE toClient=1 AND gradeId = 2;
+SELECT gs.subjectId id, r.Attribute name FROM grade_subject_tbl gs, resattrtbl r 
+WHERE gs.toClient=1 AND gs.gradeId = 1 AND r.Type=2 AND r.AttributeID=gs.subjectId;
+
+
+SELECT * FROM book_version_tbl;
+SELECT DISTINCT(versionId) FROM book_version_tbl WHERE subjectId=1 ORDER BY versionId ASC;
+SELECT * FROM resattrtbl WHERE Type=4 AND AttributeID IN(
+	SELECT DISTINCT(versionId) FROM book_version_tbl WHERE subjectId=1 ORDER BY versionId ASC
+);
+SELECT GROUP_CONCAT(DISTINCT(versionId) ORDER BY versionId ASC) FROM book_version_tbl WHERE subjectId=1;
+
+SELECT DISTINCT(versionId) id, versionName name FROM book_version_tbl WHERE gradeId=9 AND subjectId=1 ORDER BY versionId ASC;
+
+/*
+
+
+INSERT INTO `zhixue`.`grade_subject_tbl` (`phaseId`, `gradeId`, `subjectId`)
+VALUES 
+('20', '10', '1'),
+('20', '10', '2'),
+('20', '10', '3'),
+('20', '10', '5'),
+('20', '10', '21'),
+('20', '11', '1'),
+('20', '11', '2'),
+('20', '11', '3'),
+('20', '11', '5'),
+('20', '11', '21'),
+('20', '12', '1'),
+('20', '12', '2'),
+('20', '12', '3'),
+('20', '12', '5'),
+('20', '12', '21'),
+('20', '13', '1'),
+('20', '13', '2'),
+('20', '13', '3'),
+('20', '13', '5'),
+('20', '13', '21'),
+('20', '14', '1'),
+('20', '14', '2'),
+('20', '14', '3'),
+('20', '14', '5'),
+('20', '14', '21');
+
+INSERT INTO `grade_subject_tbl` (`phaseId`, `gradeId`, `subjectId`) VALUES 
+('40', '6', '1'),
+('40', '6', '2'),
+('40', '6', '3'),
+('40', '6', '4'),
+('40', '6', '5'),
+('40', '6', '6'),
+('40', '6', '7'),
+('40', '6', '8'),
+('40', '6', '9');
+
+UPDATE grade_subject_tbl SET toClient=1;
+UPDATE grade_subject_tbl SET toClient=0 WHERE phaseId=20 AND subjectId IN (5,21);
+UPDATE grade_subject_tbl SET toClient=0 WHERE subjectId=21;
+*/
+
+/*
+#将cybertron.bookversiontbl中数据导入到zhixue.book_version_tbl中
+INSERT INTO zhixue.book_version_tbl 
+(id, versionId, gradeId, subjectId, name, versionName, pressName)
+SELECT ID id, BookVersion versionId, Grade gradeId, 
+Course subjectId, BookName name, VersionName versionName, PressName pressName 
+FROM cybertron.bookversiontbl;
+
+#设置时间戳
+UPDATE book_version_tbl SET createTime=1644818400000,updateTime=1644818400000;
+
+#设置学段
+UPDATE book_version_tbl bv, phase_grade_tbl pg SET bv.phaseId=pg.phaseId WHERE bv.gradeId=pg.gradeId;
+
+#设置isbn
+UPDATE zhixue.book_version_tbl bv, cybertron.bookresourcetbl br 
+SET bv.isbn=br.NumISBN WHERE bv.id=br.BookID AND br.NumISBN <> 0;
+
+#设置imageUrl
+UPDATE zhixue.book_version_tbl bv, cybertron.bookresourcetbl br 
+SET bv.imageUrl=br.ImageUrl WHERE bv.id=br.BookID;
+
+#设置上下册
+UPDATE zhixue.book_version_tbl SET termId=1 WHERE `name` LIKE '%上册%';
+UPDATE zhixue.book_version_tbl SET termId=2 WHERE `name` LIKE '%下册%';
+
+*/
+
+
+
+SELECT * from cybertron.bookversiontbl;
+
+SELECT count(*) from cybertron.bookversiontbl;
+SELECT count(*) from zhixue.book_version_tbl;
+
+
 select * from teacher_tbl t, user_access_tbl ua where t.phone=13418545356 and t.id = ua.userId;
 
 SELECT SQL_CALC_FOUND_ROWS * from teacher_tbl t, user_access_tbl ua where t.id = ua.userId limit 0,3;
