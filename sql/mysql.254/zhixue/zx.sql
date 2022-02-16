@@ -22,6 +22,19 @@ SELECT GROUP_CONCAT(DISTINCT(versionId) ORDER BY versionId ASC) FROM book_versio
 
 SELECT DISTINCT(versionId) id, versionName name FROM book_version_tbl WHERE gradeId=9 AND subjectId=1 ORDER BY versionId ASC;
 
+SELECT SQL_CALC_FOUND_ROWS
+		s.*,
+		CONCAT('[',GROUP_CONCAT(CONCAT_WS('', '{', IFNULL(NULL, CONCAT('"subjectId":',sv.subjectId)),
+																					     IFNULL(NULL, CONCAT(',"versionId":',sv.versionId)), 
+																					     IFNULL(NULL, CONCAT(',"userId":',sv.userId)),'}')
+		),']') versions
+FROM student_tbl s
+LEFT JOIN student_version_tbl sv
+ON sv.studentId = s.id
+WHERE s.deleted=FALSE
+GROUP BY s.id
+LIMIT 0,100;
+
 /*
 
 
