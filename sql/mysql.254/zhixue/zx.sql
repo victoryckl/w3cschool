@@ -1,7 +1,12 @@
+SELECT AttributeID id, Attribute name FROM resattrtbl WHERE toClient=1 AND Type=2 AND AttributeID IN (
+	SELECT subjectId FROM grade_subject_tbl WHERE gradeId=1 AND toClient=1
+)
+
+/*
 UPDATE book_version_tbl b, resattrtbl r 
 SET b.versionName = r.Attribute
 WHERE b.versionId = r.AttributeID AND r.Type=4;
-
+*/
 SELECT r.AttributeID,r.Attribute, b.* FROM book_version_tbl b, resattrtbl r
 WHERE b.versionId = r.AttributeID AND r.Type=4;
 
