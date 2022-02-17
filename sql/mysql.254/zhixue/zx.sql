@@ -1,3 +1,13 @@
+UPDATE book_version_tbl b, resattrtbl r 
+SET b.versionName = r.Attribute
+WHERE b.versionId = r.AttributeID AND r.Type=4;
+
+SELECT r.AttributeID,r.Attribute, b.* FROM book_version_tbl b, resattrtbl r
+WHERE b.versionId = r.AttributeID AND r.Type=4;
+
+SELECT * FROM book_version_tbl b1, book_version_tbl b2
+WHERE b1.versionId = b2.versionId AND b1.versionName <> b2.versionName
+GROUP BY b1.versionId,b1.versionName;
 
 SELECT * FROM zhixue.book_version_tbl WHERE phaseId=10;
 SELECT * FROM zhixue.book_version_tbl;
