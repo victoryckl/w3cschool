@@ -1,3 +1,7 @@
+SELECT * FROM student_tbl WHERE id IN (
+	SELECT studentId FROM student_version_tbl WHERE userId=1
+);
+
 SELECT AttributeID id, Attribute name FROM resattrtbl WHERE toClient=1 AND Type=2 AND AttributeID IN (
 	SELECT subjectId FROM grade_subject_tbl WHERE gradeId=1 AND toClient=1
 )
@@ -175,11 +179,27 @@ SELECT
 		CONCAT('[',GROUP_CONCAT(DISTINCT(ts.skillId)),']') subjectIds,
 		t.*
 FROM teacher_tbl t
-INNER JOIN user_access_tbl ua  ON (t.phone=13812340010 AND t.id = ua.userId)
+INNER JOIN user_access_tbl ua  ON (/*t.phone=13812340010 AND*/ t.id = ua.userId)
 LEFT JOIN teacher_skill_tbl tg ON (t.id = tg.userId AND tg.type = 1) /*擅长的年级IDs*/
 LEFT JOIN teacher_skill_tbl ts ON (t.id = ts.userId AND ts.type = 2) /*擅长的科目IDs*/
 GROUP BY t.id /*擅长的年级IDs和科目IDs按照用户ID分组*/
-LIMIT 1;
+LIMIT 10;
+
+SELECT
+		ua.roleId, ua.maskApi, ua.maskUi,
+		(ua.accessApi & ua.maskApi) accessApi,
+		(ua.accessUi & ua.maskUi) accessUi,
+		CONCAT('[',GROUP_CONCAT(DISTINCT(tg.skillId)),']') gradeIds, /*去重，拼接成JSONArray*/
+		CONCAT('[',GROUP_CONCAT(DISTINCT(ts.skillId)),']') subjectIds,
+		t.*
+FROM teacher_tbl t
+INNER JOIN user_access_tbl ua  ON (/*t.phone=13812340010 AND*/ t.id = ua.userId)
+INNER JOIN teacher_skill_tbl tg2 ON (t.id = tg2.userId AND tg2.type = 1 AND tg2.skillId = 10) /*擅长的年级IDs*/
+INNER JOIN teacher_skill_tbl ts2 ON (t.id = ts2.userId AND ts2.type = 2 AND ts2.skillId = 1) /*擅长的年级IDs*/
+LEFT JOIN teacher_skill_tbl tg ON (t.id = tg.userId AND tg.type = 1) /*擅长的年级IDs*/
+LEFT JOIN teacher_skill_tbl ts ON (t.id = ts.userId AND ts.type = 2) /*擅长的科目IDs*/
+GROUP BY t.id /*擅长的年级IDs和科目IDs按照用户ID分组*/
+LIMIT 10;
 
 
 SELECT * FROM student_tbl WHERE phone='13855550011';
@@ -203,9 +223,24 @@ SELECT SQL_CALC_FOUND_ROWS
 	s.*,
 	CONCAT('[',GROUP_CONCAT(CONCAT('{"subjectId":',sv.subjectId,',"versionId":',sv.versionId,'}')),']') versions
 FROM student_tbl s
-LEFT JOIN student_version_tbl sv
-ON sv.studentId = s.id
+LEFT JOIN student_version_tbl sv ON sv.studentId = s.id
+WHERE sv.userId IS NULL
 GROUP BY s.id
-LIMIT 10,10;
+LIMIT 0,100;
 
 SELECT FOUND_ROWS() AS listCount;
+
+SELECT DISTINCT(studentId) FROM student_version_tbl WHERE userId IS NOT NULL;
+SELECT * FROM student_tbl WHERE id NOT IN (
+	SELECT DISTINCT(studentId) FROM student_version_tbl WHERE userId IS NOT NULL
+);
+
+SELECT SQL_CALC_FOUND_ROWS 
+	s.*, CONCAT('[',GROUP_CONCAT(CONCAT_WS('', '{', IFNULL(NULL, CONCAT('"subjectId":',sv.subjectId)), IFNULL(NULL, CONCAT(',"versionId":',sv.versionId)), IFNULL(NULL, CONCAT(',"userId":',sv.userId)),'}') ),']') versions 
+FROM student_tbl s 
+LEFT JOIN student_version_tbl sv ON sv.studentId = s.id 
+WHERE s.deleted=false 
+	#AND s.id IN ( SELECT DISTINCT(studentId) FROM student_version_tbl WHERE userId > 0) 
+	AND s.id NOT IN ( SELECT DISTINCT(studentId) FROM student_version_tbl WHERE userId > 0) 
+GROUP BY s.id LIMIT 0,100;
+SELECT FOUND_ROWS() AS orderListCount;
