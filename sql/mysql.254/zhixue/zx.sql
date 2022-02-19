@@ -1,3 +1,28 @@
+SELECT count(*) FROM fun_video_tbl;
+SELECT * FROM fun_video_tbl WHERE name is NULL;
+
+SELECT * FROM fun_video_tbl WHERE id IN (10358763,10385057,657807);
+
+#DELETE FROM fun_video_tbl;
+
+/*
+INSERT INTO fun_video_tbl (id, version, planType, name, duration, durationStr, mediaId, mediaName, createTime, updateTime)
+VALUES
+			(1, "version", "planType", "name", 10, "10秒", 2, "mediaName", CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+			(3, "version3", "planType3", "name3", 13, "13秒", 3, "mediaName3", CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
+ON DUPLICATE KEY UPDATE 
+	version=VALUES(version),
+	planType=VALUES(planType),
+	name=VALUES(name),
+	duration=VALUES(duration),
+	durationStr=VALUES(durationStr),
+	mediaId=VALUES(mediaId),
+	mediaName=VALUES(mediaName),
+	updateTime=VALUES(updateTime);
+*/
+
+
+
 SELECT * FROM student_tbl WHERE id IN (
 	SELECT studentId FROM student_version_tbl WHERE userId=1
 );
