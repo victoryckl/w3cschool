@@ -1,3 +1,12 @@
+
+
+SELECT * FROM fun_video_tbl;
+SELECT COUNT(*) FROM fun_video_tbl; #22018
+SELECT * FROM fun_video_tbl WHERE gradeName IS NULL; #20246
+SELECT * FROM fun_video_tbl WHERE name IS NULL; #15
+SELECT * FROM fun_video_tbl WHERE planType IS NULL;
+
+
 select * from teacher_tbl t, user_access_tbl ua where t.phone=13418545356 and t.id = ua.userId;
 
 SELECT SQL_CALC_FOUND_ROWS * from teacher_tbl t, user_access_tbl ua where t.id = ua.userId limit 0,3;
