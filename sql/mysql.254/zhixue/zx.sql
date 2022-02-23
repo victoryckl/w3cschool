@@ -1,4 +1,7 @@
 
+
+SELECT MAX(id) FROM book_version_tbl;
+
 SELECT AttributeID id, Attribute name FROM resattrtbl WHERE toClient=1 AND Type=2 AND AttributeID IN (
 	SELECT DISTINCT(subjectId) FROM grade_subject_tbl WHERE phaseId=20 AND toClient=1
 )
