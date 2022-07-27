@@ -1,4 +1,22 @@
 
+#高，初，小各科的点读数据列表
+SELECT t1.BookID, t1.ResourceName, t2.Attribute, t3.Attribute, t4.Attribute, t1.Size
+FROM bookresourcetbl t1
+LEFT JOIN resattrtbl t2 ON t1.BookVersion=t2.AttributeID AND t2.Type=4
+LEFT JOIN resattrtbl t3 ON t1.Grade=t3.AttributeID AND t3.Type=1
+LEFT JOIN resattrtbl t4 ON t1.Course=t4.AttributeID AND t4.Type=2
+WHERE Suffix='.tbr'
+ORDER BY BookVersion,t3.AttrOrder,Course;
+
+#云点学数据的列表
+SELECT t1.BookID, t1.Name, t2.Attribute, t3.Attribute, IF (t1.Term=1, '上册', '下册'), t4.Attribute
+FROM online_book_tbl t1
+LEFT JOIN resattrtbl t2 ON t1.BookVersion=t2.AttributeID AND t2.Type=4
+LEFT JOIN resattrtbl t3 ON t1.Grade=t3.AttributeID AND t3.Type=1
+LEFT JOIN resattrtbl t4 ON t1.Subject=t4.AttributeID AND t4.Type=2
+ORDER BY BookVersion,t3.AttrOrder,Subject;
+
+
 
 SELECT COUNT(*) FROM bookversiontbl; #2554
 SELECT COUNT(DISTINCT(BookName)) FROM bookversiontbl; #2554
