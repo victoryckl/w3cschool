@@ -1,3 +1,5 @@
+SELECT * FROM mfgexams WHERE timu LIKE '%2010051114391607726191.gif%';
+
 SELECT COUNT(*) from shiti;     #3034024
 SELECT count(*) from mfgexams;  #258402
 SELECT count(*) from xkb_questions; #311565

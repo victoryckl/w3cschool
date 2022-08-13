@@ -1,3 +1,9 @@
+# 清理20220724之前的记录
+#DELETE FROM im_module_time WHERE start_time < 1657728000;
+
+SELECT count(*) FROM im_module_time WHERE start_time < 1657728000
+
+
 SELECT *,FROM_UNIXTIME(start_time) FROM im_module_time 
 WHERE tablet_user='P26S-HV01-PO01.20190103-602897' AND package_name='com.meta.box'
 ORDER BY start_time DESC;

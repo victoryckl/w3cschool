@@ -1,4 +1,16 @@
 
+#添加offline/
+#UPDATE bookresourcetbl set DownLoadUrl = CONCAT('offline/', DownLoadUrl) WHERE ResourceID = '7c5ab8d911c87522e0987a17aa84d269';
+#去掉offlien/
+#UPDATE bookresourcetbl set DownLoadUrl = REPLACE(DownLoadUrl, 'offline/', '') WHERE ResourceID = '7c5ab8d911c87522e0987a17aa84d269';
+
+SELECT * FROM bookresourcetbl WHERE Suffix in('.mp4','.mq4','.flv','.fmv','.avi','.awi','.wmv','.wnv','.mpg','mqg');
+SELECT count(*) FROM bookresourcetbl WHERE Suffix in('.mp4','.mq4'); //18115
+SELECT count(*) FROM bookresourcetbl WHERE Suffix in('.flv','.fmv'); //0
+SELECT count(*) FROM bookresourcetbl WHERE Suffix in('.avi','.awi'); //0
+SELECT count(*) FROM bookresourcetbl WHERE Suffix in('.wmv','.wnv'); //0
+SELECT count(*) FROM bookresourcetbl WHERE Suffix in('.mpg','mqg'); //0
+
 #高，初，小各科的点读数据列表
 SELECT t1.BookID, t1.ResourceName, t2.Attribute, t3.Attribute, t4.Attribute, t1.Size
 FROM bookresourcetbl t1

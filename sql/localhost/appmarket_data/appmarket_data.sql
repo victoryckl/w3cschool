@@ -1,3 +1,9 @@
+SELECT DISTINCT (Label,Author,Sentence,Introduction) FROM appmarket_app_tbl LIMIT 10,17;
+
+SELECT * FROM appmarket_app_tbl WHERE ModelID=30 AND PackName IN (
+SELECT PackName FROM appmarket_down_tbl LIMIT 17
+)
+
 #查询排行类别下的应用
 SELECT SQL_CALC_FOUND_ROWS t1.DownTimes, t2.*, t1.Star
 FROM appmarket_down_tbl t1, appmarket_app_tbl t2

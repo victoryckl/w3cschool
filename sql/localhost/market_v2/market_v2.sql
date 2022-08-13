@@ -1,8 +1,18 @@
+#INSERT INTO `market_v2`.`app_beta_tbl` (`id`, `channelId`, `productId`, `pkg`, `label`, `verName`, `verCode`, `size`, `md5`, `url`, `updateTime`, `updateNote`, `icon`, `pics`, `author`, `source`, `sentence`, `brief`) VALUES ('101', '1007', '1008', 'com.jiongji.andriod.card1', '百词斩1', '7.2.1', '7020100', '41639451', '7fea2caf52a421b90040af8fb656005f', 'debug/代号007/007-221/com.jiongji.andriod.card/7.2.1/com.jiongji.andriod.card.apk', '1659510908611', '修改bug', '{\"md5\":\"3c379be6e2cbabd4ead1035dd9c7b48c\",\"size\":695,\"url\":\"debug/代号007/007-221/com.jiongji.andriod.card/7.2.1/com.jiongji.andriod.card.png\"}', '[{\"size\":31417,\"url\":\"debug/代号007/007-221/com.jiongji.andriod.card/7.2.1/com.jiongji.andriod.card_1.jpg\",\"md5\":\"fb17beb3994624b87885522a89bf76d0\"},{\"size\":31020,\"url\":\"debug/代号007/007-221/com.jiongji.andriod.card/7.2.1/com.jiongji.andriod.card_2.jpg\",\"md5\":\"fa73ed12c7d2e1aaab276ae4b1610fef\"},{\"size\":34075,\"url\":\"debug/代号007/007-221/com.jiongji.andriod.card/7.2.1/com.jiongji.andriod.card_3.jpg\",\"md5\":\"ce556e694981afc10051d40ae9c2a522\"},{\"size\":29989,\"url\":\"debug/代号007/007-221/com.jiongji.andriod.card/7.2.1/com.jiongji.andriod.card_4.jpg\",\"md5\":\"4c65ea77832adbb16db7b33d370325d9\"}]', '未知', '应用宝', '背单词APP', '一款网红背单词APP，\n可以离线使用，0流量背单词。\n几千万人都在用，我猜你也想试试？');
+
+
+SELECT * FROM app_tbl WHERE channelId=1000 AND pkg='com.zz.yy07';
+
+SELECT rankId FROM rank_app_tbl WHERE appId=32;
+
+SELECT count(*) FROM app_tbl WHERE productId=1000;
+
+
 SELECT d.times, a.* 
 FROM app_tbl a, down_tbl d
 WHERE a.productId=1000 AND d.channelId=1000 AND a.pkg=d.pkg
-			AND CONCAT(IFNULL(`label`,''),IFNULL(`author`,''),IFNULL(`sentence`,''),IFNULL(`brief`,'')) 
-			LIKE CONCAT('%', '23', '%')
+			AND CONCAT(IFNULL(`label`,''),IFNULL(`author`,''),IFNULL(`sentence`,''),IFNULL(`updateNote`,''),IFNULL(`brief`,'')) 
+			LIKE CONCAT('%', '数字ss', '%')
 ORDER BY label;
 
 
